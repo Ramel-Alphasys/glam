@@ -17,7 +17,7 @@
             <i class="fa fa-bars fa-2x"></i>
          </div>
          <div class="logo">
-            <a class="nav-link" href="index.php">Glamurous</a>
+            <a class="nav-link" href="index.php">Glamurousa</a>
          </div>
          <div class="menu">
             <ul>
@@ -28,6 +28,11 @@
     </header>
     <main>
       <div class="container">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
         <div class="card m-3 shadow">
           <div class="row g-0 p-3">
             <div class="col-md-4">

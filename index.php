@@ -18,7 +18,7 @@
              <i class="fa fa-bars fa-2x"></i>
           </div>
           <div class="logo">
-             <a class="nav-link" href="index.php">Glamurous</a>
+             <a class="nav-link" href="index.php">Glamurousa</a>
           </div>
           <div class="menu">
              <ul>
@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="container">
-          <div class="carousel-caption text-start text-dark">
+          <div class="carousel-caption text-start text-light bg-dark bg-opacity-50 p-3 rounded">
             <h1>Example headline.</h1>
             <p>Some representative placeholder content for the first slide of the carousel.</p>
           </div>

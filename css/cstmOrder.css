@@ -19,6 +19,7 @@ nav {
       position: fixed;
       width: 100%;
       line-height: 60px;
+      z-index: 1;
 }
 
 nav ul {
@@ -96,6 +97,16 @@ nav ul li a:hover{
             display: block;
       }
 
+      .order-det {
+        flex-wrap: wrap;
+      }
+      .order-det img {
+        width: 100% !important;
+      }
+      .cstm-card {
+        padding: 8px 15px !important;
+        font-size: 1rem !important;
+      }
 }
 
 /* Custom Css */
@@ -109,6 +120,8 @@ nav ul li a:hover{
     cursor: pointer;
     display: flex;
     color: #d9d9d9;
+    font-size: 1.25rem;
+    text-transform: uppercase;
 }
 .cstm-card.active {
     color: #0a0a0a;

@@ -45,7 +45,7 @@
                 Order #1
               </div>
               <div class="float-end">
-                <span class="text-muted">Proceed to checkout</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+                <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
                 Order #2
               </div>
               <div class="float-end">
-                <span class="text-muted">Proceed to checkout</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+                <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@
               </div>
               <div class="modal-body">
                 <div class="container">
-                  <div class="d-flex p-2 shadow rounded">
+                  <div class="d-flex p-2 shadow rounded order-det">
                     <div class="">
                       <img src="assets/img/img1.png" class="img-fluid shadow rounded" alt="" width="200" height="200">
                     </div>
@@ -86,17 +86,17 @@
                 </div>
                 <div class="container w-100 mt-5 mb-3">
                   <div class="d-flex justify-content-center m-3">
-                    <div class="cstm-card fs-5 f2-bold text-uppercase me-3" id="gcashMode">
+                    <div class="cstm-card f2-bold me-3" id="gcashMode">
                       Gcash
                     </div>
-                    <div class="cstm-card fs-5 f2-bold text-uppercase" id="codMode">
+                    <div class="cstm-card f2-bold" id="codMode">
                       Cash On Delivery
                     </div>
                   </div>
                 </div>
                 <div class="form invisible d-none" id="gcashForm">
                   <div class="container">
-                    Gcask
+                    Gcash
                   </div>
                 </div>
                 <div class="form invisible d-none" id="codForm">
@@ -139,6 +139,14 @@
                       </div>
                     </form>
                   </div>
+                </div>
+              </div>
+              <div class="modal-footer clearfix">
+                <div class="float-start">
+                  <span class="fw-light">Order Status: </span><span class="text-success fw-semibold">To ship</span>
+                </div>
+                <div class="float-end">
+                  <span class="fw-light">Expected Date: </span><span class="fw-semibold">30 Sept. 2020</span>
                 </div>
               </div>
             </div>

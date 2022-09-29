@@ -17,7 +17,7 @@
              <i class="fa fa-bars fa-2x"></i>
           </div>
           <div class="logo">
-             <a class="nav-link" href="index.php">Glamurous</a>
+             <a class="nav-link" href="index.php">Glamurousa</a>
           </div>
           <div class="menu">
              <ul>
