@@ -1,0 +1,34 @@
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.1s;
+    visibility: visible;
+    cursor: help;
+}
+[data-title]:after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: -1.6em;
+    left: 100%;
+    padding: 4px 4px 4px 8px;
+    color: #222;
+    white-space: nowrap; 
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px;  
+    border-radius: 5px;  
+    -moz-box-shadow: 1px 4px 8px 1px rgba(0, 0, 0, .3);  
+    -webkit-box-shadow: 1px 4px 8px 1px rgba(0, 0, 0, .3);  
+    box-shadow: 1px 4px 8px 1px rgba(0, 0, 0, .3);  
+    background-image: -moz-linear-gradient(top, #adb5bd, #cccccc);  
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #adb5bd),color-stop(1, #cccccc));
+    background-image: -webkit-linear-gradient(top, #adb5bd, #cccccc);  
+    background-image: -moz-linear-gradient(top, #adb5bd, #cccccc);  
+    background-image: -ms-linear-gradient(top, #adb5bd, #cccccc);  
+    background-image: -o-linear-gradient(top, #adb5bd, #cccccc);
+    opacity: 0;
+    z-index: 99999;
+    visibility: hidden;
+    font-weight: 600;
+}
+[data-title] {
+    position: relative;
+}
