@@ -1,12 +1,3 @@
-/**
-* @ Name: database.php
-* @ Purpose: consists of all serverside queries and usable php methods
-* @ Author: Ramel Niño O. Empleo
-* @ Create Time: 2022-09-29 22:29:45
-* @ Modified by: Ramel Niño O. Empleo
-* @ Modified time: 2022-09-30 21:44:36
-* @ Change Log:
-*/
 <?php
 
 error_reporting(E_ALL | E_STRICT);

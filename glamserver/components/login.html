@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 08:57:01
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-09-30 22:06:52
+ * @ Modified time: 2022-09-30 22:08:27
  * @ Change Log:
  -->
 <article id="loginPage">
@@ -61,6 +61,7 @@
         dataType: "json",
       }).done((data) => {
         var result = data;
+        console.log("Output:  => $ => result", result);
         if(result.STATUS == 0) {
           $('.errorMessage').text('User not found!');
           $('input[type="text"],input[type="password"]').val('');

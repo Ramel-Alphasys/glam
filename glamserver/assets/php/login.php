@@ -1,12 +1,3 @@
-/**
-* @ Name: login.php
-* @ Purpose: access script for employee or client
-* @ Author: Ramel Niño O. Empleo
-* @ Create Time: 2022-09-29 22:31:42
-* @ Modified by: Ramel Niño O. Empleo
-* @ Modified time: 2022-09-30 21:45:10
-* @ Change Log:
-*/
 <?php
 require 'database.php';
 
