@@ -1,0 +1,130 @@
+header {
+      width: 100%;
+      height: auto;
+}
+
+.logo {
+      line-height: 60px;
+      position: fixed;
+      float: left;
+      margin: 16px 46px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 30px;
+      letter-spacing: 2px;
+      text-transform:uppercase;
+}
+
+nav {
+      position: fixed;
+      width: 100%;
+      line-height: 60px;
+      z-index: 1;
+}
+
+nav ul {
+      line-height: 60px;
+      list-style: none;
+      background: rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      padding: 0;
+      text-align: right;
+      margin: 0;
+      padding-right: 40px;
+      transition: 1s;
+}
+
+nav.black ul {
+      background: rgba(0, 0, 0, 0.8);
+}
+
+nav ul li {
+      display: inline-block;
+      padding: 16px 40px;;
+}
+
+nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 16px;
+      text-transform: uppercase;
+}
+nav.black .logo,
+nav.black ul li a{
+  color:#fff
+}
+nav ul li a:hover{
+  color: #aaa;
+}
+
+.menu-icon {
+      line-height: 60px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      text-align: right;
+      box-sizing: border-box;
+      padding: 15px 24px;
+      cursor: pointer;
+      color: #fff;
+      display: none;
+}
+
+@media(max-width: 786px) {
+
+      .logo {
+            position: fixed;
+            top: 0;
+            margin-top: 16px;
+            font-size: 25px;
+      }
+
+      nav ul {
+            max-height: 0px;
+      }
+
+      .showing {
+            max-height: 34em;
+      }
+
+      nav ul li {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 24px;
+            text-align: center;
+      }
+
+      .menu-icon {
+            display: block;
+      }
+
+      .order-det {
+        flex-wrap: wrap;
+      }
+      .order-det img {
+        width: 100% !important;
+      }
+      .cstm-card {
+        padding: 8px 15px !important;
+        font-size: 1rem !important;
+      }
+}
+
+/* Custom Css */
+
+.cstm-card {
+    padding: 20px 40px;
+    border: 2px solid #d9d9d9;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    color: #d9d9d9;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+}
+.cstm-card.active {
+    color: #0a0a0a;
+    background: #f6fcf7;
+    border-color: #7dc855;
+}

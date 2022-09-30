@@ -1,0 +1,89 @@
+<!--
+ * @ Name: login.html
+ * @ Purpose: system login page
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-09-15 08:57:01
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-09-30 22:08:27
+ * @ Change Log:
+ -->
+<article id="loginPage">
+  <div class="loginBox">
+    <div class="loginForm">
+      <h2>Sign in</h2>
+      <div class="loginInputBox">
+        <input type="text" name="username" required="required" />
+        <span>Username</span>
+        <i></i>
+      </div>
+      <div class="loginInputBox">
+        <input type="password" name="password" required="required" />
+        <span>Password</span>
+        <i></i>
+      </div>
+      <div class="loginLinks">
+        <a id="forget_password" href="javascript:void(0)" data-title="Click to reset password">Forgot Password</a>
+      </div>
+      <input type="submit" value="Login" />
+      <br />
+            <aside class="errorMessage text-danger"></aside>
+    </div>
+  </div>
+</article>
+<script>
+  $('input[type="text"],input[type="password"]').on('keydown', (event) => {
+    $('.errorMessage').text('');
+  });
+  $('input[type="submit"]').on('click', (event) => {
+    var fields = [
+          'input[type="text"]',
+          'input[type="password"]'
+        ],
+        fieldLabel = [
+          'Username',
+          'Password'
+        ],
+        fieldCounter = 0;
+    for(var i = 0; i < fields.length; i++) {
+      if($(fields[i]).val() === '') {
+        $(fields[i]).focus();
+        $('.errorMessage').text(fieldLabel[i] + ' field is Empty!');
+        break;
+      }else {
+        fieldCounter++;
+      }
+    }
+    if(fieldCounter == fields.length) {
+      $.ajax({
+        type: "POST",
+        url: "/glam/glamserver/assets/php/login.php",
+        data: {"TYPE": "userlogin","g_user": $(fields[0]).val(),"g_pass": $(fields[1]).val()},
+        dataType: "json",
+      }).done((data) => {
+        var result = data;
+        console.log("Output:  => $ => result", result);
+        if(result.STATUS == 0) {
+          $('.errorMessage').text('User not found!');
+          $('input[type="text"],input[type="password"]').val('');
+          setTimeout( () => {
+            $('input[type="text"]').focus();
+          },1000);
+        }else {
+          sessionStorage.setItem("page", 1);
+          sessionStorage.setItem("userId", result.USER);
+          $('.errorMessage').removeClass('text-danger').addClass('text-success').text('User verified!');
+          setTimeout( () => {
+            location.reload();
+          },800);
+        }
+      });
+    }
+  });
+  $('#forget_password').on('click', (event) => {
+    $("#server-content").load(`components/passwordreset.html`,function (response, status) {
+			if (status === "error") {
+				console.log("Output:  => $ => load passwordreset.html status: ", status);
+			}
+		});
+  });
+</script>
