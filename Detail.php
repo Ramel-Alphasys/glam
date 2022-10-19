@@ -8,7 +8,7 @@
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <link href="css/cstmDet.css" rel="stylesheet">
+    <link href="css/cstmProd.css" rel="stylesheet">
   </head>
   <body>
     <header>
@@ -21,12 +21,20 @@
          </div>
          <div class="menu">
             <ul>
+              <li><a href="Order.php">My Order</a></li>
+              <li><a href="Product.php">Products</a></li>
               <li><a href="Profile.php"><i class="p-2 fa fa-user-o border text-info rounded-circle"></i></a></li>
             </ul>
          </div>
       </nav>
     </header>
     <main>
+      <div class="breakline-spacer">
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
       <div class="container">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -39,13 +47,13 @@
               <div id="ItemPreview" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                   <div class="carousel-item active" data-bs-interval="1500">
-                    <img src="assets/img/img1.png" class="d-block w-100" alt="...">
+                    <img src="assets/img/img1.png" class="d-block w-100" alt="..." style="height: 240px;">
                   </div>
                   <div class="carousel-item" data-bs-interval="1500">
-                    <img src="assets/img/img3.png" class="d-block w-100" alt="...">
+                    <img src="assets/img/img3.png" class="d-block w-100" alt="..." style="height: 240px;">
                   </div>
                   <div class="carousel-item" data-bs-interval="1500">
-                    <img src="assets/img/img1.png" class="d-block w-100" alt="...">
+                    <img src="assets/img/img1.png" class="d-block w-100" alt="..." style="height: 240px;">
                   </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#ItemPreview" data-bs-slide="prev">
