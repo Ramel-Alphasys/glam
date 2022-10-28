@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * @ Name: database.php
+ * @ Purpose: file contains the main connection to database
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-09-29 22:29:45
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-10-28 21:11:18
+ * @ Change Log:
+ */
 error_reporting(E_ALL | E_STRICT);
 date_default_timezone_set('Asia/Manila');
 header("Access-Control-Allow-Origin: *");

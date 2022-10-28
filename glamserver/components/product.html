@@ -1,0 +1,229 @@
+<!--
+ * @ Name:
+ * @ Purpose:
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-09-15 09:11:53
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-10-28 22:45:24
+ * @ Change Log:
+ -->
+<div class="container-scroller">
+	<div class="container-fluid page-body-wrapper">
+		<div id="leftSideNavigation" style="float: left"></div>
+		<div class="main-panel">
+			<div class="content-wrapper">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="home-tab">
+							<div
+								class="d-sm-flex align-items-center justify-content-between border-bottom"
+							>
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a
+											class="nav-link active ps-0"
+											id="home-tab"
+											data-bs-toggle="tab"
+											href="javascript:void(0)"
+											role="tab"
+											aria-controls="overview"
+											aria-selected="true"
+											>Products</a
+										>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-content tab-content-basic">
+								<div
+									class="tab-pane fade show active"
+									id="overview"
+									role="tabpanel"
+									aria-labelledby="overview"
+								>
+									<div class="row">
+										<div class="col-lg-12 d-flex flex-column">
+											<div class="row flex-grow">
+												<div class="col-12 grid-margin stretch-card">
+													<div class="card card-rounded">
+														<div class="card-body">
+															<table
+																id="productTable"
+																class="table table-striped"
+																style="width: 100%"
+															>
+																<thead>
+																	<tr>
+																		<th>Id</th>
+																		<th>Product Image</th>
+																		<th>Name</th>
+																		<th>Description</th>
+																		<th>Type</th>
+																		<th>Availability</th>
+																		<th>Price</th>
+																	</tr>
+																</thead>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Modal -->
+				<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLongTitle">Product Record</h5>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="productImage">Product Image</label>
+								<input type="file" class="form-control form-control-lg" id="productImage" placeholder="Product image here...">
+							</div>
+							<div class="form-group">
+								<label for="productName">Product Name</label>
+								<input type="text" class="form-control" id="productName" placeholder="Product name here...">
+							</div>
+							<div class="form-group">
+								<label for="productDescription">Description</label>
+								<textarea class="form-control form-control-lg" id="productDescription" rows="20" placeholder="Product description here..."></textarea>
+							</div>
+							<div class="form-group">
+								<label for="productType">Product Type</label>
+								<select class="form-control" id="productType">
+								  <option>Casual</option>
+								  <option>Formal</option>
+								  <option>Wedding</option>
+								  <option>Swim wear</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="productAmount">Product Amount</label>
+								<div class="input-group">
+								  <div class="input-group-prepend">
+									<span class="input-group-text bg-primary text-white">₱ </span>
+								  </div>
+								  <input id="productAmount" type="text" class="form-control" aria-label="Amount (to the nearest peso)">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="productGcashQR">Gcash QR Image</label>
+								<input type="file" class="form-control form-control-lg" id="productGcashQR" placeholder="Gcash qr image here...">
+							</div>
+						</div>
+						<div class="modal-footer">
+						<button id="saveRecord" type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		var table = $("#productTable").DataTable({
+			dom: "Bfrtip",
+			select: true,
+			scrollX: true,
+			buttons: [{
+				text: "&#xea1f New Record",
+				className: "createProductRecord",
+			},{
+                text: 'Update Selected Row',
+                action: function ( e, dt, node, config ) {
+					var record = dt.row('.selected').data();
+					console.warn("Log:  => record", record);
+					$('#saveRecord').val(record.gpId);
+					$('#productName').val(record.gp_name);
+					$('#productDescription').val(record.gp_description);
+					$('#productType').val(record.gp_type);
+					$('#productAmount').val(record.gp_price.replace(/\D/g, ""));
+					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
+					$('#exampleModalCenter').modal('show');
+                },
+				enabled: false
+            },{
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+				download: 'open'
+            }],
+			processing: true,
+			serverSide: true,
+			ajax: "assets/php/product.php",
+			columns: [
+					{ data: 'gpId'},
+					{ data: 'gp_product_img' },
+					{ data: 'gp_name' },
+					{ data: 'gp_description' },
+					{ data: 'gp_type' },
+					{ data: 'gp_availability'},
+					{ data: 'gp_price' },
+			],
+			columnDefs: [
+				{
+					target: 0,
+					visible: false,
+					searchable: false,
+				},
+        	],
+			initComplete: function () {
+				$(".createProductRecord").click((event) => {
+					$('#saveRecord').html($('#saveRecord').text().replace('Update','Save'));
+					$('#productName,#productDescription,#productType,#productAmount').val('');
+					$('#exampleModalCenter').modal('show');
+				});
+			}
+		});
+		$('#productTable tbody').on('click', 'tr', function () {
+			var selectedRows;
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+				selectedRows = table.$('tr.selected').length;
+			} else {
+				table.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+				selectedRows = table.$('tr.selected').length;
+			}
+			table.button( 1 ).enable( selectedRows === 1 );
+		});
+		$('#saveRecord').on('click', (event) => {
+			if($('#saveRecord:contains("Update")')) {
+				var form = new FormData();
+				var myFormData = document.getElementById('productImage').files[0]; //get the file 
+					console.warn("Log:  => $ => myFormData", myFormData);
+				if (myFormData) {   //Check the file is emty or not
+					form.append('inputFile', myFormData); //append files
+					$.ajax({
+						type: 'POST',               
+						processData: false,
+						contentType: false, 
+						data: form,
+						url: "/glam/glamserver/assets/php/saveImage.php", //My reference URL
+						dataType : 'json',  
+						success: function(jsonData){
+							console.warn("Log:  => $ => jsonData", jsonData);
+						}
+					});
+				}
+				$.ajax({
+					type: "POST",
+					url: "/glam/glamserver/assets/php/productCRUD.php",
+					data: {"TYPE": "updateProduct", "params" : `gp_name = '${$('#productName').val()}', gp_description = '${$('#productDescription').val()}', gp_type = '${$('#productType').val()}', gp_price = ${$('#productAmount').val()}, gp_product_img = '${myFormData.name}'`, "filter" : `gpId = '${$('#saveRecord').val()}'`},
+					dataType: "json",
+				  }).done((data) => {
+					  console.warn("Log:  => $ => data", data);
+				  });
+				$('#exampleModalCenter').modal('hide');
+				table.draw();
+			}
+		});
+	});
+</script>

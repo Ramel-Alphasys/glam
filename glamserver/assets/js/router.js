@@ -43,6 +43,37 @@ if (sessionStorage.page === "0") {
 			}
 		}
 	);
+} else if (sessionStorage.page === "2") {
+	$("#server-header").load(
+		`components/headerNavigation.html`,
+		function (response, status) {
+			if (status === "error") {
+				console.log(
+					"Output:  => $ => load headerNavigation.html status: ",
+					status
+				);
+			}
+		}
+	);
+	$("#server-content").load(
+		`components/product.html`,
+		function (response, status) {
+			$("#leftSideNavigation").load(
+				`components/sideNavigation.html`,
+				function (response, status) {
+					if (status === "error") {
+						console.log(
+							"Output:  => $ => load sideNavigation.html status: ",
+							status
+						);
+					}
+				}
+			);
+			if (status === "error") {
+				console.log("Output:  => $ => load product.html status: ", status);
+			}
+		}
+	);
 }
 //Open submenu on hover in compact sidebar mode and horizontal menu mode
 $(".navbar-toggler").on("click", (elem) => {

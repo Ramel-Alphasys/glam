@@ -1,42 +1,67 @@
 <?php
+
+/**
+ * @ Name: login.php
+ * @ Purpose: file contains the connection from database to system
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-09-29 22:31:42
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-10-28 21:43:01
+ * @ Change Log:
+ */
 require 'database.php';
+require 'CRUD.php';
 
-$conToServer = new ServerCon(['localhost', 3306, 'glamdb', 'root', '']);
+$crud = new serverManipulation();
 
+// set here connection to database
+$conToServer = new ServerCon(['localhost', 3306, 'glamdb', 'root', 'admin']);
+
+$tokenGenerated = $conToServer->generateRandomString();
 
 if (!empty($_POST['TYPE'])) {
     switch ($_POST['TYPE']) {
         case 'userlogin':
             try {
                 if (!empty($_POST['g_user']) && !empty($_POST['g_pass'])) {
-                    $checker = '';
-                    $data = $conToServer->startDb()->prepare('SELECT * FROM g_user WHERE g_username="' . $_POST['g_user'] . '" AND (g_userpass="' . $_POST['g_pass'] . '" OR g_token="' . $_POST['g_pass'] . '") AND gu_type=0 LIMIT 1');
-                    $data->execute();
-                    $checker = $data->fetchAll();
+                    $params = array(
+                        'fields' => '*',
+                        'table' => 'g_user',
+                        'filter' => "g_username='${_POST['g_user']}' AND (g_userpass='${_POST['g_pass']}' OR g_token='${_POST['g_pass']}') AND gu_type=0 LIMIT 1",
+                        'dbcon' => $conToServer
+                    );
+                    $checker = $crud->sm_vr_server($params);
                 }
-                echo (!empty($checker)) ? json_encode([['STATUS' => 1, 'USER' => $checker[0]['guId']]]) : json_encode(['STATUS' => 0]);
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $checker[0]['guId'])) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }
             break;
         case 'resetaccount':
             try {
-                $to = $_POST['email']; // this is your Email address
-                $from = "ramelTtech@gmail.com"; // this is the sender's Email address
-                $checker = '';
-                $data = $conToServer->startDb()->prepare('SELECT * FROM g_employee WHERE ge_email="' . $_POST['email'] . '" LIMIT 1');
-                $data->execute();
-                $checker = $data->fetchAll();
+                $params = array(
+                    'fields' => '*',
+                    'table' => 'g_employee',
+                    'filter' => "ge_email = '${_POST['email']}' LIMIT 1",
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
                 if (!empty($checker)) {
-                    $tokenGenerated = $conToServer->generateRandomString();
-                    $conToServer->startDb()->prepare('UPDATE g_user SET g_token="' . $tokenGenerated . '" WHERE guId=' . $checker[0]['ge_guId'])->execute();
-                    $first_name = $checker[0]['ge_gname'];
-                    $last_name = $checker[0]['ge_sname'];
-                    $subject = "Token Access";
-                    $message = "Hi " . $first_name . " " . $last_name . ",\n\n This is your token: " . $tokenGenerated . ". Use this to login your account at http:localhost/glamserver/.";
-                    $headers = "From:" . $from;
-                    mail($to, $subject, $message, $headers);
-                    echo json_encode(['STATUS' => "Mail Sent. Please check your email."]);
+                    $params = array(
+                        'fields' => "g_token='${tokenGenerated}' WHERE guId = {$checker[0]['ge_guId']}",
+                        'table' => 'g_user',
+                        'dbcon' => $conToServer
+                    );
+                    if ($crud->sm_ur_server($params) != null) {
+                        $params = array(
+                            'to' => $_POST['email'],
+                            'message' => "Hi {$checker[0]['ge_gname']} {$checker[0]['ge_sname']},\n\n This is your token: ${tokenGenerated}. Use this to login your account at http:localhost/glamserver/.",
+                            'subject' => "Token Access",
+                            'headers' => "From: ramelTtech@gmail.com",
+                            'dbcon' => $conToServer
+                        );
+                    }
+                    echo json_encode($crud->sm_mailing($params));
                     // You can also use header('Location: thank_you.php'); to redirect to another page.
                 } else {
                     echo json_encode(['STATUS' => 0]);
