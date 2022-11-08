@@ -28,6 +28,13 @@ try {
                 return '<img src="/glam/glamserver/assets/contents/' . $d . '" />';
             }
         ),
+        array(
+            'db'        => 'gp_gcash_qr',
+            'dt'        => 'gp_gcash_qr',
+            'formatter' => function ($d, $row) {
+                return '<img src="/glam/glamserver/assets/qrcodes/' . $d . '" />';
+            }
+        ),
         array('db' => 'gp_name', 'dt' => 'gp_name'),
         array('db' => 'gp_description',  'dt' => 'gp_description'),
         array('db' => 'gp_type',   'dt' => 'gp_type'),

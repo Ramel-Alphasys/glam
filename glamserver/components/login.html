@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 08:57:01
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-09-30 22:08:27
+ * @ Modified time: 2022-11-03 21:39:44
  * @ Change Log:
  -->
 <article id="loginPage">
@@ -69,7 +69,7 @@
             $('input[type="text"]').focus();
           },1000);
         }else {
-          sessionStorage.setItem("page", 1);
+          sessionStorage.setItem("page", '1');
           sessionStorage.setItem("userId", result.USER);
           $('.errorMessage').removeClass('text-danger').addClass('text-success').text('User verified!');
           setTimeout( () => {

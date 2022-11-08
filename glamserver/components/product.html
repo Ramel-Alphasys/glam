@@ -1,10 +1,10 @@
 <!--
- * @ Name:
+ * @ Name: product.html
  * @ Purpose:
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-10-28 22:45:24
+ * @ Modified time: 2022-11-03 21:54:59
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -53,8 +53,10 @@
 															>
 																<thead>
 																	<tr>
+																		<th></th>
 																		<th>Id</th>
 																		<th>Product Image</th>
+																		<th>Product QR</th>
 																		<th>Name</th>
 																		<th>Description</th>
 																		<th>Type</th>
@@ -75,7 +77,7 @@
 					</div>
 				</div>
 				<!-- Modal -->
-				<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal fade bd-example-modal-lg" id="ProductModal" tabindex="-1" role="dialog" aria-labelledby="ProductModalTitle" aria-hidden="true">
 					<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -84,7 +86,7 @@
 						<div class="modal-body">
 							<div class="form-group">
 								<label for="productImage">Product Image</label>
-								<input type="file" class="form-control form-control-lg" id="productImage" placeholder="Product image here...">
+								<input type="file" class="form-control form-control-lg" id="productImage" accept="image/jpeg" placeholder="Product image here...">
 							</div>
 							<div class="form-group">
 								<label for="productName">Product Name</label>
@@ -114,7 +116,7 @@
 							</div>
 							<div class="form-group">
 								<label for="productGcashQR">Gcash QR Image</label>
-								<input type="file" class="form-control form-control-lg" id="productGcashQR" placeholder="Gcash qr image here...">
+								<input type="file" class="form-control form-control-lg" id="productGcashQR" accept="image/jpeg" placeholder="Gcash qr image here...">
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -128,29 +130,59 @@
 </div>
 <script>
 	$(document).ready(function () {
+		function format(d) {
+			return (
+				`<div style="display: flex;flex-direction: row;">
+					<div style="padding: 10px;">
+						<p>
+							QR Code
+							${d.gp_gcash_qr}
+						</p>
+					</div>
+					<div style="padding: 10px;">
+						<p>
+							Product Image
+							${d.gp_product_img}
+						</p>
+					</div>
+				</div>`
+			);
+		}
+		var recordCount = 0;
 		var table = $("#productTable").DataTable({
 			dom: "Bfrtip",
 			select: true,
 			scrollX: true,
 			buttons: [{
-				text: "&#xea1f New Record",
+				text: "<i class='icon-doc'></i> New Record",
 				className: "createProductRecord",
+				action: function( e, dt, node, config ) {
+					recordCount = dt.rows().count();
+					$('#saveRecord').html($('#saveRecord').text().replace('Update','Save'));
+					$('#productName,#productDescription,#productType,#productAmount,#productImage,#productGcashQR').val('');
+					$('#ProductModal').modal('show');
+				}
 			},{
                 text: 'Update Selected Row',
                 action: function ( e, dt, node, config ) {
 					var record = dt.row('.selected').data();
-					console.warn("Log:  => record", record);
 					$('#saveRecord').val(record.gpId);
 					$('#productName').val(record.gp_name);
 					$('#productDescription').val(record.gp_description);
 					$('#productType').val(record.gp_type);
-					$('#productAmount').val(record.gp_price.replace(/\D/g, ""));
+					record.gp_price = record.gp_price.split('.');
+					record.gp_price[0] = record.gp_price[0].replace(/\₱ /g, "");
+					record.gp_price[3] = record.gp_price[0] +'.'+ record.gp_price[1];
+					$('#productAmount').val(parseFloat(record.gp_price[3]).toFixed(2));
 					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
-					$('#exampleModalCenter').modal('show');
+					$('#ProductModal').modal('show');
                 },
 				enabled: false
             },{
                 extend: 'pdfHtml5',
+				text:      '<i class="icon-docs"></i> Generate PDF',
+				title: 'Product Records',
+                titleAttr: 'PDF',
                 orientation: 'landscape',
                 pageSize: 'LEGAL',
 				download: 'open'
@@ -159,8 +191,15 @@
 			serverSide: true,
 			ajax: "assets/php/product.php",
 			columns: [
+					{
+						class: 'details-control',
+						orderable: false,
+						data: null,
+						defaultContent: "<i class='icon-plus'></i>",
+					},
 					{ data: 'gpId'},
 					{ data: 'gp_product_img' },
+					{ data: 'gp_gcash_qr' },
 					{ data: 'gp_name' },
 					{ data: 'gp_description' },
 					{ data: 'gp_type' },
@@ -169,17 +208,14 @@
 			],
 			columnDefs: [
 				{
-					target: 0,
+					target: [1,2,3],
 					visible: false,
 					searchable: false,
 				},
         	],
+			order: [[4, 'asc']],
 			initComplete: function () {
-				$(".createProductRecord").click((event) => {
-					$('#saveRecord').html($('#saveRecord').text().replace('Update','Save'));
-					$('#productName,#productDescription,#productType,#productAmount').val('');
-					$('#exampleModalCenter').modal('show');
-				});
+
 			}
 		});
 		$('#productTable tbody').on('click', 'tr', function () {
@@ -194,11 +230,42 @@
 			}
 			table.button( 1 ).enable( selectedRows === 1 );
 		});
+		// Array to track the ids of the details displayed rows
+		var detailRows = [];
+ 
+		$('#productTable tbody').on('click', 'tr td.details-control', function () {
+			var tr = $(this).closest('tr');
+			var row = table.row(tr);
+			var idx = detailRows.indexOf(tr.attr('id'));
+	 
+			if (row.child.isShown()) {
+				tr.removeClass('details');
+				row.child.hide();
+	 
+				// Remove from the 'open' array
+				detailRows.splice(idx, 1);
+			} else {
+				tr.addClass('details');
+				row.child(format(row.data())).show();
+	 
+				// Add to the 'open' array
+				if (idx === -1) {
+					detailRows.push(tr.attr('id'));
+				}
+			}
+		});
+	 
+		// On each draw, loop over the `detailRows` array and show any child rows
+		table.on('draw', function () {
+			detailRows.forEach(function(id, i) {
+				$('#' + id + ' td.details-control').trigger('click');
+			});
+		});
 		$('#saveRecord').on('click', (event) => {
-			if($('#saveRecord:contains("Update")')) {
-				var form = new FormData();
-				var myFormData = document.getElementById('productImage').files[0]; //get the file 
-					console.warn("Log:  => $ => myFormData", myFormData);
+			var form = new FormData();
+			var myFormData = document.getElementById('productImage').files[0]; //get the file 
+			var myFormData2 = document.getElementById('productGcashQR').files[0]; //get the file 
+			if(event.currentTarget.innerText.includes('Update')) {
 				if (myFormData) {   //Check the file is emty or not
 					form.append('inputFile', myFormData); //append files
 					$.ajax({
@@ -213,15 +280,114 @@
 						}
 					});
 				}
+				form = new FormData();
+				if (myFormData2) {   //Check the file is emty or not
+					form.append('inputFile', myFormData2); //append files
+					$.ajax({
+						type: 'POST',               
+						processData: false,
+						contentType: false, 
+						data: form,
+						url: "/glam/glamserver/assets/php/saveqr.php", //My reference URL
+						dataType : 'json',  
+						success: function(jsonData){
+							console.warn("Log:  => $ => jsonData", jsonData);
+						}
+					});
+				}
+
+				var loadData = [];
+				var recordData = '';
+				if($('#productName').val()) {
+					recordData += `gp_name = '${$('#productName').val()}', `;
+				}
+				if($('#productDescription').val()) {
+					recordData += `gp_description = '${$('#productDescription').val()}', `;
+				}
+				if($('#productType').val()) {
+					recordData += `gp_type = '${$('#productType').val()}', `;
+				}
+				if($('#productAmount').val()) {
+					recordData += `gp_price = '${$('#productAmount').val()}'`;
+				}
+				if(myFormData) {
+					recordData += `, gp_product_img = '${myFormData.name}'`;
+				}
+				if(myFormData2) {
+					recordData += `, gp_gcash_qr = '${myFormData2.name}'`;
+				}
+				loadData = [{...loadData, TYPE: "updateProduct", filter: `gpId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
 					type: "POST",
 					url: "/glam/glamserver/assets/php/productCRUD.php",
-					data: {"TYPE": "updateProduct", "params" : `gp_name = '${$('#productName').val()}', gp_description = '${$('#productDescription').val()}', gp_type = '${$('#productType').val()}', gp_price = ${$('#productAmount').val()}, gp_product_img = '${myFormData.name}'`, "filter" : `gpId = '${$('#saveRecord').val()}'`},
+					data: loadData[0],
 					dataType: "json",
 				  }).done((data) => {
 					  console.warn("Log:  => $ => data", data);
 				  });
-				$('#exampleModalCenter').modal('hide');
+				$('#ProductModal').modal('hide');
+				table.draw();
+			}else {
+				if (myFormData) {   //Check the file is emty or not
+					form.append('inputFile', myFormData); //append files
+					$.ajax({
+						type: 'POST',               
+						processData: false,
+						contentType: false, 
+						data: form,
+						url: "/glam/glamserver/assets/php/saveImage.php", //My reference URL
+						dataType : 'json',  
+						success: function(jsonData){
+							console.warn("Log:  => $ => jsonData", jsonData);
+						}
+					});
+				}
+				form = new FormData();
+				if (myFormData2) {   //Check the file is emty or not
+					form.append('inputFile', myFormData2); //append files
+					$.ajax({
+						type: 'POST',               
+						processData: false,
+						contentType: false, 
+						data: form,
+						url: "/glam/glamserver/assets/php/saveqr.php", //My reference URL
+						dataType : 'json',  
+						success: function(jsonData){
+							console.warn("Log:  => $ => jsonData", jsonData);
+						}
+					});
+				}
+				
+				var loadData = [];
+				var recordData = `${recordCount}, `;
+				if($('#productName').val()) {
+					recordData += `"${$('#productName').val()}", `;
+				}
+				if($('#productDescription').val()) {
+					recordData += `"${$('#productDescription').val()}", `;
+				}
+				if($('#productType').val()) {
+					recordData += `"${$('#productType').val()}", 1, `;
+				}
+				if($('#productAmount').val()) {
+					recordData += `${$('#productAmount').val()}`;
+				}
+				if(myFormData) {
+					recordData += `, "${myFormData.name}"`;
+				}
+				if(myFormData2) {
+					recordData += `, "${myFormData2.name}"`;
+				}
+				loadData = [{...loadData, TYPE: "createProduct", params: recordData}];
+				$.ajax({
+					type: "POST",
+					url: "/glam/glamserver/assets/php/productCRUD.php",
+					data: loadData[0],
+					dataType: "json",
+				  }).done((data) => {
+					  console.warn("Log:  => $ => data", data);
+				  });
+				$('#ProductModal').modal('hide');
 				table.draw();
 			}
 		});

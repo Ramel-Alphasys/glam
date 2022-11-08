@@ -1,25 +1,45 @@
 <!-- partial:partials/_sidebar.html -->
 <nav class="sidebar" id="sidebar">
 <ul class="nav">
-    <li class="nav-item" onclick="sessionStorage.page=1;location.reload();">
-    <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page=1;">
+    <li class="nav-item dashboard">
+    <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page='1';location.reload();">
         <i class="mdi mdi-grid-large menu-icon"></i>
         <span class="menu-title">Dashboard</span>
     </a>
     </li>
-    <li class="nav-item nav-category">Product Settings</li>
-    <li class="nav-item">
-    <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page=2;location.reload();">
+    <li class="nav-item nav-category">Product Section</li>
+    <li class="nav-item product">
+    <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page='product';location.reload();">
         <i class="menu-icon mdi mdi-table"></i>
-        <span class="menu-title">Product</span>
+        <span class="menu-title">Products</span>
     </a>
     </li>
-    <li class="nav-item">
-    <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page=1;location.reload();">
+    <li class="nav-item transaction">
+        <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page='transaction';location.reload();">
+            <i class="menu-icon mdi mdi-layers-outline"></i>
+            <span class="menu-title">Transactions</span>
+        </a>
+        </li>
+    <li class="nav-item report">
+    <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page='1';location.reload();">
         <i class="menu-icon mdi mdi-floor-plan"></i>
         <span class="menu-title">Report</span>
     </a>
     </li>
+    <li class="nav-item nav-category">System Section</li>
+    <li class="nav-item userSettings">
+        <a class="nav-link" href="javascript:void(0)" onclick="sessionStorage.page='userSettings';location.reload();">
+            <i class="menu-icon mdi mdi-account-circle-outline"></i>
+            <span class="menu-title">User Setting</span>
+        </a>
+    </li>
 </ul>
 </nav>
+<script>
+    if(sessionStorage.page === '1') {
+        $("li.dashboard").addClass('active');
+    }else {
+        $("li." + sessionStorage.page).addClass('active');
+    }
+</script>
 <!-- partial -->
