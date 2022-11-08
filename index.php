@@ -40,10 +40,10 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="assets/img/img1.jpg" class="d-block w-100 img-fluid" alt="...">
+            <img src="assets/img/img2.jpg" class="d-block w-100 img-fluid" alt="...">
           </div>
           <div class="carousel-item">
-            <img src="assets/img/img2.jpg" class="d-block w-100 img-fluid" alt="...">
+            <img src="assets/img/imgPlace.jpg" class="d-block w-100 img-fluid" alt="...">
           </div>
           <div class="carousel-item">
             <img src="assets/img/img3.jpg" class="d-block w-100 img-fluid" alt="...">
@@ -99,7 +99,7 @@
             <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
           </div>
           <div class="col-md-5">
-            <img src="assets/img/img4.png" alt="..." class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
+            <img src="assets/img/imgOwner.jpg" alt="..." class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
           </div>
         </div>
 
@@ -111,7 +111,7 @@
             <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
           </div>
           <div class="col-md-5 order-md-1">
-            <img src="assets/img/img5.png" alt="" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
+            <img src="assets/img/imgPlaceView.jpg" alt="" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
           </div>
         </div>
 
@@ -123,7 +123,7 @@
             <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
           </div>
           <div class="col-md-5">
-            <img src="assets/img/img6.png" alt="" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
+            <img src="assets/img/imgPrepare.jpg" alt="" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="200">
           </div>
         </div>
 
@@ -133,7 +133,7 @@
 
       </div>
       <footer class="container">
-        <p><strong>&copy; 2022</strong> Ramel Gwaa Company, Inc. &middot; </p>  <!--<a href="#">Privacy</a> &middot; <a href="#">Terms</a>-->
+        <p><strong>2022 &copy;</strong> Glamurousa &middot; </p>
       </footer>
     </main>
   </body>
