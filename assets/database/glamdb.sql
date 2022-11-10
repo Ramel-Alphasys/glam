@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2022 at 01:28 PM
+-- Generation Time: Nov 10, 2022 at 02:58 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `glamdb`
 --
-CREATE DATABASE IF NOT EXISTS `glamdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `glamdb`;
 
 -- --------------------------------------------------------
 
@@ -29,8 +27,7 @@ USE `glamdb`;
 -- Stand-in structure for view `gv_transactions`
 -- (See below for the actual view)
 --
-DROP VIEW IF EXISTS `gv_transactions`;
-CREATE TABLE IF NOT EXISTS `gv_transactions` (
+CREATE TABLE `gv_transactions` (
 `customer_Id` int(11)
 ,`full_name` varchar(452)
 ,`product_name` varchar(255)
@@ -40,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `gv_transactions` (
 ,`method` text
 ,`balance` decimal(11,2)
 ,`transaction_date` date
+,`file_attachment` varchar(255)
 ,`status` text
 );
 
@@ -48,24 +46,16 @@ CREATE TABLE IF NOT EXISTS `gv_transactions` (
 --
 -- Table structure for table `g_customer`
 --
--- Creation: Nov 10, 2022 at 11:42 AM
---
 
-DROP TABLE IF EXISTS `g_customer`;
-CREATE TABLE IF NOT EXISTS `g_customer` (
+CREATE TABLE `g_customer` (
   `gcId` int(11) NOT NULL,
   `gc_guId` int(11) NOT NULL,
   `gc_gname` varchar(150) NOT NULL,
   `gc_mname` varchar(150) NOT NULL,
   `gc_sname` varchar(150) NOT NULL,
   `gc_email` varchar(200) NOT NULL,
-  `gc_p_m_number` int(11) NOT NULL,
-  PRIMARY KEY (`gcId`)
+  `gc_p_m_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `g_customer`:
---
 
 --
 -- Dumping data for table `g_customer`
@@ -79,26 +69,15 @@ INSERT INTO `g_customer` (`gcId`, `gc_guId`, `gc_gname`, `gc_mname`, `gc_sname`,
 --
 -- Table structure for table `g_employee`
 --
--- Creation: Nov 10, 2022 at 11:42 AM
---
 
-DROP TABLE IF EXISTS `g_employee`;
-CREATE TABLE IF NOT EXISTS `g_employee` (
+CREATE TABLE `g_employee` (
   `geId` int(11) NOT NULL,
   `ge_guId` int(11) DEFAULT NULL,
   `ge_gname` varchar(150) DEFAULT NULL,
   `ge_mname` varchar(150) DEFAULT NULL,
   `ge_sname` varchar(150) DEFAULT NULL,
-  `ge_email` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`geId`),
-  KEY `ge_guId` (`ge_guId`)
+  `ge_email` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `g_employee`:
---   `ge_guId`
---       `g_user` -> `guId`
---
 
 --
 -- Dumping data for table `g_employee`
@@ -112,11 +91,8 @@ INSERT INTO `g_employee` (`geId`, `ge_guId`, `ge_gname`, `ge_mname`, `ge_sname`,
 --
 -- Table structure for table `g_product`
 --
--- Creation: Nov 10, 2022 at 11:42 AM
---
 
-DROP TABLE IF EXISTS `g_product`;
-CREATE TABLE IF NOT EXISTS `g_product` (
+CREATE TABLE `g_product` (
   `gpId` int(11) NOT NULL,
   `gp_name` varchar(255) NOT NULL,
   `gp_description` longtext NOT NULL,
@@ -125,13 +101,8 @@ CREATE TABLE IF NOT EXISTS `g_product` (
   `gp_price` decimal(10,2) NOT NULL,
   `gp_product_img` text NOT NULL,
   `gp_gcash_qr` text NOT NULL,
-  `gp_count` int(11) NOT NULL,
-  PRIMARY KEY (`gpId`)
+  `gp_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `g_product`:
---
 
 --
 -- Dumping data for table `g_product`
@@ -149,58 +120,41 @@ INSERT INTO `g_product` (`gpId`, `gp_name`, `gp_description`, `gp_type`, `gp_ava
 --
 -- Table structure for table `g_transactions`
 --
--- Creation: Nov 10, 2022 at 11:42 AM
--- Last update: Nov 10, 2022 at 12:27 PM
---
 
-DROP TABLE IF EXISTS `g_transactions`;
-CREATE TABLE IF NOT EXISTS `g_transactions` (
+CREATE TABLE `g_transactions` (
   `gtId` int(11) NOT NULL,
   `gt_gpId` int(11) NOT NULL,
   `gt_gcId` int(11) NOT NULL,
   `gt_payment_method` text NOT NULL,
   `gt_type` text NOT NULL,
   `gt_payment` decimal(10,2) NOT NULL,
+  `gt_additional_cost` decimal(10,2) NOT NULL,
   `gt_transaction_date` date NOT NULL,
   `gt_status` text NOT NULL,
-  `gt_attachment` varchar(255) NOT NULL,
-  PRIMARY KEY (`gtId`)
+  `gt_attachment` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `g_transactions`:
---
 
 --
 -- Dumping data for table `g_transactions`
 --
 
-INSERT INTO `g_transactions` (`gtId`, `gt_gpId`, `gt_gcId`, `gt_payment_method`, `gt_type`, `gt_payment`, `gt_transaction_date`, `gt_status`, `gt_attachment`) VALUES
-(0, 0, 0, 'Gcash', 'Partial', '50.00', '2022-11-10', 'Pending', ''),
-(1, 1, 0, 'Cash on Delivery', 'Full + shipping', '100.00', '2022-11-10', 'Pending', '');
+INSERT INTO `g_transactions` (`gtId`, `gt_gpId`, `gt_gcId`, `gt_payment_method`, `gt_type`, `gt_payment`, `gt_additional_cost`, `gt_transaction_date`, `gt_status`, `gt_attachment`) VALUES
+(0, 0, 0, 'Gcash', 'Partial', '50.00', '0.00', '2022-11-10', 'Pending', ''),
+(1, 1, 0, 'Cash on Delivery', 'Full + shipping', '100.00', '140.00', '2022-11-10', 'Pending', '');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_user`
 --
--- Creation: Nov 10, 2022 at 11:42 AM
--- Last update: Nov 10, 2022 at 12:02 PM
---
 
-DROP TABLE IF EXISTS `g_user`;
-CREATE TABLE IF NOT EXISTS `g_user` (
+CREATE TABLE `g_user` (
   `guId` int(11) NOT NULL,
   `g_username` varchar(100) DEFAULT NULL,
   `g_userpass` varchar(50) DEFAULT NULL,
   `g_token` varchar(16) DEFAULT NULL,
-  `gu_type` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`guId`)
+  `gu_type` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- RELATIONSHIPS FOR TABLE `g_user`:
---
 
 --
 -- Dumping data for table `g_user`
@@ -217,8 +171,42 @@ INSERT INTO `g_user` (`guId`, `g_username`, `g_userpass`, `g_token`, `gu_type`) 
 --
 DROP TABLE IF EXISTS `gv_transactions`;
 
-DROP VIEW IF EXISTS `gv_transactions`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_transactions`  AS SELECT `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `p`.`gp_price`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_status` AS `status` FROM ((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) WHERE `c`.`gcId` is not nullnot null  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_transactions`  AS SELECT `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `p`.`gp_price`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status` FROM ((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) WHERE `c`.`gcId` is not nullnot null  ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `g_customer`
+--
+ALTER TABLE `g_customer`
+  ADD PRIMARY KEY (`gcId`);
+
+--
+-- Indexes for table `g_employee`
+--
+ALTER TABLE `g_employee`
+  ADD PRIMARY KEY (`geId`),
+  ADD KEY `ge_guId` (`ge_guId`);
+
+--
+-- Indexes for table `g_product`
+--
+ALTER TABLE `g_product`
+  ADD PRIMARY KEY (`gpId`);
+
+--
+-- Indexes for table `g_transactions`
+--
+ALTER TABLE `g_transactions`
+  ADD PRIMARY KEY (`gtId`);
+
+--
+-- Indexes for table `g_user`
+--
+ALTER TABLE `g_user`
+  ADD PRIMARY KEY (`guId`);
 
 --
 -- Constraints for dumped tables
