@@ -1,3 +1,24 @@
+<?php
+/**
+ * @ Name: Detail.php
+ * @ Purpose: file contains the connection from database to system
+ * @ Author: Metz Tamz
+ * 
+*/
+  require 'glamserver\assets\php\database.php';
+  require 'glamserver\assets\php\CRUD.php';
+  $crud = new serverManipulation();
+  $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
+
+  $params = array(
+    'fields' => '*',
+    'table' => 'g_product',
+    'filter' => "gpId='${_GET['Product']}'",
+    'dbcon' => $serverConn
+  );
+  $response = $crud->sm_vr_server($params);
+  $res = $response[0];
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -41,38 +62,32 @@
           <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
           <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
-        <div class="card m-3 shadow">
-          <div class="row g-0 p-3">
-            <div class="col-md-4">
-              <div id="ItemPreview" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active" data-bs-interval="1500">
-                    <img src="assets/img/img1.png" class="d-block w-100" alt="..." style="height: 240px;">
-                  </div>
-                  <div class="carousel-item" data-bs-interval="1500">
-                    <img src="assets/img/img3.png" class="d-block w-100" alt="..." style="height: 240px;">
-                  </div>
-                  <div class="carousel-item" data-bs-interval="1500">
-                    <img src="assets/img/img1.png" class="d-block w-100" alt="..." style="height: 240px;">
-                  </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#ItemPreview" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#ItemPreview" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
+        <div class="card border-0 mb-3">
+          <div id="ItemPreview" class="carousel slide carousel-fade m-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active" data-bs-interval="1000">
+                <img src="assets/img/img1.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
+              </div>
+              <div class="carousel-item" data-bs-interval="1000">
+                <img src="assets/img/img3.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
+              </div>
+              <div class="carousel-item" data-bs-interval="1000">
+                <img src="assets/img/img1.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
               </div>
             </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-              </div>
-            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#ItemPreview" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#ItemPreview" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title me-5 ms-5"><?php echo $res['gp_name'] ?></h5><br>
+            <p class="card-text me-5 ms-5"><?php echo $res['gp_description'] ?></p>
+            <!-- <p class="card-text"><small class="text-muted"><?php echo $res['gp_type']; ?> occasion</small></p> -->
           </div>
         </div>
       </div>
