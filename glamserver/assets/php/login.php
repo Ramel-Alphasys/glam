@@ -15,7 +15,7 @@ require 'CRUD.php';
 $crud = new serverManipulation();
 
 // set here connection to database
-$conToServer = new ServerCon(['localhost', 3306, 'glamdb', 'root', 'admin']);
+$conToServer = new ServerCon(['localhost', 3306, 'glamdb', $user, $pass]);
 
 $tokenGenerated = $conToServer->generateRandomString();
 

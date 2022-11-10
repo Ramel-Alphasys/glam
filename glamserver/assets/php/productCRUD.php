@@ -4,7 +4,7 @@ require 'CRUD.php';
 
 $crud = new serverManipulation();
 // set here connection to database
-$conToServer = new ServerCon(['localhost', 3306, 'glamdb', 'root', 'admin']);
+$conToServer = new ServerCon(['localhost', 3306, 'glamdb', $user, $pass]);
 
 if (!empty($_POST['TYPE'])) {
     switch ($_POST['TYPE']) {

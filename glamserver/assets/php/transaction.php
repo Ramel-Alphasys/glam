@@ -1,4 +1,5 @@
 <?php
+
 require 'database.php';
 // set here connection to database
 $conToServer = new ServerCon(['localhost', 3306, 'glamdb', $user, $pass]);
@@ -10,52 +11,44 @@ try {
      */
 
     // DB table to use
-    $table = 'g_product';
+    $table = 'gv_transactions';
 
     // Table's primary key
-    $primaryKey = 'gpId';
+    $primaryKey = 'customer_Id';
 
     // Array of database columns which should be read and sent back to DataTables.
     // The `db` parameter represents the column name in the database, while the `dt`
     // parameter represents the DataTables column identifier. In this case object
     // parameter names
     $columns = array(
-        array('db' => 'gpId', 'dt' => 'gpId'),
+        array('db' => 'customer_Id', 'dt' => 'customer_Id'),
+        array('db' => 'full_name', 'dt' => 'full_name'),
+        array('db' => 'product_name', 'dt' => 'product_name'),
+        array('db' => 'product_type', 'dt' => 'product_type'),
         array(
-            'db'        => 'gp_product_img',
-            'dt'        => 'gp_product_img',
-            'formatter' => function ($d, $row) {
-                return '<img src="/glam/glamserver/assets/contents/' . $d . '" />';
-            }
-        ),
-        array(
-            'db'        => 'gp_gcash_qr',
-            'dt'        => 'gp_gcash_qr',
-            'formatter' => function ($d, $row) {
-                return '<img src="/glam/glamserver/assets/qrcodes/' . $d . '" />';
-            }
-        ),
-        array('db' => 'gp_name', 'dt' => 'gp_name'),
-        array('db' => 'gp_description',  'dt' => 'gp_description'),
-        array('db' => 'gp_type',   'dt' => 'gp_type'),
-        array(
-            'db'        => 'gp_availability',
-            'dt'        => 'gp_availability',
-            'formatter' => function ($d, $row) {
-                if ($d == 1) {
-                    return 'Available';
-                } else if ($d == 0) {
-                    return 'Not Available';
-                }
-            }
-        ),
-        array(
-            'db'        => 'gp_price',
-            'dt'        => 'gp_price',
+            'db'        => 'product_price',
+            'dt'        => 'product_price',
             'formatter' => function ($d, $row) {
                 return '₱ ' . number_format($d, 2, '.', '');
             }
-        )
+        ),
+        array(
+            'db'        => 'payment',
+            'dt'        => 'payment',
+            'formatter' => function ($d, $row) {
+                return '₱ ' . number_format($d, 2, '.', '');
+            }
+        ),
+        array('db' => 'method', 'dt' => 'method'),
+        array(
+            'db'        => 'balance',
+            'dt'        => 'balance',
+            'formatter' => function ($d, $row) {
+                return '₱ ' . number_format($d, 2, '.', '');
+            }
+        ),
+        array('db' => 'transaction_date', 'dt' => 'transaction_date'),
+        array('db' => 'status', 'dt' => 'status')
     );
 
     // SQL server connection information

@@ -62,3 +62,6 @@ class ServerCon
         return $randomString;
     }
 }
+// database user here
+$user = 'Developer';
+$pass = '@g6sv9s02qUe()kl';

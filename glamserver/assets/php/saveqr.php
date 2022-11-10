@@ -4,11 +4,14 @@ require 'CRUD.php';
 
 $crud = new serverManipulation();
 // set here connection to database
-$conToServer = new ServerCon(['localhost', 3306, 'glamdb', 'root', 'admin']);
+$conToServer = new ServerCon(['localhost', 3306, 'glamdb', $user, $pass]);
 
+// xampp - htdocs  glamserver  assets qrcodes
 $uploaddir = 'C:\\xampp\\htdocs\\glam\\glamserver\\assets\\qrcodes\\';
+// Uploads a file to the upload directory.
 $uploadfile = $uploaddir . basename($_FILES['inputFile']['name']);
 
+// Uploads a file
 if (move_uploaded_file($_FILES['inputFile']['tmp_name'], $uploadfile)) {
     echo "File is valid, and was successfully uploaded.";
 } else {
