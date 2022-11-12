@@ -2,7 +2,7 @@
 
 require 'database.php';
 // set here connection to database
-$conToServer = new ServerCon(['localhost', 3306, 'glamdb', $user, $pass]);
+$conToServer = new ServerCon([$serverUsed, $databasePort, $databaseUsed, $user, $pass]);
 require 'ssp.class.php';
 
 try {
@@ -14,14 +14,14 @@ try {
     $table = 'gv_transactions';
 
     // Table's primary key
-    $primaryKey = 'customer_Id';
+    $primaryKey = 'transac_Id';
 
     // Array of database columns which should be read and sent back to DataTables.
     // The `db` parameter represents the column name in the database, while the `dt`
     // parameter represents the DataTables column identifier. In this case object
     // parameter names
     $columns = array(
-        array('db' => 'customer_Id', 'dt' => 'customer_Id'),
+        array('db' => 'transac_Id', 'dt' => 'transac_Id'),
         array('db' => 'full_name', 'dt' => 'full_name'),
         array('db' => 'product_name', 'dt' => 'product_name'),
         array('db' => 'product_type', 'dt' => 'product_type'),
@@ -55,8 +55,8 @@ try {
     $sql_details = array(
         'user' => $user,
         'pass' => $pass,
-        'db'   => 'glamdb',
-        'host' => 'localhost'
+        'db'   => $databaseUsed,
+        'host' => $serverUsed
     );
 
 

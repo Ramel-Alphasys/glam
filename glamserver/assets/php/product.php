@@ -1,7 +1,7 @@
 <?php
 require 'database.php';
 // set here connection to database
-$conToServer = new ServerCon(['localhost', 3306, 'glamdb', $user, $pass]);
+$conToServer = new ServerCon([$serverUsed, $databasePort, $databaseUsed, $user, $pass]);
 require 'ssp.class.php';
 
 try {
@@ -62,8 +62,8 @@ try {
     $sql_details = array(
         'user' => $user,
         'pass' => $pass,
-        'db'   => 'glamdb',
-        'host' => 'localhost'
+        'db'   => $databaseUsed,
+        'host' => $serverUsed
     );
 
 

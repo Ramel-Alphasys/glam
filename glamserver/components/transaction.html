@@ -1,3 +1,11 @@
+<!--
+ * @ Name:
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-11-10 19:05:02
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-11-12 15:35:06
+ * @ Description:
+ -->
 <div class="container-scroller">
 	<div class="container-fluid page-body-wrapper">
 		<div id="leftSideNavigation" style="float: left"></div>
@@ -78,7 +86,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 	<div class="modal-content" style="max-height: 500px;">
 		<div class="modal-header">
-		<h5 class="modal-title" id="exampleModalLongTitle">Product Record</h5>
+		<h5 class="modal-title" id="exampleModalLongTitle">Transaction Record</h5>
 		</div>
 		<div class="modal-body" style="overflow-x: auto;">
 			<div class="form-group">
@@ -89,6 +97,8 @@
 					<option>To Pack</option>
 					<option>Shipped</option>
 					<option>Delivered</option>
+					<option>Paid</option>
+					<option>Cancelled</option>
 				</select>
 			</div>
 		</div>
@@ -132,7 +142,7 @@
                 text: 'Update Selected Row',
                 action: function ( e, dt, node, config ) {
 					var record = dt.row('.selected').data();
-					$('#saveRecord').val(record.customer_Id);
+					$('#saveRecord').val(record.transac_Id);
 					$('#tStatus').val(record.status);
 					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
 					$('#TransactionModal').modal('show');
@@ -157,7 +167,7 @@
 						data: null,
 						defaultContent: "<i class='icon-plus'></i>",
 					},
-					{ data: 'customer_Id'},
+					{ data: 'transac_Id'},
 					{ data: 'full_name' },
 					{ data: 'product_name' },
 					{ data: 'product_type' },
@@ -175,7 +185,7 @@
 					searchable: false,
 				},
         	],
-			order: [[4, 'asc']],
+			order: [[8, 'desc']],
 			initComplete: function () {
 
 			}
@@ -227,19 +237,31 @@
 				var loadData = [];
 				var recordData = '';
 				if($('#tStatus').val()) {
-					recordData += `gp_type = '${$('#tStatus').val()}', `;
+					recordData += `gt_status = '${$('#tStatus').val()}'`;
 				}
-				loadData = [{...loadData, TYPE: "updateTransaction", filter: `gpId = ${$('#saveRecord').val()}`, params: recordData}];
+				loadData = [{...loadData, TYPE: "updateTransaction", table: `g_transactions`, filter: `gtId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
 					type: "POST",
 					url: "/glam/glamserver/assets/php/transactionCRUD.php",
 					data: loadData[0],
 					dataType: "json",
 				  }).done((data) => {
-					  console.warn("Log:  => $ => data", data);
+						console.warn("Log:  => $ => data", data);
 				  });
 				$('#TransactionModal').modal('hide');
 				table.draw();
+				$.notify({
+					title: 'Transaction Updated',
+					message: `Transaction status is now ${$('#tStatus').val()}`,
+				},{
+					showProgressbar: true,
+					type: "success",
+					allow_dismiss: false,
+					placement: {
+						from: 'top',
+						align: 'right'
+					}
+				});
 		});
 	});
 </script>

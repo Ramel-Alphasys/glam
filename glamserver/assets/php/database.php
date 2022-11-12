@@ -62,6 +62,9 @@ class ServerCon
         return $randomString;
     }
 }
-// database user here
+// database config here
+$databaseUsed = 'glamdb';
+$databasePort = 3306;
+$serverUsed = 'localhost';
 $user = 'Developer';
 $pass = '@g6sv9s02qUe()kl';
