@@ -1,3 +1,18 @@
+<?php
+require 'glamserver\assets\php\database.php';
+require 'glamserver\assets\php\CRUD.php';
+$crud = new serverManipulation();
+$serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
+
+$params = array(
+  'fields' => '*',
+  'table' => 'g_product',
+  'dbcon' => $serverConn
+);
+
+$featured = $crud->sm_vr_server($params);
+
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -51,7 +66,7 @@
         </div>
         <div class="container">
           <div class="carousel-caption text-start text-light bg-dark bg-opacity-50 p-3 rounded">
-            <h1>Example headline.</h1>
+            <h1>Glamorouza Charlene</h1>
             <p>Some representative placeholder content for the first slide of the carousel.</p>
           </div>
         </div>
