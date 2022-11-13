@@ -3,7 +3,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-12 19:07:39
+ * @ Modified time: 2022-11-13 21:38:28
  * @ Description:
  -->
 <div class="container-scroller">
@@ -27,7 +27,7 @@
 											role="tab"
 											aria-controls="overview"
 											aria-selected="true"
-											>Transactions</a
+											><i class="mdi mdi-layers-outline"></i> Transactions</a
 										>
 									</li>
 								</ul>
@@ -139,7 +139,7 @@
 			select: true,
 			scrollX: true,
 			buttons: [{
-                text: 'Update Selected Row',
+                text: '<i class="mdi mdi-file-send"></i> Update Selected Row',
                 action: function ( e, dt, node, config ) {
 					var record = dt.row('.selected').data();
 					$('#saveRecord').val(record.transac_Id);
@@ -150,7 +150,7 @@
 				enabled: false
             },{
                 extend: 'pdfHtml5',
-				text:      '<i class="icon-docs"></i> Generate PDF',
+				text:      '<i class="mdi mdi-file-export"></i> Generate PDF',
 				title: 'Transaction Records',
                 titleAttr: 'PDF',
                 orientation: 'landscape',
@@ -183,10 +183,12 @@
 					$('td', row).eq(6).addClass('text-info');
 				} else if (data.status == 'Delivered' || data.status == 'Paid') {
 					$('td', row).eq(6).addClass('text-success');
-				} else if (data.status == 'Cancelled' || data.status == 'Pending') {
+				} else if (data.status == 'Cancelled') {
 					$('td', row).eq(6).addClass('text-danger');
 				} else if (data.status == 'Reserved') {
 					$('td', row).eq(6).addClass('text-primary');
+				} else if(data.status == 'Pending') {
+					$('td', row).eq(6).addClass('text-warning');
 				}
 			},
 			columnDefs: [

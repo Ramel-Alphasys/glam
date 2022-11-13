@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-13 14:41:25
+ * @ Modified time: 2022-11-13 21:06:04
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -28,7 +28,7 @@
 											role="tab"
 											aria-controls="overview"
 											aria-selected="true"
-											>Products</a
+											><i class="mdi mdi-table"></i> Products</a
 										>
 									</li>
 								</ul>
@@ -86,7 +86,7 @@
 						</div>
 						<div class="modal-body" style="overflow-x: auto;">
 							<div class="form-group">
-								<label for="productImage">Product Image</label>
+								<label for="productImage"><i class="mdi mdi-regex text-danger"></i> Product Image</label>
 								<input type="file" class="form-control form-control-sm" id="productImage" accept="image/jpeg" placeholder="Product image here...">
 							</div>
 							<div class="form-group">
@@ -94,15 +94,15 @@
 								<input type="file" class="form-control form-control-sm" id="productGcashQR" accept="image/jpeg" placeholder="Gcash qr image here...">
 							</div>
 							<div class="form-group">
-								<label for="productName">Product Name</label>
+								<label for="productName"><i class="mdi mdi-regex text-danger"></i> Product Name</label>
 								<input type="text" class="form-control" id="productName" placeholder="Product name here...">
 							</div>
 							<div class="form-group">
-								<label for="productDescription">Description</label>
+								<label for="productDescription"><i class="mdi mdi-regex text-danger"></i> Description</label>
 								<textarea class="form-control form-control-lg" id="productDescription" rows="20" placeholder="Product description here..."></textarea>
 							</div>
 							<div class="form-group">
-								<label for="productSize">Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
+								<label for="productSize"><i class="mdi mdi-regex text-danger"></i> Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
 								<select id="productSize" class="form-select" multiple>
 									<option value="S">Small</option>
 									<option value="M">Medium</option>
@@ -111,7 +111,7 @@
 								  </select>
 							</div>
 							<div class="form-group">
-								<label for="productType">Product Type</label>
+								<label for="productType"><i class="mdi mdi-regex text-danger"></i> Product Type</label>
 								<select class="form-control" id="productType">
 								  <option>Casual</option>
 								  <option>Formal</option>
@@ -120,7 +120,7 @@
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="productAmount">Product Amount</label>
+								<label for="productAmount"><i class="mdi mdi-regex text-danger"></i> Product Amount</label>
 								<div class="input-group">
 								  <div class="input-group-prepend">
 									<span class="input-group-text bg-primary text-white">₱ </span>
@@ -129,12 +129,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="productCount">Available</label>
+								<label for="productCount"><i class="mdi mdi-regex text-danger"></i> Available</label>
 								<div class="input-group">
 								  <div class="input-group-prepend">
 									<span class="input-group-text bg-primary text-white">Count:</span>
 								  </div>
 								  <input id="productCount" type="number" min="0" step="1" class="form-control" aria-label="Number of Items">
+								  <div class="input-group-append">
+									<span class="input-group-text">Item/Bundle</span>
+								  </div>
 								</div>
 							</div>
 						</div>
@@ -178,18 +181,18 @@
 				`<h5>Description</h5>
 				<div style="width: auto; white-space: normal;">
 					<p>${temp[0]}</p>
-					<p>Size: ${temp[2]}</p>
+					<p><i class="mdi mdi-tshirt-crew"></i> Size: ${temp[2]}</p>
 				</div>
 				<div style="display: flex;flex-direction: row;">
 					<div style="padding: 10px;">
 						<p>
-							QR Code:<br />
+							<i class="mdi mdi-qrcode"></i> QR Code:<br />
 							${qr}
 						</p>
 					</div>
 					<div style="padding: 10px;">
 						<p>
-							Product Image:<br />
+							<i class="mdi mdi-file-image"></i> Product Image:<br />
 							<a class="yBox" href="/glam/glamserver/assets/contents/${d.gp_product_img}" data-ybox-group="group${d.gpId}">
 								<img src="/glam/glamserver/assets/contents/${d.gp_product_img}" />
 							</a>
@@ -210,7 +213,7 @@
         	],
 			pagingType: 'full',
 			buttons: [{
-				text: "<i class='icon-doc'></i> New Record",
+				text: "<i class=\"mdi mdi-file-import\"></i> New Record",
 				className: "createProductRecord",
 				action: function( e, dt, node, config ) {
 					recordCount = table.page.info().recordsTotal;
@@ -220,7 +223,7 @@
 					$('#ProductModal').modal('show');
 				}
 			},{
-                text: 'Update Selected Row',
+                text: '<i class="mdi mdi-file-send"></i> Update Selected Row',
                 action: function ( e, dt, node, config ) {
 					$('#productSize').val([]);
 					var record = dt.row('.selected').data();
@@ -248,7 +251,7 @@
 				enabled: false
             },{
                 extend: 'pdfHtml5',
-				text:      '<i class="icon-docs"></i> Generate PDF',
+				text:      '<i class="mdi mdi-file-export"></i> Generate PDF',
 				title: 'Product Records',
                 titleAttr: 'PDF',
                 orientation: 'landscape',
@@ -500,6 +503,7 @@
 					$('#productCount').addClass('is-invalid').prop('title', 'this is required!').focus();
 					return;
 				}
+				recordData += ', ""';
 				loadData = [{...loadData, TYPE: "createProduct", params: recordData}];
 				$.ajax({
 					type: "POST",

@@ -3,7 +3,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-13 15:04:32
+ * @ Modified time: 2022-11-13 21:36:52
  * @ Description:
  -->
 <div class="container-scroller">
@@ -17,7 +17,7 @@
               <div class="d-sm-flex align-items-center justify-content-between border-bottom">
                 <ul class="nav nav-tabs" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="overview" aria-selected="true">Monthly Overview</a>
+                    <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="javascript:void(0)" role="tab" aria-controls="overview" aria-selected="true"><i class="mdi mdi-shape-plus"></i> Overview</a>
                   </li>
                 </ul>
               </div>
@@ -60,12 +60,12 @@
                         <div>
                           <p class="statistics-title">Overdue Rentals</p>
                           <h3 class="rate-percentage"><span class="text-danger">2</span><br />Item/bundle</h3>
-                          <p class="d-flex"><i class="mdi mdi-menu-up"></i><span style="cursor: pointer;" onclick="sessionStorage.page='1';location.reload();">view details</span></p>
+                          <p class="d-flex"><span style="cursor: pointer;" onclick="sessionStorage.page='1';location.reload();">view details <i class="mdi mdi-open-in-new" style="font-size: 12px;"></i></span></p>
                         </div>
                         <div>
-                          <p class="statistics-title">Rental (Cash on delivery)</p>
-                          <h3 class="rate-percentage">₱7,682<br />this year</h3>
-                          <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8% last year</span></p>
+                          <p class="statistics-title">New Transactions</p>
+                          <h3 class="rate-percentage"><span class="text-warning">1</span><br />Item/bundle</h3>
+                          <p class="d-flex"><span style="cursor: pointer;" onclick="sessionStorage.page='transaction';location.reload();">view details <i class="mdi mdi-open-in-new" style="font-size: 12px;"></i></span></p>
                         </div>
                         <div class="d-none d-md-block">
                           <p class="statistics-title">Total Rentals</p>

@@ -4,13 +4,13 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 08:57:01
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-03 21:39:44
+ * @ Modified time: 2022-11-13 21:27:17
  * @ Change Log:
  -->
 <article id="loginPage">
   <div class="loginBox">
     <div class="loginForm">
-      <h2>Sign in</h2>
+      <h2>Glamarouza</h2>
       <div class="loginInputBox">
         <input type="text" name="username" required="required" />
         <span>Username</span>
@@ -22,7 +22,7 @@
         <i></i>
       </div>
       <div class="loginLinks">
-        <a id="forget_password" href="javascript:void(0)" data-title="Click to reset password">Forgot Password</a>
+        <a id="forget_password" href="javascript:void(0)" data-title="Click to reset password"><i class="mdi mdi-account-search"></i> Forgot Password</a>
       </div>
       <input type="submit" value="Login" />
       <br />
@@ -32,7 +32,7 @@
 </article>
 <script>
   $('input[type="text"],input[type="password"]').on('keydown', (event) => {
-    $('.errorMessage').text('');
+    $('.errorMessage').html('');
   });
   $('input[type="submit"]').on('click', (event) => {
     var fields = [
@@ -47,7 +47,7 @@
     for(var i = 0; i < fields.length; i++) {
       if($(fields[i]).val() === '') {
         $(fields[i]).focus();
-        $('.errorMessage').text(fieldLabel[i] + ' field is Empty!');
+        $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> ' + fieldLabel[i] + ' field is Empty');
         break;
       }else {
         fieldCounter++;
@@ -63,7 +63,7 @@
         var result = data;
         console.log("Output:  => $ => result", result);
         if(result.STATUS == 0) {
-          $('.errorMessage').text('User not found!');
+          $('.errorMessage').html('<i class="mdi mdi-account-off"></i> User not found');
           $('input[type="text"],input[type="password"]').val('');
           setTimeout( () => {
             $('input[type="text"]').focus();
@@ -71,7 +71,7 @@
         }else {
           sessionStorage.setItem("page", '1');
           sessionStorage.setItem("userId", result.USER);
-          $('.errorMessage').removeClass('text-danger').addClass('text-success').text('User verified!');
+          $('.errorMessage').removeClass('text-danger').addClass('text-success').html('<i class="mdi mdi-account-check"></i> User verified');
           setTimeout( () => {
             location.reload();
           },800);
