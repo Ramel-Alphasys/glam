@@ -28,6 +28,7 @@ CREATE TABLE `g_customer` (
   `gc_gname` varchar(150) NOT NULL,
   `gc_mname` varchar(150) NOT NULL,
   `gc_sname` varchar(150) NOT NULL,
+  `gc_address` text NOT NULL,
   `gc_email` varchar(200) NOT NULL,
   `gc_p_m_number` int(11) NOT NULL,
   PRIMARY KEY (`gcId`),
@@ -42,7 +43,7 @@ CREATE TABLE `g_customer` (
 
 LOCK TABLES `g_customer` WRITE;
 /*!40000 ALTER TABLE `g_customer` DISABLE KEYS */;
-INSERT INTO `g_customer` VALUES (0,1,'chad','t.','wick','',1231231231);
+INSERT INTO `g_customer` VALUES (0,1,'chad','t.','wick','','',1231231231);
 /*!40000 ALTER TABLE `g_customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,6 +94,7 @@ CREATE TABLE `g_product` (
   `gp_product_img` text NOT NULL,
   `gp_gcash_qr` text DEFAULT NULL,
   `gp_count` int(11) NOT NULL,
+  `gp_featured_img` text DEFAULT NULL,
   PRIMARY KEY (`gpId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -103,7 +105,7 @@ CREATE TABLE `g_product` (
 
 LOCK TABLES `g_product` WRITE;
 /*!40000 ALTER TABLE `g_product` DISABLE KEYS */;
-INSERT INTO `g_product` VALUES (0,'Pellentesque in ipsum id orci porta dapibus.','{\"Description\":\"Nulla porttitor accumsan tincidunt.\nPraesent sapien massa, convallis a pellentesque nec, egestas non nisi.\"}','Casual',1,100.00,'FB_IMG_15057447458379679.jpg','b361dc12ab407a00db104cda410ea551.jpg',2),(1,'Vestibulum ac diam','Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.','Casual',0,199.99,'ian-schneider-TamMbr4okv4-unsplash.jpg','georg-arthur-pflueger-eO_JhqabBY0-unsplash.jpg',2),(2,'Curabitur arcu erat','{\"Description\":\"Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Donec rutrum congue leo eget malesuada.\",\"Size\":\"[\"S\",\"M\",\"L\",\"XL\"]\"}','Swim wear',1,459.99,'phillip-goldsberry--AHIA8Bs_HA-unsplash.jpg','salesforce-new-logo.jpg',1),(3,'Sed porttitor lectus nibh.','Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.','Casual',1,129.99,'FB_IMG_15057366648826881.jpg','FireShot Capture 493 - Checkout – AlphaSys Merchandise - merchandise.alphasys.com.au.jpg',1),(4,'Vestibulum ac diam','Curabitur aliquet quam id dui posuere blandit. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.','Formal',1,100.00,'phillip-goldsberry--AHIA8Bs_HA-unsplash.jpg','FireShot Capture 493 - Checkout – AlphaSys Merchandise - merchandise.alphasys.com.au.jpg',4),(5,'Red shoes','{\"Description\":\"test\",\"Size\":\"[\"M\",\"XL\"]\"}','Casual',1,150.00,'FB_IMG_15057447242236845.jpg','b361dc12ab407a00db104cda410ea551.jpg',1),(6,'Black shoes','{\"Description\":\"dfadfgag arg argrgsrsgs\",\"Size\":\"[\"S\",\"M\",\"L\",\"XL\"]\"}','Casual',1,150.00,'b361dc12ab407a00db104cda410ea551.jpg','',3);
+INSERT INTO `g_product` VALUES (0,'Pellentesque in ipsum id orci porta dapibus.','{\"Description\":\"Nulla porttitor accumsan tincidunt.\nPraesent sapien massa, convallis a pellentesque nec, egestas non nisi.\"}','Casual',1,100.00,'FB_IMG_15057447458379679.jpg','b361dc12ab407a00db104cda410ea551.jpg',2,NULL),(1,'Vestibulum ac diam','Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.','Casual',0,199.99,'ian-schneider-TamMbr4okv4-unsplash.jpg','georg-arthur-pflueger-eO_JhqabBY0-unsplash.jpg',2,NULL),(2,'Curabitur arcu erat','{\"Description\":\"Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Donec rutrum congue leo eget malesuada.\",\"Size\":\"[\"S\",\"M\",\"L\",\"XL\"]\"}','Swim wear',1,459.99,'phillip-goldsberry--AHIA8Bs_HA-unsplash.jpg','salesforce-new-logo.jpg',1,NULL),(3,'Sed porttitor lectus nibh.','Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.','Casual',1,129.99,'FB_IMG_15057366648826881.jpg','FireShot Capture 493 - Checkout – AlphaSys Merchandise - merchandise.alphasys.com.au.jpg',1,NULL),(4,'Vestibulum ac diam','Curabitur aliquet quam id dui posuere blandit. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.','Formal',1,100.00,'phillip-goldsberry--AHIA8Bs_HA-unsplash.jpg','FireShot Capture 493 - Checkout – AlphaSys Merchandise - merchandise.alphasys.com.au.jpg',4,NULL),(5,'Red shoes','{\"Description\":\"test\",\"Size\":\"[\"M\",\"XL\"]\"}','Casual',1,150.00,'FB_IMG_15057447242236845.jpg','b361dc12ab407a00db104cda410ea551.jpg',1,NULL),(6,'Black shoes','{\"Description\":\"dfadfgag arg argrgsrsgs\",\"Size\":\"[\"S\",\"M\",\"L\",\"XL\"]\"}','Casual',1,150.00,'b361dc12ab407a00db104cda410ea551.jpg','',3,NULL);
 /*!40000 ALTER TABLE `g_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,4 +280,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-13 18:31:23
+-- Dump completed on 2022-11-13 19:05:49
