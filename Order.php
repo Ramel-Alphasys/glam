@@ -1,3 +1,18 @@
+<?php
+require 'glamserver\assets\php\database.php';
+require 'glamserver\assets\php\CRUD.php';
+$crud = new serverManipulation();
+$serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
+
+$params = array(
+  'fields' => '*',
+  'table' => 'g_transactions',
+  'dbcon' => $serverConn
+);
+
+$orderlist = $crud->sm_vr_server($params);
+
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -17,7 +32,7 @@
              <i class="fa fa-bars fa-2x"></i>
           </div>
           <div class="logo">
-             <a class="nav-link" href="index.php">Glamurousa</a>
+             <a class="nav-link" href="index.php">Glamorouza</a>
           </div>
           <div class="menu">
              <ul>
@@ -39,6 +54,7 @@
       <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom mb-5">Order</h2>
         <div class="container">
+          <?php foreach ($orderlist as $order) { ?>
           <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
             <div class="card-body">
               <div class="float-start text-truncate">
@@ -49,7 +65,8 @@
               </div>
             </div>
           </div>
-          <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr2">
+          <?php } ?>
+          <!-- <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr2">
             <div class="card-body">
               <div class="float-start text-truncate">
                 Order #2
@@ -58,7 +75,7 @@
                 <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- Modal -->
         <div class="modal fade" id="Ordr1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Order1" aria-hidden="true">
