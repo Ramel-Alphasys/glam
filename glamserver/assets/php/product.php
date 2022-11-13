@@ -21,20 +21,8 @@ try {
     // parameter names
     $columns = array(
         array('db' => 'gpId', 'dt' => 'gpId'),
-        array(
-            'db'        => 'gp_product_img',
-            'dt'        => 'gp_product_img',
-            'formatter' => function ($d, $row) {
-                return '<img src="/glam/glamserver/assets/contents/' . $d . '" />';
-            }
-        ),
-        array(
-            'db'        => 'gp_gcash_qr',
-            'dt'        => 'gp_gcash_qr',
-            'formatter' => function ($d, $row) {
-                return '<img src="/glam/glamserver/assets/qrcodes/' . $d . '" />';
-            }
-        ),
+        array('db' => 'gp_product_img','dt' => 'gp_product_img'),
+        array('db' => 'gp_gcash_qr','dt' => 'gp_gcash_qr',),
         array('db' => 'gp_name', 'dt' => 'gp_name'),
         array('db' => 'gp_description',  'dt' => 'gp_description'),
         array('db' => 'gp_type',   'dt' => 'gp_type'),
@@ -55,7 +43,8 @@ try {
             'formatter' => function ($d, $row) {
                 return '₱ ' . number_format($d, 2, '.', '');
             }
-        )
+        ),
+        array('db' => 'gp_count', 'dt' => 'gp_count')
     );
 
     // SQL server connection information

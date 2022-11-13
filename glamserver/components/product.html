@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-03 21:54:59
+ * @ Modified time: 2022-11-13 14:41:25
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -62,6 +62,7 @@
 																		<th>Type</th>
 																		<th>Availability</th>
 																		<th>Price</th>
+																		<th>Count</th>
 																	</tr>
 																</thead>
 															</table>
@@ -86,7 +87,11 @@
 						<div class="modal-body" style="overflow-x: auto;">
 							<div class="form-group">
 								<label for="productImage">Product Image</label>
-								<input type="file" class="form-control form-control-lg" id="productImage" accept="image/jpeg" placeholder="Product image here...">
+								<input type="file" class="form-control form-control-sm" id="productImage" accept="image/jpeg" placeholder="Product image here...">
+							</div>
+							<div class="form-group">
+								<label for="productGcashQR">Gcash QR Image</label>
+								<input type="file" class="form-control form-control-sm" id="productGcashQR" accept="image/jpeg" placeholder="Gcash qr image here...">
 							</div>
 							<div class="form-group">
 								<label for="productName">Product Name</label>
@@ -95,6 +100,15 @@
 							<div class="form-group">
 								<label for="productDescription">Description</label>
 								<textarea class="form-control form-control-lg" id="productDescription" rows="20" placeholder="Product description here..."></textarea>
+							</div>
+							<div class="form-group">
+								<label for="productSize">Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
+								<select id="productSize" class="form-select" multiple>
+									<option value="S">Small</option>
+									<option value="M">Medium</option>
+									<option value="L">Large</option>
+									<option value="XL">Extra Large</option>
+								  </select>
 							</div>
 							<div class="form-group">
 								<label for="productType">Product Type</label>
@@ -111,12 +125,17 @@
 								  <div class="input-group-prepend">
 									<span class="input-group-text bg-primary text-white">₱ </span>
 								  </div>
-								  <input id="productAmount" type="text" class="form-control" aria-label="Amount (to the nearest peso)">
+								  <input id="productAmount" type="Number" min="0" step=".01" class="form-control" aria-label="Amount (to the nearest peso)">
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="productGcashQR">Gcash QR Image</label>
-								<input type="file" class="form-control form-control-lg" id="productGcashQR" accept="image/jpeg" placeholder="Gcash qr image here...">
+								<label for="productCount">Available</label>
+								<div class="input-group">
+								  <div class="input-group-prepend">
+									<span class="input-group-text bg-primary text-white">Count:</span>
+								  </div>
+								  <input id="productCount" type="number" min="0" step="1" class="form-control" aria-label="Number of Items">
+								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -131,24 +150,49 @@
 <script>
 	$(document).ready(function () {
 		function format(d) {
+			var temp = [];
+			var qr;
+			if(d.gp_description.includes('[') || d.gp_description.includes('{')) {
+				temp = d.gp_description.replace(/[{}]/g, "").split(':');
+				temp[1] = temp[1].split('",');
+				temp[0] = temp[1][0].replace(/["]/g, "");
+				if(temp.length > 2) {
+					temp[2] = JSON.parse(temp[2].substring(1).slice(0,-1));
+				}else {
+					temp[2] = 'All size';
+				}
+			}else {
+				temp[0] = d.gp_description;
+				temp[2] = 'All size';
+			}
+			if(d.gp_gcash_qr) {
+				qr = `
+				<a class="yBox" href="/glam/glamserver/assets/qrcodes/${d.gp_gcash_qr}" data-ybox-group="group${d.gpId}">
+					<img src="/glam/glamserver/assets/qrcodes/${d.gp_gcash_qr}" />
+				</a>
+				`;
+			}else {
+				qr = 'No Gcash QR Code';
+			}
 			return (
-				`<div style="display: flex;flex-direction: row;">
+				`<h5>Description</h5>
+				<div style="width: auto; white-space: normal;">
+					<p>${temp[0]}</p>
+					<p>Size: ${temp[2]}</p>
+				</div>
+				<div style="display: flex;flex-direction: row;">
 					<div style="padding: 10px;">
 						<p>
-							QR Code: 
-							${d.gp_gcash_qr}
+							QR Code:<br />
+							${qr}
 						</p>
 					</div>
 					<div style="padding: 10px;">
 						<p>
-							Product Image: 
-							${d.gp_product_img}
-						</p>
-					</div>
-					<div style="padding: 10px;">
-						<p>
-							Description:
-							${d.gp_description}
+							Product Image:<br />
+							<a class="yBox" href="/glam/glamserver/assets/contents/${d.gp_product_img}" data-ybox-group="group${d.gpId}">
+								<img src="/glam/glamserver/assets/contents/${d.gp_product_img}" />
+							</a>
 						</p>
 					</div>
 				</div>`
@@ -157,29 +201,47 @@
 		var recordCount = 0;
 		var table = $("#productTable").DataTable({
 			dom: "Bfrtip",
+			responsive: true,
 			select: true,
 			scrollX: true,
+			lengthMenu: [
+				[5, 10, 15, -1],
+				[5, 10, 15, 'All'],
+        	],
+			pagingType: 'full',
 			buttons: [{
 				text: "<i class='icon-doc'></i> New Record",
 				className: "createProductRecord",
 				action: function( e, dt, node, config ) {
-					recordCount = dt.rows().count();
+					recordCount = table.page.info().recordsTotal;
 					$('#saveRecord').html($('#saveRecord').text().replace('Update','Save'));
-					$('#productName,#productDescription,#productType,#productAmount,#productImage,#productGcashQR').val('');
+					$('#productName,#productDescription,#productType,#productAmount,#productImage,#productGcashQR,#productCount').removeClass('is-invalid').val('');
+					$('#productSize').val([]);
 					$('#ProductModal').modal('show');
 				}
 			},{
                 text: 'Update Selected Row',
                 action: function ( e, dt, node, config ) {
+					$('#productSize').val([]);
 					var record = dt.row('.selected').data();
+					if(record.gp_description.includes('[')||record.gp_description.includes('{')) {
+						var temp = record.gp_description.replace(/[{}]/g, "").split(':');
+						temp[1] = temp[1].split('",');
+						$('#productDescription').val(temp[1][0].replace(/["]/g, ""));
+						if(temp.length > 2) {
+							$('#productSize').val(JSON.parse(temp[2].substring(1).slice(0,-1)));
+						}
+					}else {
+						$('#productDescription').val(record.gp_description);
+					}
 					$('#saveRecord').val(record.gpId);
 					$('#productName').val(record.gp_name);
-					$('#productDescription').val(record.gp_description);
 					$('#productType').val(record.gp_type);
 					record.gp_price = record.gp_price.split('.');
 					record.gp_price[0] = record.gp_price[0].replace(/\₱ /g, "");
 					record.gp_price[3] = record.gp_price[0] +'.'+ record.gp_price[1];
 					$('#productAmount').val(parseFloat(record.gp_price[3]).toFixed(2));
+					$('#productCount').val(record.gp_count);
 					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
 					$('#ProductModal').modal('show');
                 },
@@ -211,6 +273,7 @@
 					{ data: 'gp_type' },
 					{ data: 'gp_availability'},
 					{ data: 'gp_price' },
+					{ data: 'gp_count' },
 			],
 			columnDefs: [
 				{
@@ -226,15 +289,17 @@
 		});
 		$('#productTable tbody').on('click', 'tr', function () {
 			var selectedRows;
-			if ($(this).hasClass('selected')) {
-				$(this).removeClass('selected');
-				selectedRows = table.$('tr.selected').length;
-			} else {
-				table.$('tr.selected').removeClass('selected');
-				$(this).addClass('selected');
-				selectedRows = table.$('tr.selected').length;
+			if(this.classList.value != '') {
+				if ($(this).hasClass('selected')) {
+					$(this).removeClass('selected');
+					selectedRows = table.$('tr.selected').length;
+				} else {
+					table.$('tr.selected').removeClass('selected');
+					$(this).addClass('selected');
+					selectedRows = table.$('tr.selected').length;
+				}
+				table.button( 1 ).enable( selectedRows === 1 );
 			}
-			table.button( 1 ).enable( selectedRows === 1 );
 		});
 		// Array to track the ids of the details displayed rows
 		var detailRows = [];
@@ -268,19 +333,22 @@
 			});
 		});
 		$('#saveRecord').on('click', (event) => {
+			$('#productName,#productDescription,#productType,#productAmount,#productImage,#productCount').removeClass('is-invalid');
 			var form = new FormData();
+			var Description = {};
+			var loadData = [];
 			var myFormData = document.getElementById('productImage').files[0]; //get the file 
 			var myFormData2 = document.getElementById('productGcashQR').files[0]; //get the file 
 			if(event.currentTarget.innerText.includes('Update')) {
 				if (myFormData) {   //Check the file is emty or not
 					form.append('inputFile', myFormData); //append files
 					$.ajax({
-						type: 'POST',               
+						type: 'POST',
 						processData: false,
-						contentType: false, 
+						contentType: false,
 						data: form,
 						url: "/glam/glamserver/assets/php/saveImage.php", //My reference URL
-						dataType : 'json',  
+						dataType : 'json',
 						success: function(jsonData){
 							console.warn("Log:  => $ => jsonData", jsonData);
 						}
@@ -302,14 +370,17 @@
 					});
 				}
 
-				var loadData = [];
 				var recordData = '';
 				if($('#productName').val()) {
 					recordData += `gp_name = '${$('#productName').val()}', `;
 				}
 				if($('#productDescription').val()) {
-					recordData += `gp_description = '${$('#productDescription').val()}', `;
+					Description.Description = $('#productDescription').val();
 				}
+				if($('#productSize').val().length > 0) {
+					Description.Size = JSON.stringify($('#productSize').val());
+				}
+				recordData += `gp_description = '${JSON.stringify(Description)}', `;
 				if($('#productType').val()) {
 					recordData += `gp_type = '${$('#productType').val()}', `;
 				}
@@ -322,17 +393,32 @@
 				if(myFormData2) {
 					recordData += `, gp_gcash_qr = '${myFormData2.name}'`;
 				}
+				if($('#productCount').val()) {
+					recordData += `, gp_count = ${$('#productCount').val()}`;
+				}
 				loadData = [{...loadData, TYPE: "updateProduct", filter: `gpId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
-					type: "POST",
-					url: "/glam/glamserver/assets/php/productCRUD.php",
-					data: loadData[0],
-					dataType: "json",
-				  }).done((data) => {
-					  console.warn("Log:  => $ => data", data);
-				  });
+						type: "POST",
+						url: "/glam/glamserver/assets/php/productCRUD.php",
+						data: loadData[0],
+						dataType: "json",
+				}).done((data) => {
+					console.warn("Log:  => $ => data", data);
+				});
 				$('#ProductModal').modal('hide');
 				table.draw();
+				$.notify({
+					title: 'Product Updated',
+					message: `Product name: ${$('#productName').val()} has been updated.`,
+				},{
+					showProgressbar: true,
+					type: "success",
+					allow_dismiss: false,
+					placement: {
+						from: 'top',
+						align: 'right'
+					}
+				});
 			}else {
 				if (myFormData) {   //Check the file is emty or not
 					form.append('inputFile', myFormData); //append files
@@ -347,6 +433,9 @@
 							console.warn("Log:  => $ => jsonData", jsonData);
 						}
 					});
+				}else {
+					$('#productImage').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
 				}
 				form = new FormData();
 				if (myFormData2) {   //Check the file is emty or not
@@ -363,26 +452,53 @@
 						}
 					});
 				}
-				
-				var loadData = [];
+
 				var recordData = `${recordCount}, `;
 				if($('#productName').val()) {
+					$('#productName').removeClass('is-invalid');
 					recordData += `"${$('#productName').val()}", `;
+				}else {
+					$('#productName').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
 				}
 				if($('#productDescription').val()) {
-					recordData += `"${$('#productDescription').val()}", `;
+					Description.Description = $('#productDescription').val();
+				}else {
+					$('#productDescription').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
 				}
+				if($('#productSize').val().length > 0) {
+					Description.Size = JSON.stringify($('#productSize').val());
+				}else {
+					$('#productSize').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
+				}
+				recordData += `'${JSON.stringify(Description)}', `;
 				if($('#productType').val()) {
 					recordData += `"${$('#productType').val()}", 1, `;
+				}else {
+					$('#productType').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
 				}
 				if($('#productAmount').val()) {
 					recordData += `${$('#productAmount').val()}`;
+				}else {
+					$('#productAmount').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
 				}
 				if(myFormData) {
 					recordData += `, "${myFormData.name}"`;
 				}
 				if(myFormData2) {
 					recordData += `, "${myFormData2.name}"`;
+				}else {
+					recordData += `, ""`;
+				}
+				if($('#productCount').val()) {
+					recordData += `, ${$('#productCount').val()}`;
+				}else {
+					$('#productCount').addClass('is-invalid').prop('title', 'this is required!').focus();
+					return;
 				}
 				loadData = [{...loadData, TYPE: "createProduct", params: recordData}];
 				$.ajax({
@@ -390,11 +506,23 @@
 					url: "/glam/glamserver/assets/php/productCRUD.php",
 					data: loadData[0],
 					dataType: "json",
-				  }).done((data) => {
-					  console.warn("Log:  => $ => data", data);
-				  });
+				}).done((data) => {
+					console.warn("Log:  => $ => data", data);
+				});
 				$('#ProductModal').modal('hide');
-				table.draw();
+				// table.draw();
+				$.notify({
+					title: 'Product Created',
+					message: `Product name: ${$('#productName').val()} has been created.`,
+				},{
+					showProgressbar: true,
+					type: "success",
+					allow_dismiss: false,
+					placement: {
+						from: 'top',
+						align: 'right'
+					}
+				});
 			}
 		});
 	});
