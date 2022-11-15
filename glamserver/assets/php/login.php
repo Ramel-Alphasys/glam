@@ -27,7 +27,7 @@ if (!empty($_POST['TYPE'])) {
                     $params = array(
                         'fields' => '*',
                         'table' => 'g_user',
-                        'filter' => "g_username='${_POST['g_user']}' AND (g_userpass='${_POST['g_pass']}' OR g_token='${_POST['g_pass']}') AND gu_type=0 LIMIT 1",
+                        'filter' => "WHERE g_username='${_POST['g_user']}' AND (g_userpass='${_POST['g_pass']}' OR g_token='${_POST['g_pass']}') AND gu_type=0 LIMIT 1",
                         'dbcon' => $conToServer
                     );
                     $checker = $crud->sm_vr_server($params);
@@ -42,7 +42,7 @@ if (!empty($_POST['TYPE'])) {
                 $params = array(
                     'fields' => '*',
                     'table' => 'g_employee',
-                    'filter' => "ge_email = '${_POST['email']}' LIMIT 1",
+                    'filter' => "WHERE ge_email = '${_POST['email']}' LIMIT 1",
                     'dbcon' => $conToServer
                 );
                 $checker = $crud->sm_vr_server($params);

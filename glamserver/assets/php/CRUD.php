@@ -64,7 +64,7 @@ class serverManipulation
             $query = "SELECT ${params['fields']} FROM ${params['table']} ";
 
             if (array_key_exists("filter", $params)) {
-                $query .= "WHERE ${params['filter']}";
+                $query .= "${params['filter']}";
             }
 
             $data = $params['dbcon']->startDb()->prepare($query);
