@@ -1,30 +1,30 @@
 <?php
-  require 'glamserver\assets\php\database.php';
-  require 'glamserver\assets\php\CRUD.php';
-  $crud = new serverManipulation();
-  $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
+	require 'glamserver\assets\php\database.php';
+	require 'glamserver\assets\php\CRUD.php';
+	$crud = new serverManipulation();
+	$serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
 
-  $params = array(
-    'fields' => '*',
-    'table' => 'g_product',
-    'filter' => "gpId='${_GET['Product']}'",
-    'dbcon' => $serverConn
-  );
-  $response = $crud->sm_vr_server($params);
-  $res = $response[0];
+	$params = array(
+		'fields' => '*',
+		'table' => 'g_product',
+		'filter' => "gpId='${_GET['Product']}'",
+		'dbcon' => $serverConn
+	);
+	$response = $crud->sm_vr_server($params);
+	$res = $response[0];
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Item Detail</title>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <link href="css/cstmProd.css" rel="stylesheet">
-  </head>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Item Detail</title>
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<script src="assets/js/bootstrap.bundle.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<link href="css/cstmProd.css" rel="stylesheet">
+	</head>
   <body>
     <header>
       <nav>
