@@ -8,11 +8,11 @@
 	$params = array(
 		'fields' => '*',
 		'table' => 'g_customer',
-		'filter' => "gcId='0'",
 		'dbcon' => $serverConn
 	);
 	$information = $crud->sm_vr_server($params);
 	$info = $information[0];
+	$cus_add = explode(',',$info['gc_address']);
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -64,13 +64,13 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" name="g_gname" id="floatFnam" placeholder="First Name" value="<?php echo $info['gc_gname']; ?>" required>
+								<input type="text" class="form-control" name="gname" id="floatFnam" placeholder="First Name" value="<?php echo $info['gc_gname']; ?>" required>
 								<label for="floatFnam">First Name</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" name="g_sname" id="floatLnam" placeholder="Last Name" value="<?php echo $info['gc_sname']; ?>" required>
+								<input type="text" class="form-control" name="sname" id="floatLnam" placeholder="Last Name" value="<?php echo $info['gc_sname']; ?>" required>
 								<label for="floatLnam">Last Name</label>
 							</div>
 						</div>
@@ -78,13 +78,13 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="tel" class="form-control" name="g_mobile" id="floatPhone" value="<?php echo $info['gc_p_m_number']; ?>" required placeholder="Mobile" required>
+								<input type="tel" class="form-control" name="mobile" id="floatPhone" value="<?php echo $info['gc_p_m_number']; ?>" required placeholder="Mobile" required>
 								<label for="floatPhone">Phone</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="email" class="form-control" name="g_email" id="floatEmail" placeholder="Email" value="<?php echo $info['gc_email']; ?>" required>
+								<input type="email" class="form-control" name="email" id="floatEmail" placeholder="Email" value="<?php echo $info['gc_email']; ?>" required>
 								<label for="floatEmail">Email</label>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floatStreet" placeholder="Street">
+								<input type="text" name="street" class="form-control" id="floatStreet" placeholder="Street" value="<?php echo $cus_add[0]; ?>">
 								<label for="floatStreet">Street</label>
 							</div>
 						</div>
@@ -101,19 +101,19 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floatBrgy" placeholder="Barangay">
+								<input type="text" name="brgy" class="form-control" id="floatBrgy" placeholder="Barangay" value="<?php echo $cus_add[1]; ?>">
 								<label for="floatBrgy">Barangay</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floatCity" placeholder="City/Municipality">
+								<input type="text" name="city" class="form-control" id="floatCity" placeholder="City/Municipality" value="<?php echo $cus_add[2]; ?>">
 								<label for="floatCity">City/Municipality</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" class="form-control" id="floatProvince" placeholder="Province">
+								<input type="text" name="province" class="form-control" id="floatProvince" placeholder="Province" value="<?php echo $cus_add[3]; ?>">
 								<label for="floatProvince">Province</label>
 							</div>
 						</div>

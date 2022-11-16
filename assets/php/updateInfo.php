@@ -6,13 +6,17 @@
      $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
 
      if(isset($_POST['submit'])) {
-          $gname = $_POST['g_gname'];
-          $sname = $_POST['g_sname'];
-          $mobile = $_POST['g_mobile'];
-          $email = $_POST['g_email'];
+          $params = array(
+               "fields" => 
+               "`gc_gname`='"+$_POST["gname"]+
+               "', `gc_sname`='"+$_POST["sname"]+
+               "', `gc_p_m_number`='"+$_POST["mobile"]+
+               "', `gc_email`='"+$_POST["email"]+
+               "', `gc_address`='"+$_POST["street"]+", "+ $_POST["brgy"]+", "+$_POST["city"]+", "+$_POST["province"],
+               "table" => 'g_customer',
+               "dbcon" => $serverConn
+          );
+
+          $response = $crud->sm_ur_server($params);
      }
 
-     echo $gname;
-     echo $sname;
-     echo $mobile;
-     echo $email;
