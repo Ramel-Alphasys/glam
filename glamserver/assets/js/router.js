@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 19:42:39
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-03 21:44:12
+ * @ Modified time: 2022-11-15 19:33:45
  * @ Change Log:
  */
 $(document).ready(function () {
@@ -112,6 +112,37 @@ $(document).ready(function () {
 				);
 				if (status === "error") {
 					console.log("Output:  => $ => load product.html status: ", status);
+				}
+			}
+		);
+	} else if (sessionStorage.page === "newTransaction") {
+		$("#server-header").load(
+			`components/headerNavigation.html`,
+			function (response, status) {
+				if (status === "error") {
+					console.log(
+						"Output:  => $ => load headerNavigation.html status: ",
+						status
+					);
+				}
+			}
+		);
+		$("#server-content").load(
+			`components/newTransaction.html`,
+			function (response, status) {
+				$("#leftSideNavigation").load(
+					`components/sideNavigation.html`,
+					function (response, status) {
+						if (status === "error") {
+							console.log(
+								"Output:  => $ => load sideNavigation.html status: ",
+								status
+							);
+						}
+					}
+				);
+				if (status === "error") {
+					console.log("Output:  => $ => load newTransaction.html status: ", status);
 				}
 			}
 		);

@@ -3,7 +3,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-13 21:36:52
+ * @ Modified time: 2022-11-16 21:03:06
  * @ Description:
  -->
 <div class="container-scroller">
@@ -28,23 +28,23 @@
                       <div class="statistics-details d-flex align-items-center justify-content-between">
                         <div>
                           <p class="statistics-title">Rentals (Gcash)</p>
-                          <h3 class="rate-percentage">₱32,213.53<br />this year</h3>
-                          <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>0.5% last year</span></p>
+                          <h3 class="rate-percentage">₱<span id="totalGcash"></span><br />this year</h3>
+                          <p id="totalGcashper" class="d-flex"></p>
                         </div>
                         <div>
                           <p class="statistics-title">Rentals (Walk in)</p>
-                          <h3 class="rate-percentage">₱67,682<br />this year</h3>
-                          <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>0.1% last year</span></p>
+                          <h3 class="rate-percentage">₱<span id="totalWalkin"></span><br />this year</h3>
+                          <p id="totalWalkinper" class="d-flex"></p>
                         </div>
                         <div>
                           <p class="statistics-title">Rentals (Cash on delivery)</p>
-                          <h3 class="rate-percentage">₱7,682<br />this year</h3>
-                          <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>68.8% last year</span></p>
+                          <h3 class="rate-percentage">₱<span id="totalCOD"></span><br />this year</h3>
+                          <p id="totalCODper" class="d-flex"></p>
                         </div>
                         <div class="d-none d-md-block">
-                          <p class="statistics-title">Total Rentals</p>
-                          <h3 class="rate-percentage">₱102,213.23<br />this year</h3>
-                          <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>0.8% last year</span></p>
+                          <p class="statistics-title">Total Rental Revenue</p>
+                          <h3 class="rate-percentage">₱<span id="totalTR"></span><br />this year</h3>
+                          <p id="totalTRper" class="d-flex"></p>
                         </div>
                       </div>
                     </div>
@@ -84,4 +84,140 @@
     </div>
   </div>
 </div>
+<script>
+	$(document).ready(function () {
+    function caculatePercentage(number1, number2) {
+      return (parseFloat((number1).replaceAll(',','')) / parseFloat((number2).replaceAll(',',''))) * 100;
+    }
+    // for Gcash
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "thisYearG"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        var this_year = data.Response;
+        $('#totalGcash').html(data.Response);
+        $.ajax({
+          type: "POST",
+          url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+          data: {"TYPE": "lastYearG"},
+          dataType: "json",
+        }).done((data) => {
+          if(data.Response != 0) {
+            var content = $('#totalGcashper');
+            var calGper = caculatePercentage(this_year, data.Response).toFixed(2);
+            if(calGper > 100) {
+              content.addClass('text-success').html(`<i class="mdi mdi-menu-up"></i><span>${calGper}% last year</span>`);
+            }else {
+              content.addClass('text-danger').html(`<i class="mdi mdi-menu-down"></i><span>${calGper}% last year</span>`);
+            }
+          }else {
+            console.warn(`🚀lastYearG => data`, data);
+          }
+        });
+      }else {
+        console.warn(`🚀thisYearG => data`, data);
+      }
+    });
+    // for Walk in
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "thisYearW"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        var this_year = data.Response;
+        $('#totalWalkin').html(data.Response);
+        $.ajax({
+          type: "POST",
+          url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+          data: {"TYPE": "lastYearW"},
+          dataType: "json",
+        }).done((data) => {
+          if(data.Response != 0) {
+            var content = $('#totalWalkinper');
+            var calGper = caculatePercentage(this_year, data.Response).toFixed(2);
+            if(calGper > 100) {
+              content.addClass('text-success').html(`<i class="mdi mdi-menu-up"></i><span>${calGper}% last year</span>`);
+            }else {
+              content.addClass('text-danger').html(`<i class="mdi mdi-menu-down"></i><span>${calGper}% last year</span>`);
+            }
+          }else {
+            console.warn(`🚀lastYearW => data`, data);
+          }
+        });
+      }else {
+        console.warn(`🚀thisYearW => data`, data);
+      }
+    });
+    // Cash on Delivery
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "thisYearCOD"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        var this_year = data.Response;
+        $('#totalCOD').html(data.Response);
+        $.ajax({
+          type: "POST",
+          url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+          data: {"TYPE": "lastYearCOD"},
+          dataType: "json",
+        }).done((data) => {
+          if(data.Response != 0) {
+            var content = $('#totalCODper');
+            var calGper = caculatePercentage(this_year, data.Response).toFixed(2);
+            if(calGper > 100) {
+              content.addClass('text-success').html(`<i class="mdi mdi-menu-up"></i><span>${calGper}% last year</span>`);
+            }else {
+              content.addClass('text-danger').html(`<i class="mdi mdi-menu-down"></i><span>${calGper}% last year</span>`);
+            }
+          }else {
+            console.warn(`🚀lastYearCOD => data`, data);
+          }
+        });
+      }else {
+        console.warn(`🚀thisYearCOD => data`, data);
+      }
+    });
+    // total revenue
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "thisYearTR"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        var this_year = data.Response;
+        $('#totalTR').html(data.Response);
+        $.ajax({
+          type: "POST",
+          url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+          data: {"TYPE": "lastYearTR"},
+          dataType: "json",
+        }).done((data) => {
+          if(data.Response != 0) {
+            console.warn(`🚀 => data.Response`, data.Response);
+            var content = $('#totalTRper');
+            var calGper = caculatePercentage(this_year, data.Response).toFixed(2);
+            if(calGper > 100) {
+              content.addClass('text-success').html(`<i class="mdi mdi-menu-up"></i><span>${calGper}% last year</span>`);
+            }else {
+              content.addClass('text-danger').html(`<i class="mdi mdi-menu-down"></i><span>${calGper}% last year</span>`);
+            }
+          }else {
+            console.warn(`🚀lastYearTR => data`, data);
+          }
+        });
+      }else {
+        console.warn(`🚀thisYearTR => data`, data);
+      }
+    });
+  })
+</script>
         
