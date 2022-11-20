@@ -114,3 +114,14 @@ if (!empty($_POST['TYPE'])) {
                 break;
     }
 }
+
+// CREATE TRIGGER trig_g_transactions_a AFTER UPDATE
+// ON g_transactions FOR EACH ROW
+// BEGIN IF (NEW.gt_status != 'Pending' AND OLD.gt_status = 'Pending')
+// THEN
+// UPDATE g_product SET gp_count = (gp_count - 1) WHERE gpId = NEW.gt_gpId;
+// ELSE IF (NEW.gt_status = 'Cancelled')
+// THEN
+// UPDATE g_product SET gp_count = (gp_count + 1) WHERE gpId = NEW.gt_gpId;
+// END IF;
+// END;

@@ -17,7 +17,7 @@ if (!empty($_POST['TYPE'])) {
                         'table' => 'g_product',
                         'dbcon' => $conToServer
                     );
-                    return ($crud->sm_ur_server($params) != null) ? 'Product updated!' : null;
+                    echo ($crud->sm_ur_server($params) != null) ? 'Product updated!' : null;
                 }
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed in updateProduct: " . $conToServer->htmlize($e->getMessage())]]);
@@ -31,11 +31,23 @@ if (!empty($_POST['TYPE'])) {
                         'table' => 'g_product',
                         'dbcon' => $conToServer
                     );
-                    print_r($params);
-                    return ($crud->sm_cr_server($params) != null) ? 'Product created!' : null;
+                    echo ($crud->sm_cr_server($params) != null) ? 'Product created!' : null;
                 }
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed in createProduct: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'getAllProducts':
+            try {
+                $params = array(
+                    'fields' => '*',
+                    'table' => 'g_product',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                 echo ($checker != null) ?  json_encode($checker) : null;
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in getAllProducts: " . $conToServer->htmlize($e->getMessage())]]);
             }
             break;
     }

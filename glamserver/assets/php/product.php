@@ -27,10 +27,10 @@ try {
         array('db' => 'gp_description',  'dt' => 'gp_description'),
         array('db' => 'gp_type',   'dt' => 'gp_type'),
         array(
-            'db'        => 'gp_availability',
+            'db'        => 'gp_count',
             'dt'        => 'gp_availability',
             'formatter' => function ($d, $row) {
-                if ($d == 1) {
+                if ($d >= 0) {
                     return 'Available';
                 } else if ($d == 0) {
                     return 'Not Available';

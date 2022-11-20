@@ -2,7 +2,214 @@
     <div class="container-fluid page-body-wrapper">
         <div id="leftSideNavigation" style="float: left"></div>
         <div class="main-panel">
-            <div class="content-wrapper"></div>
+            <div class="content-wrapper">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="home-tab">
+                            <div class="d-sm-flex align-items-center justify-content-between border-bottom" >
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a
+											class="nav-link active ps-0"
+											id="home-tab"
+											data-bs-toggle="tab"
+											href="javascript:void(0)"
+											role="tab"
+											aria-controls="overview"
+											aria-selected="true"
+											><i class="menu-icon mdi mdi-floor-plan"></i> Walk in</a
+										>
+									</li>
+								</ul>
+							</div>
+                            <div class="tab-content tab-content-basic">
+                                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                    <div class="row">
+                                        <div class="col-lg-12 d-flex flex-column">
+                                            <div class="row flex-grow">
+                                                <div class="col-12 grid-margin stretch-card">
+                                                    <div class="card card-rounded">
+                                                        <div class="card-body">
+                                                            <div class="row flex-grow">
+                                                                <div class="col-6 d-flex flex-column">
+                                                                    <!-- <div class="form-group">
+                                                                        <label for="productName"><i class="mdi mdi-regex text-danger"></i> Product Name</label>
+                                                                        <input type="text" class="form-control" id="productName" placeholder="Product name here...">
+                                                                    </div> -->
+                                                                    <div class="form-group">
+                                                                        <label for="productName"><i class="mdi mdi-regex text-danger"></i> Product Name <small class="text-muted"></small></label>
+                                                                        <input type="text" class="form-control" id="productName" placeholder="Product name here..." />
+                                                                    </div>
+                                                                    <div id="otherDetails">
+                                                                        <div class="form-group">
+                                                                            <label for="productSize"><i class="mdi mdi-regex text-danger"></i> Size <small class="text-muted"></small></label>
+                                                                            <select id="productSize" class="form-select"></select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="prodDetail" class="col-6 d-flex flex-column clearfix">
+                                                                    
+                                                                </div>
+                                                                <div class="col-6 d-flex flex-column clearfix">
+                                                                    <p id="balance" class="fw-bold"></p>
+                                                                    <div class="form-group">
+                                                                        <label for="AmountReceived"><i class="mdi mdi-regex text-danger"></i> Received Amount <small class="text-muted"></small></label>
+                                                                        <div class="input-group">
+                                                                            <div class="input-group-prepend">
+                                                                              <span class="input-group-text bg-primary text-white">₱ </span>
+                                                                            </div>
+                                                                            <input id="AmountReceived" type="Number" min="0" step=".01" class="form-control" aria-label="Amount here...">
+                                                                        </div>
+                                                                    </div>
+                                                                    <p id="amountChange" class="fw-bold"></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    $('#otherDetails').hide();
+    var getResponse = [];
+    var autoCompleteData = [];
+    var selectedProducts = [];
+    var selectedProduct = '';
+    var toPay = 0;
+    var customerChange = 0;
+    $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
+$.ajax({
+    type: 'POST',
+    data: {'TYPE' : 'getAllProducts'},
+    url: "/glam/glamserver/assets/php/productCRUD.php", //My reference URL
+    dataType : 'json'
+}).done((data) => {
+    data.forEach(row => {
+        getResponse = [...getResponse, row];
+        autoCompleteData = [...autoCompleteData, row.gp_name];
+    });
+    $('#productName').autofill({
+        minCharacters: 1,
+        values: autoCompleteData,
+        onSelect: (item) => {
+            var temp = [];
+            var tempo = getResponse[getResponse.findIndex(row => row.gp_name == item.object)];
+            selectedProduct = item.object;
+            if(tempo.gp_description.includes('[') || tempo.gp_description.includes('{')) {
+                temp = tempo.gp_description.replace(/[{}]/g, "").split(':');
+                temp[1] = temp[1].split('",');
+                temp[0] = temp[1][0].replace(/["]/g, "");
+                if(temp.length > 2) {
+                    temp[2] = JSON.parse(temp[2].substring(1).slice(0,-1));
+                }else {
+                    temp[2] = 'All size';
+                }
+            }else {
+                temp[0] = tempo.gp_description;
+                temp[2] = 'All size';
+            }
+            tempo.gp_description = temp[0];
+            $('#productSize').html('<option value="">Select Size</option>');
+            if(temp[2] != 'All size') {
+                temp[2].forEach(row => {
+                    $('#productSize').append(`<option value="${row}">${row}</option>`);
+                });
+            }else {
+                $('#productSize').append(`<option value="${temp[2]}">${temp[2]}</option>`);
+            }
+            selectedProducts = [...selectedProducts, tempo];
+            toPay += parseFloat(tempo.gp_price);
+            $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
+            $('#otherDetails').show();
+        },
+        onError: (err) => {
+            console.error(`🚀 => err`, err);
+        },
+    });
+});
+$('#productName').on('keydown', (event) => {
+    if(event.which === 27){
+        event.currentTarget.value = '';
+        $('#otherDetails').hide();
+    }
+});
+$('#productSize').on('change', (event) => {
+    displayDetails(event.currentTarget.value);
+});
+$('#AmountReceived').on('change', (event) => {
+    if(selectedProducts.length == 0) {
+        $.notify({
+            title: 'Error',
+            message: `No selected product to create transaction!`,
+        },{
+            showProgressbar: true,
+            type: "danger",
+            allow_dismiss: false,
+            placement: {
+                from: 'top',
+                align: 'right'
+            }
+        });
+        $('#AmountReceived').val('');
+    }else {
+        customerChange = event.currentTarget.value - toPay;
+        $('#amountChange').html(`Change: ₱ ${customerChange.toFixed(2)}`);
+        $.notify({
+            title: 'Success',
+            message: `Transaction created!`,
+        },{
+            showProgressbar: true,
+            type: "success",
+            allow_dismiss: false,
+            placement: {
+                from: 'top',
+                align: 'right'
+            }
+        });
+    }
+});
+
+function removeSelected(event) {
+    var tempo = selectedProducts[selectedProducts.findIndex(row => row.gpId == event.dataset.id)];
+    toPay -= parseFloat(tempo.gp_price);
+    selectedProducts.slice(selectedProducts.findIndex(row => {return row.gpId === event.dataset.id}));
+    event.parentNode.parentNode.removeChild(event.parentNode);
+    $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
+    $('#productName').val('');
+    $('#otherDetails').hide();
+}
+function displayDetails(sizeSelected) {
+    selectedProducts.map(row => {
+        if(row.gp_name == selectedProduct) {
+            row.selectedSize = sizeSelected;
+        }
+        return row;
+    });
+    $('#prodDetail').html('');
+    selectedProducts.forEach(row => {
+        $('#prodDetail').append(`
+            <div id="p${row.gpId}" class="border-bottom border-primary m-2">
+                <button type="button" title="Remove" class="btn-close float-end" data-id="${row.gpId}" onclick="removeSelected(this)"></button>
+                <div class="float-start">
+                    <p class="fw-bold">Product Name: ${row.gp_name}</p>
+                    <p class="fw-bold">Description: ${row.gp_description}</p>
+                    <p class="fw-bold">Sizes: ${row.selectedSize}</p>
+                    <p class="fw-bold">Price: ₱ ${row.gp_price}</p>
+                    <p class="fw-bold">Type: ${row.gp_type}</p>
+                </div>
+            </div>
+        `);
+    });
+    $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
+}
+</script>

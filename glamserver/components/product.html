@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-13 21:06:04
+ * @ Modified time: 2022-11-20 22:56:04
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -15,9 +15,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="home-tab">
-							<div
-								class="d-sm-flex align-items-center justify-content-between border-bottom"
-							>
+							<div class="d-sm-flex align-items-center justify-content-between border-bottom" >
 								<ul class="nav nav-tabs" role="tablist">
 									<li class="nav-item">
 										<a
@@ -104,10 +102,10 @@
 							<div class="form-group">
 								<label for="productSize"><i class="mdi mdi-regex text-danger"></i> Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
 								<select id="productSize" class="form-select" multiple>
-									<option value="S">Small</option>
-									<option value="M">Medium</option>
-									<option value="L">Large</option>
-									<option value="XL">Extra Large</option>
+									<option value="S">S</option>
+									<option value="M">M</option>
+									<option value="L">L</option>
+									<option value="XL">XL</option>
 								  </select>
 							</div>
 							<div class="form-group">
@@ -223,6 +221,11 @@
 					$('#ProductModal').modal('show');
 				}
 			},{
+				text: `<i class="mdi mdi-shopping"></i> New Transaction`,
+				action: function (e, dt, node, config) {
+					sessionStorage.page='newTransaction';location.reload();
+				}
+			},{
                 text: '<i class="mdi mdi-file-send"></i> Update Selected Row',
                 action: function ( e, dt, node, config ) {
 					$('#productSize').val([]);
@@ -274,7 +277,7 @@
 					{ data: 'gp_name' },
 					{ data: 'gp_description' },
 					{ data: 'gp_type' },
-					{ data: 'gp_availability'},
+					{ data: 'gp_count'},
 					{ data: 'gp_price' },
 					{ data: 'gp_count' },
 			],
@@ -301,7 +304,7 @@
 					$(this).addClass('selected');
 					selectedRows = table.$('tr.selected').length;
 				}
-				table.button( 1 ).enable( selectedRows === 1 );
+				table.button( 2 ).enable( selectedRows === 1 );
 			}
 		});
 		// Array to track the ids of the details displayed rows
@@ -509,22 +512,35 @@
 					type: "POST",
 					url: "/glam/glamserver/assets/php/productCRUD.php",
 					data: loadData[0],
-					dataType: "json",
 				}).done((data) => {
-					console.warn("Log:  => $ => data", data);
-				});
-				$('#ProductModal').modal('hide');
-				// table.draw();
-				$.notify({
-					title: 'Product Created',
-					message: `Product name: ${$('#productName').val()} has been created.`,
-				},{
-					showProgressbar: true,
-					type: "success",
-					allow_dismiss: false,
-					placement: {
-						from: 'top',
-						align: 'right'
+					if(data === 'Product created!') {
+						$('#ProductModal').modal('hide');
+						table.draw();
+						$.notify({
+							title: 'Product Created',
+							message: `Product name: ${$('#productName').val()} has been created.`,
+						},{
+							showProgressbar: true,
+							type: "success",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
+					}else {
+						$.notify({
+							title: 'Error',
+							message: `Product name: ${$('#productName').val()} was not created.`,
+						},{
+							showProgressbar: true,
+							type: "danger",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
 					}
 				});
 			}
