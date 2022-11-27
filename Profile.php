@@ -13,6 +13,26 @@
 	$information = $crud->sm_vr_server($params);
 	$info = $information[0];
 	$cus_add = explode(',',$info['gc_address']);
+	// print_r($info);
+	$street = "";
+	$brgy = "";
+	$city = "";
+	$province = "";
+	if($info['gc_address'] != '') {
+		if($cus_add[0] != "" ) {
+			$street = $cus_add[0];
+		}
+		if($cus_add[1] != "" ) {
+			$brgy = $cus_add[1];
+		}
+		if($cus_add[2] != "" ) {
+			$city = $cus_add[2];
+		}
+		if($cus_add[3] != "" ) {
+			$province = $cus_add[3];
+		}
+	}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -57,9 +77,10 @@
 					<div class="d-flex align-items-center justify-content-between border-bottom">
 						<h2 class="pb-2">Profile</h2>
 						<div class="">
-							<button type="submit" class="btn btn-sm border shadow-sm form-control">Save Changes</button>
+						<input type="submit" name="submit" class="btn btn-sm border shadow-sm form-control" value="Save Changes">
 						</div>
 					</div>
+					<input type="hidden" name="gc_id" value="<?php echo $info['gcId']; ?>">
 					<h5 class="ms-4 me-4 mt-4 pb-2">Your Information</h5>
 					<div class="row m-4">
 						<div class="col">
@@ -78,7 +99,7 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="tel" class="form-control" name="mobile" id="floatPhone" value="<?php echo $info['gc_p_m_number']; ?>" required placeholder="Mobile" required>
+								<input type="tel" maxlength="9" class="form-control" name="mobile" id="floatPhone" value="<?php echo $info['gc_p_m_number']; ?>" required placeholder="Mobile" required>
 								<label for="floatPhone">Phone</label>
 							</div>
 						</div>
@@ -93,7 +114,7 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" name="street" class="form-control" id="floatStreet" placeholder="Street" value="<?php echo $cus_add[0]; ?>">
+								<input type="text" name="street" class="form-control" id="floatStreet" placeholder="Street" value="<?php echo $street; ?>" required>
 								<label for="floatStreet">Street</label>
 							</div>
 						</div>
@@ -101,19 +122,19 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" name="brgy" class="form-control" id="floatBrgy" placeholder="Barangay" value="<?php echo $cus_add[1]; ?>">
+								<input type="text" name="brgy" class="form-control" id="floatBrgy" placeholder="Barangay" value="<?php echo $brgy; ?>" required>
 								<label for="floatBrgy">Barangay</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" name="city" class="form-control" id="floatCity" placeholder="City/Municipality" value="<?php echo $cus_add[2]; ?>">
+								<input type="text" name="city" class="form-control" id="floatCity" placeholder="City/Municipality" value="<?php echo $city; ?>" required>
 								<label for="floatCity">City/Municipality</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="text" name="province" class="form-control" id="floatProvince" placeholder="Province" value="<?php echo $cus_add[3]; ?>">
+								<input type="text" name="province" class="form-control" id="floatProvince" placeholder="Province" value="<?php echo $province; ?>" required>
 								<label for="floatProvince">Province</label>
 							</div>
 						</div>
