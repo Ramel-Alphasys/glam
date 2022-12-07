@@ -1,0 +1,289 @@
+<!--
+ * @ Name:
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-11-10 19:05:02
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-12-07 17:46:13
+ -->
+ <div class="container-scroller">
+	<div class="container-fluid page-body-wrapper">
+		<div id="leftSideNavigation" style="float: left"></div>
+		<div class="main-panel">
+			<div class="content-wrapper">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="home-tab">
+							<div
+								class="d-sm-flex align-items-center justify-content-between border-bottom"
+							>
+								<ul class="nav nav-tabs" role="tablist">
+									<li class="nav-item">
+										<a
+											class="nav-link active ps-0"
+											id="home-tab"
+											data-bs-toggle="tab"
+											href="javascript:void(0)"
+											role="tab"
+											aria-controls="overview"
+											aria-selected="true"
+											><i class="mdi mdi-calendar-clock"></i> Rental Status</a
+										>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-content tab-content-basic">
+								<div
+									class="tab-pane fade show active"
+									id="overview"
+									role="tabpanel"
+									aria-labelledby="overview"
+								>
+									<div class="row">
+										<div class="col-lg-12 d-flex flex-column">
+											<div class="row flex-grow">
+												<div class="col-12 grid-margin stretch-card">
+													<div class="card card-rounded">
+														<div class="card-body">
+															<table
+																id="transactionTable"
+																class="table table-striped"
+																style="width: 100%"
+															>
+																<thead>
+																	<tr>
+																		<th></th>
+																		<th>Id</th>
+																		<th>Customer</th>
+																		<th>Product</th>
+																		<th>Type</th>
+																		<th>Price</th>
+																		<th>Payment</th>
+																		<th>Method</th>
+																		<th>Balance</th>
+																		<th>Date</th>
+																		<th>Status</th>
+																	</tr>
+																</thead>
+															</table>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="TransactionModal" tabindex="-1" role="dialog" aria-labelledby="TransactionModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content" style="max-height: 500px;">
+		<div class="modal-header">
+		<h5 class="modal-title" id="exampleModalLongTitle">Transaction Record</h5>
+		</div>
+		<div class="modal-body" style="overflow-x: auto;">
+			<div class="form-group">
+				<label for="tStatus">Item Status</label>
+				<select class="form-control" id="tStatus">
+					<option>To Pack</option>
+					<option>Shipped</option>
+					<option>Delivered</option>
+					<option>Paid</option>
+					<option>Cancelled</option>
+				</select>
+			</div>
+		</div>
+		<div class="modal-footer">
+		<button id="saveRecord" type="button" class="btn btn-primary">Save changes</button>
+		</div>
+	</div>
+</div>
+<script>
+	$(document).ready(function () {
+		function format(d) {
+			return (
+				`<div style="display: flex;flex-direction: row;">
+					<div style="padding: 10px;">
+						<p>
+							Product Name: 
+							${d.product_name}
+						</p>
+					</div>
+					<div style="padding: 10px;">
+						<p>
+							Type: 
+							${d.product_type}
+						</p>
+					</div>
+					<div style="padding: 10px;">
+						<p>
+							Method: 
+							${d.method}
+						</p>
+					</div>
+				</div>`
+			);
+		}
+		var recordCount = 0;
+		var table = $("#transactionTable").DataTable({
+			dom: "Bfrtip",
+			select: true,
+			scrollX: true,
+			buttons: [{
+                text: '<i class="mdi mdi-file-send"></i> Update Selected Row',
+                action: function ( e, dt, node, config ) {
+					var record = dt.row('.selected').data();
+					$('#saveRecord').val(record.transac_Id);
+					$('#tStatus').val(record.status);
+					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
+					$('#TransactionModal').modal('show');
+                },
+				enabled: false
+            },{
+                extend: 'pdfHtml5',
+				text:      '<i class="mdi mdi-file-export"></i> Generate PDF',
+				title: 'Transaction Records',
+                titleAttr: 'PDF',
+                pageSize: 'LETTER',
+				orientation: 'landscape',
+				exportOptions: {
+                    columns: [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                },
+				download: 'open'
+            }],
+			processing: true,
+			serverSide: true,
+			ajax: "assets/php/transaction.php",
+			columns: [
+					{
+						class: 'details-control',
+						orderable: false,
+						data: null,
+						defaultContent: "<i class='icon-plus'></i>",
+					},
+					{ data: 'transac_Id'},
+					{ data: 'full_name' },
+					{ data: 'product_name' },
+					{ data: 'product_type' },
+					{ data: 'product_price' },
+					{ data: 'payment' },
+					{ data: 'method'},
+					{ data: 'balance' },
+					{ data: 'transaction_date' },
+					{ data: 'status' },
+			],
+			createdRow: function (row, data, index) {
+				if (data.status == 'To Pack' || data.status == 'Shipped') {
+					$('td', row).eq(6).addClass('text-info');
+				} else if (data.status == 'Delivered' || data.status == 'Paid') {
+					$('td', row).eq(6).addClass('text-success');
+				} else if (data.status == 'Cancelled') {
+					$('td', row).eq(6).addClass('text-danger');
+				} else if(data.status == 'Pending' || data.status == 'Reserved') {
+					$('td', row).eq(6).addClass('text-warning');
+				}
+			},
+			columnDefs: [
+				{
+					target: [1,3,4,7],
+					visible: false,
+					searchable: false,
+				},
+        	],
+			order: [[9, 'desc']],
+			stateSave: true,
+			initComplete: function () {
+
+			}
+		});
+		$('#transactionTable tbody').on('click', 'tr', function () {
+			var selectedRows;
+			if(this.classList.value != '') {
+				if ($(this).hasClass('selected')) {
+					$(this).removeClass('selected');
+					selectedRows = table.$('tr.selected').length;
+				} else {
+					table.$('tr.selected').removeClass('selected');
+					$(this).addClass('selected');
+					selectedRows = table.$('tr.selected').length;
+				}
+				table.button( 0 ).enable( selectedRows === 1 );
+			}
+		});
+		// Array to track the ids of the details displayed rows
+		var detailRows = [];
+ 
+		$('#transactionTable tbody').on('click', 'tr td.details-control', function () {
+			var tr = $(this).closest('tr');
+			var row = table.row(tr);
+			var idx = detailRows.indexOf(tr.attr('id'));
+	 
+			if (row.child.isShown()) {
+				tr.removeClass('details');
+				row.child.hide();
+	 
+				// Remove from the 'open' array
+				detailRows.splice(idx, 1);
+			} else {
+				tr.addClass('details');
+				row.child(format(row.data())).show();
+	 
+				// Add to the 'open' array
+				if (idx === -1) {
+					detailRows.push(tr.attr('id'));
+				}
+			}
+		});
+	 
+		// On each draw, loop over the `detailRows` array and show any child rows
+		table.on('draw', function () {
+			detailRows.forEach(function(id, i) {
+				$('#' + id + ' td.details-control').trigger('click');
+			});
+		});
+
+		$('#transactionTable tbody').on('mouseenter', 'td', function () {
+			var colIdx = table.cell(this).index().column;
+	
+			$(table.cells().nodes()).removeClass('highlight');
+			$(table.column(colIdx).nodes()).addClass('highlight');
+		});
+		$('#saveRecord').on('click', (event) => {
+				var loadData = [];
+				var recordData = '';
+				if($('#tStatus').val()) {
+					recordData += `gt_status = '${$('#tStatus').val()}'`;
+				}
+				loadData = [{...loadData, TYPE: "updateTransaction", table: `g_transactions`, filter: `gtId = ${$('#saveRecord').val()}`, params: recordData}];
+				$.ajax({
+					type: "POST",
+					url: "/glam/glamserver/assets/php/transactionCRUD.php",
+					data: loadData[0],
+					dataType: "json",
+				  }).done((data) => {
+						console.warn("Log: saveRecord => $ => data", data);
+				  });
+				$('#TransactionModal').modal('hide');
+				table.draw();
+				$.notify({
+					title: 'Transaction Updated',
+					message: `Transaction status is now ${$('#tStatus').val()}.`,
+				},{
+					showProgressbar: true,
+					type: "success",
+					allow_dismiss: false,
+					placement: {
+						from: 'top',
+						align: 'right'
+					}
+				});
+		});
+	});
+</script>

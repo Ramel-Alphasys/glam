@@ -146,6 +146,37 @@ $(document).ready(function () {
 				}
 			}
 		);
+	} else if (sessionStorage.page === "rentalStat") {
+		$("#server-header").load(
+			`components/headerNavigation.html`,
+			function (response, status) {
+				if (status === "error") {
+					console.log(
+						"Output:  => $ => load headerNavigation.html status: ",
+						status
+					);
+				}
+			}
+		);
+		$("#server-content").load(
+			`components/rentalStatus.html`,
+			function (response, status) {
+				$("#leftSideNavigation").load(
+					`components/sideNavigation.html`,
+					function (response, status) {
+						if (status === "error") {
+							console.log(
+								"Output:  => $ => load sideNavigation.html status: ",
+								status
+							);
+						}
+					}
+				);
+				if (status === "error") {
+					console.log("Output:  => $ => load rentalStatus.html status: ", status);
+				}
+			}
+		);
 	} else if (sessionStorage.page === "userSettings") {
 		$("#server-header").load(
 			`components/headerNavigation.html`,

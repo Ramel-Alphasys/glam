@@ -1,25 +1,24 @@
 <?php
-
 /**
  * @ Name: CRUD.php
  * @ Purpose:
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-10-28 19:32:37
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-01 21:24:30
+ * @ Modified time: 2022-12-07 17:48:18
  * @ Change Log:
  */
 class serverManipulation
 {
+    /*****************************
+     * METHOD TO UPDATE DATABASE *
+     *          RECORD           *
+     *****************************/
     public function sm_ur_server($params)
     {
         try {
 
-            $query = "UPDATE ${params['table']} SET ${params['fields']} ";
-
-            if (array_key_exists("filter", $params)) {
-                $query .= "WHERE ${params['filter']}";
-            }
+            $query = "UPDATE ${params['table']} SET ${params['fields']} WHERE ${params['filter']}";
 
             $checker = $params['dbcon']->startDb()->prepare($query)->execute();
 
@@ -28,7 +27,10 @@ class serverManipulation
             echo json_encode([['MESSAGE' => "Connection failed in sm_ur_server: " . $params['dbcon']->htmlize($e->getMessage())]]);
         }
     }
-
+    /***************************
+     * METHOD TO CREATE RECORD *
+     *       IN DATABASE       *
+     ***************************/
     public function sm_cr_server($params)
     {
         try {
@@ -42,7 +44,10 @@ class serverManipulation
             echo json_encode([['MESSAGE' => "Connection failed in sm_cr_server: " . $params['dbcon']->htmlize($e->getMessage())]]);
         }
     }
-
+    /***************************
+     * METHOD TO DELETE RECORD *
+     *       IN DATABASE       *
+     ***************************/
     public function sm_dr_server($params)
     {
         try {
@@ -56,7 +61,10 @@ class serverManipulation
             echo json_encode([['MESSAGE' => "Connection failed: " . $params['dbcon']->htmlize($e->getMessage())]]);
         }
     }
-
+    /**************************
+     * METHOD TO FETCH RECORD *
+     *      IN DATABASE       *
+     **************************/
     public function sm_vr_server($params)
     {
         try {
@@ -76,7 +84,9 @@ class serverManipulation
             echo json_encode([['MESSAGE' => "Connection failed: " . $params['dbcon']->htmlize($e->getMessage())]]);
         }
     }
-
+    /****************************
+     * METHOD FOR SENDING EMAIL *
+     ****************************/
     public function sm_mailing($params)
     {
         try {

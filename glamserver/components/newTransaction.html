@@ -3,8 +3,6 @@
         <div id="leftSideNavigation" style="float: left"></div>
         <div class="main-panel">
             <div class="content-wrapper">
-                <div class="row">
-                    <div class="col-sm-12">
                         <div class="home-tab">
                             <div class="d-sm-flex align-items-center justify-content-between border-bottom" >
 								<ul class="nav nav-tabs" role="tablist">
@@ -43,13 +41,16 @@
                                                                     <p id="productAvalibility" class="fw-bold col-9 d-flex flex-column clearfix"></p>
                                                                     <div id="otherDetails">
                                                                         <div class="form-group">
-                                                                            <label for="productSize"><i class="mdi mdi-regex text-danger"></i> Size <small class="text-muted"></small></label>
+                                                                            <label for="productSize"><i class="mdi mdi-regex text-danger"></i> Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
                                                                             <select id="productSize" class="form-select" multiple></select>
+                                                                        </div>
+                                                                        <div id="selectedSizesBreakdown">
+
                                                                         </div>
                                                                     </div>
                                                                     <p id="balance" class="fw-bold"></p>
                                                                     <div class="form-group">
-                                                                        <label for="AmountReceived"><i class="mdi mdi-regex text-danger"></i> Received Amount <small class="text-muted"></small></label>
+                                                                        <label for="AmountReceived"><i class="mdi mdi-regex text-danger"></i> Received Amount</label>
                                                                         <div class="input-group">
                                                                             <div class="input-group-prepend">
                                                                               <span class="input-group-text bg-primary text-white">₱ </span>
@@ -88,13 +89,14 @@
 </div>
 <script>
     $('#otherDetails, #createTransac').hide();
-    var getResponse = [];
+    var getResponse      = [];
     var autoCompleteData = [];
     var selectedProducts = [];
-    var selectedProduct = '';
+    var selectedProduct  = '';
     var currentIndex;
-    var toPay = 0;
-    var customerChange = 0;
+    var toPay            = 0;
+    var prevAmount       = 0;
+    var customerChange   = 0;
     $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
 $.ajax({
     type: 'POST',
@@ -115,18 +117,18 @@ $.ajax({
         values: autoCompleteData,
         onSelect: (item) => {
             $('#productSize').html('');
-            var temp = [];
-            var tempo = [];
+            var temp             = [];
+            var tempo            = [];
             var checkInSelection = -1;
             tempo = getResponse[getResponse.findIndex(row => row.gp_name == item.object)];
             if(tempo.gp_count > 0) {
                 if(tempo.gp_description.includes('[') || tempo.gp_description.includes('{')) {
-                    temp = tempo.gp_description.replace(/[{}]/g, "").split(':');
+                    temp    = tempo.gp_description.replace(/[{}]/g, "").split(':');
                     temp[1] = temp[1].split('",');
                     temp[0] = temp[1][0].replace(/["]/g, "");
                     if(temp.length > 2) {
                         temp[2] = JSON.parse(temp[2].substring(1).slice(0,-1));
-                    }else {
+                    }else {      
                         temp[2] = 'All size';
                     }
                 }else {
@@ -178,12 +180,13 @@ $('#productName').on('keydown', (event) => {
     }
 });
 $('#productSize').on('change', (event) => {
+    $('#selectedSizesBreakdown').html('');
     var productSizes = $(event.target).val();
     var total = 0;
     selectedProducts.filter(row => {
         if(row.gpId !== currentIndex) {
-            if('selectedSize' in row) {
-                total += (row.selectedSize.length * row.gp_price);
+            if('selectedSizeCount' in row) {
+                total += (row.selectedSizeCount.length * row.gp_price);
             }
         }
     });
@@ -213,23 +216,35 @@ $('#productSize').on('change', (event) => {
                     return;
                 }
                 row.currentCount = row.gp_count;
-                toPay = 0;
+                toPay = total;
                 if(row.currentCount >= productSizes.length) {
                     row.currentCount -= productSizes.length;
-                    toPay += (parseFloat(row.gp_price * productSizes.length) + total);
-                }else {
-                    row.currentCount += productSizes.length;
-                    toPay -= (parseFloat(row.gp_price * productSizes.length) + total);
+                    toPay += (parseFloat(row.gp_price * productSizes.length));
                 }
                 row.selectedSizeCount = productSizes.length;
+                $('#productAvalibility').html(`Avalable: ${row.currentCount}`);
             }
-            $('#productAvalibility').html(`Avalable: ${row.currentCount}`);
+            if(row.gp_count > row.currentCount && productSizes.length !== row.gp_count) {
+                productSizes.forEach(inrow => {
+                    $('#selectedSizesBreakdown').append(`
+                        <div class="form-group">
+                            <label for="size${inrow}">For size ${inrow}<small class="text-muted"></small></label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-primary text-white">₱ </span>
+                                </div>
+                                <input id="size${inrow}" data-value="1" type="Number" min="1" max="${(row.currentCount + 1)}" step="1" value="1" onchange="countPerSize(this)" class="form-control" aria-label="Size Count">
+                            </div>
+                        </div>
+                    `);
+                });
+            }
             getResponse = [...getResponse, row];
-            displayDetails();
         }
         return row;
     });
-    console.warn(`🚀 => selectedProducts.map => selectedProducts`, selectedProducts);
+    displayDetails();
+    $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
 });
 $('#AmountReceived').on('change', (event) => {
     if(selectedProducts.length == 0) {
@@ -269,21 +284,79 @@ $('#AmountReceived').on('change', (event) => {
     }
 });
 $('#createTransac').on('click', event => {
-    $.notify({
-        title: 'Success!',
-        message: `Transaction created.`,
-    },{
-        showProgressbar: true,
-        type: "success",
-        allow_dismiss: false,
-        placement: {
-            from: 'top',
-            align: 'right'
+    $.ajax({
+        type: "POST",
+        url: "/glam/glamserver/assets/php/transactionCRUD.php",
+        data: {"TYPE": "newTransaction","transactionRecords": selectedProducts},
+        dataType: "json",
+    }).done((data) => {
+        if(data.Response != 0) {
+            $.notify({
+                title: 'Success!',
+                message: `Transaction created.`,
+            },{
+                showProgressbar: true,
+                type: "success",
+                allow_dismiss: false,
+                placement: {
+                    from: 'top',
+                    align: 'right'
+                }
+            });
+            sessionStorage.page='rentalStat';
+            location.reload();
+        }else {
+            console.warn(`🚀newTransaction => data`, data);
         }
     });
 });
-
-
+countPerSize = (event) => {
+    var total = 0;
+    selectedProducts.filter(row => {
+        if(row.gpId !== currentIndex) {
+            if('selectedSizeCount' in row) {
+                total += parseFloat(row.selectedSizeCount * row.gp_price);
+            }
+        }
+    });
+    selectedProducts.map((row) => {
+        if(row.gpId === currentIndex) {
+            toPay = total;
+            if(row.selectedSizeCount == row.gp_count && event.value > event.dataset.value) {
+                $.notify({
+                    title: 'Product Availability!',
+                    message: `There are no more stock on the selected item.`,
+                },{
+                    showProgressbar: true,
+                    type: "warning",
+                    allow_dismiss: false,
+                    placement: {
+                        from: 'top',
+                        align: 'right'
+                    }
+                });
+                event.value = event.value - 1;
+                return;
+            }
+            if(event.value > event.dataset.value) {
+                row.currentCount -= 1;
+                row.selectedSizeCount += 1;
+                toPay += parseFloat(row.gp_price * row.selectedSizeCount);
+            }else {
+                row.currentCount += 1;
+                row.selectedSizeCount -= 1;
+                toPay = parseFloat(prevAmount - row.gp_price);
+            }
+            $('#productAvalibility').html(`Avalable: ${row.currentCount}`);
+            prevAmount = toPay;
+            $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
+            getResponse = [...getResponse, row];
+            displayDetails();
+            event.dataset.value = event.value;
+        }
+        return row;
+    });
+}
 removeSelected = (event) => {
     var tempo = selectedProducts[selectedProducts.findIndex((row) => row.gpId == event.dataset.id)];
     toPay -= parseFloat((tempo.gp_price * tempo.selectedSize.length));
@@ -317,11 +390,10 @@ displayDetails = () => {
                     <p class="fw-bold">Price: ₱ ${row.gp_price}</p>
                     <p class="fw-bold">Type: ${row.gp_type}</p>
                     <hr />
-                    <p class="fw-bold">Selected: ₱ ${row.selectedSize.length}</p>
+                    <p class="fw-bold">Selected: ${row.selectedSizeCount}</p>
                 </div>
             </div>
         `);
     });
-    $('#balance').html(`To Pay: ₱ ${toPay.toFixed(2)}`);
 }
 </script>
