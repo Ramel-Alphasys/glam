@@ -3,8 +3,8 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-16 21:03:06
- * @ Description:
+ * @ Modified by: Ramel Niño O. Empleo3
+ * @ Modified time: 2022-12-08 22:14:58
  -->
 <div class="container-scroller">
   <div class="container-fluid page-body-wrapper">
@@ -54,23 +54,23 @@
                       <div class="statistics-details d-flex align-items-center justify-content-between">
                         <div>
                           <p class="statistics-title">Cancelled Rentals</p>
-                          <h3 class="rate-percentage">43<br />this year</h3>
-                          <p class="text-danger d-flex"><i class="mdi mdi-menu-up"></i><span>5% last year</span></p>
+                          <h3 class="rate-percentage"><span id="totalCR"></span><br />this year</h3>
+                          <p id="totalCRper" class="d-flex"></p>
                         </div>
                         <div>
                           <p class="statistics-title">Overdue Rentals</p>
-                          <h3 class="rate-percentage"><span class="text-danger">2</span><br />Item/bundle</h3>
-                          <p class="d-flex"><span style="cursor: pointer;" onclick="sessionStorage.page='1';location.reload();">view details <i class="mdi mdi-open-in-new" style="font-size: 12px;"></i></span></p>
+                          <h3 class="rate-percentage"><span id="overDueRentals" class="text-danger"></span><br />Item/bundle</h3>
+                          <p class="d-flex"><span style="cursor: pointer;" onclick="sessionStorage.page='rentalStat';location.reload();">view details <i class="mdi mdi-open-in-new" style="font-size: 12px;"></i></span></p>
                         </div>
                         <div>
                           <p class="statistics-title">New Transactions</p>
-                          <h3 class="rate-percentage"><span class="text-warning">1</span><br />Item/bundle</h3>
+                          <h3 class="rate-percentage"><span id="pendingRentals" class="text-warning"></span><br />Item/bundle</h3>
                           <p class="d-flex"><span style="cursor: pointer;" onclick="sessionStorage.page='transaction';location.reload();">view details <i class="mdi mdi-open-in-new" style="font-size: 12px;"></i></span></p>
                         </div>
                         <div class="d-none d-md-block">
-                          <p class="statistics-title">Total Rentals</p>
-                          <h3 class="rate-percentage">₱102,213.23<br />this year</h3>
-                          <p class="text-success d-flex"><i class="mdi mdi-menu-down"></i><span>0.8% last year</span></p>
+                          <p class="statistics-title">Total Active Rentals</p>
+                          <h3 class="rate-percentage"><span id="activeRentals" class="text-success"></span><br />Item/bundle</h3>
+                          <p class="d-flex"><span style="cursor: pointer;" onclick="sessionStorage.page='rentalStat';location.reload();">view details <i class="mdi mdi-open-in-new" style="font-size: 12px;"></i></span></p>
                         </div>
                       </div>
                     </div>
@@ -86,6 +86,8 @@
 </div>
 <script>
 	$(document).ready(function () {
+    $('#totalGcash,#totalWalkin,#totalCOD,#totalTR').html('0.00');
+    $('#totalCR,#overDueRentals,#pendingRentals,#activeRentals').html('0');
     function caculatePercentage(number1, number2) {
       return (parseFloat((number1).replaceAll(',','')) / parseFloat((number2).replaceAll(',',''))) * 100;
     }
@@ -98,7 +100,7 @@
     }).done((data) => {
       if(data.Response != 0) {
         var this_year = data.Response;
-        $('#totalGcash').html(data.Response);
+        $('#totalGcash').html(this_year);
         $.ajax({
           type: "POST",
           url: "/glam/glamserver/assets/php/dashboardCRUD.php",
@@ -130,7 +132,7 @@
     }).done((data) => {
       if(data.Response != 0) {
         var this_year = data.Response;
-        $('#totalWalkin').html(data.Response);
+        $('#totalWalkin').html(this_year);
         $.ajax({
           type: "POST",
           url: "/glam/glamserver/assets/php/dashboardCRUD.php",
@@ -162,7 +164,7 @@
     }).done((data) => {
       if(data.Response != 0) {
         var this_year = data.Response;
-        $('#totalCOD').html(data.Response);
+        $('#totalCOD').html(this_year);
         $.ajax({
           type: "POST",
           url: "/glam/glamserver/assets/php/dashboardCRUD.php",
@@ -194,7 +196,7 @@
     }).done((data) => {
       if(data.Response != 0) {
         var this_year = data.Response;
-        $('#totalTR').html(data.Response);
+        $('#totalTR').html(this_year);
         $.ajax({
           type: "POST",
           url: "/glam/glamserver/assets/php/dashboardCRUD.php",
@@ -202,7 +204,6 @@
           dataType: "json",
         }).done((data) => {
           if(data.Response != 0) {
-            console.warn(`🚀 => data.Response`, data.Response);
             var content = $('#totalTRper');
             var calGper = caculatePercentage(this_year, data.Response).toFixed(2);
             if(calGper > 100) {
@@ -216,6 +217,77 @@
         });
       }else {
         console.warn(`🚀thisYearTR => data`, data);
+      }
+    });
+    // total cancelled
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "thisYearCR"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        var this_year = parseInt(data.Response);
+        $('#totalCR').html(this_year);
+        $.ajax({
+          type: "POST",
+          url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+          data: {"TYPE": "lastYearCR"},
+          dataType: "json",
+        }).done((data) => {
+          if(data.Response != 0) {
+            var content = $('#totalCRper');
+            var calGper = caculatePercentage(this_year, data.Response).toFixed(2);
+            if(calGper > 100) {
+              content.addClass('text-success').html(`<i class="mdi mdi-menu-up"></i><span>${calGper}% last year</span>`);
+            }else {
+              content.addClass('text-danger').html(`<i class="mdi mdi-menu-down"></i><span>${calGper}% last year</span>`);
+            }
+          }else {
+            console.warn(`🚀lastYearCR => data`, data);
+          }
+        });
+      }else {
+        console.warn(`🚀thisYearCR => data`, data);
+      }
+    });
+    // over due
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "overDue"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        $('#overDueRentals').html(parseInt(data.Response).toFixed(0));
+      }else {
+        console.warn(`🚀overDue => data`, data);
+      }
+    });
+    // new transac
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "newTrasac"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        $('#pendingRentals').html(parseInt(data.Response).toFixed(0));
+      }else {
+        console.warn(`🚀newTrasac => data`, data);
+      }
+    });
+    // still due
+    $.ajax({
+      type: "POST",
+      url: "/glam/glamserver/assets/php/dashboardCRUD.php",
+      data: {"TYPE": "stillDue"},
+      dataType: "json",
+    }).done((data) => {
+      if(data.Response != 0) {
+        $('#activeRentals').html(parseInt(data.Response).toFixed(0));
+      }else {
+        console.warn(`🚀stillDue => data`, data);
       }
     });
   })

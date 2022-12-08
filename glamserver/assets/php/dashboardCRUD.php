@@ -1,9 +1,18 @@
 <?php
+/**
+ * @ Name:
+ * @ Author: Ramel Niño O. Empleo
+ * @ Create Time: 2022-11-15 20:50:08
+ * @ Modified by: Ramel Niño O. Empleo
+ * @ Modified time: 2022-12-08 17:48:23
+ * @ Description:
+ */
+
 require 'database.php';
 require 'CRUD.php';
 
 $crud = new serverManipulation();
-// set here connection to database
+
 $conToServer = new ServerCon([$serverUsed, $databasePort, $databaseUsed, $user, $pass]);
 
 if (!empty($_POST['TYPE'])) {
@@ -100,28 +109,82 @@ if (!empty($_POST['TYPE'])) {
             }
             break;
         case 'lastYearTR':
-                try {
-                    $params = array(
-                        'fields' => 'SUM(total_last_year) AS last_year',
-                        'table' => 'gv_dashboard_overall_l',
-                        'dbcon' => $conToServer
-                    );
-                    $checker = $crud->sm_vr_server($params);
-                    echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['last_year'],2)]) : json_encode(['Response' => 0]);
-                } catch (PDOException $e) {
-                    echo json_encode([['MESSAGE' => "Connection failed in lastYearTR: " . $conToServer->htmlize($e->getMessage())]]);
-                }
-                break;
+            try {
+                $params = array(
+                    'fields' => 'SUM(total_last_year) AS last_year',
+                    'table' => 'gv_dashboard_overall_l',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['last_year'],2)]) : json_encode(['Response' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in lastYearTR: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'thisYearCR':
+            try {
+                $params = array(
+                    'fields' => 'SUM(total_this_year) AS this_year',
+                    'table' => 'gv_dashboard_on_cancel_c',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['this_year'],2)]) : json_encode(['Response' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in thisYearCR: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'lastYearCR':
+            try {
+                $params = array(
+                    'fields' => 'SUM(total_last_year) AS last_year',
+                    'table' => 'gv_dashboard_on_cancel_l',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['last_year'],2)]) : json_encode(['Response' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in lastYearCR: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'overDue':
+            try {
+                $params = array(
+                    'fields' => 'SUM(over_due) AS over_due',
+                    'table' => 'gv_dashboard_on_due_date',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['over_due'],2)]) : json_encode(['Response' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in overDue: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'newTrasac':
+            try {
+                $params = array(
+                    'fields' => 'SUM(pending_count) AS pending_count',
+                    'table' => 'gv_dashboard_new',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['pending_count'],2)]) : json_encode(['Response' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in newTrasac: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'stillDue':
+            try {
+                $params = array(
+                    'fields' => 'SUM(still_due) AS still_due',
+                    'table' => 'gv_dashboard_still_on_due_date',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(['Response' => number_format($checker[0]['still_due'],2)]) : json_encode(['Response' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in stillDue: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
     }
 }
-
-// CREATE TRIGGER trig_g_transactions_a AFTER UPDATE
-// ON g_transactions FOR EACH ROW
-// BEGIN IF (NEW.gt_status != 'Pending' AND OLD.gt_status = 'Pending')
-// THEN
-// UPDATE g_product SET gp_count = (gp_count - 1) WHERE gpId = NEW.gt_gpId;
-// ELSE IF (NEW.gt_status = 'Cancelled')
-// THEN
-// UPDATE g_product SET gp_count = (gp_count + 1) WHERE gpId = NEW.gt_gpId;
-// END IF;
-// END;

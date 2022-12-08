@@ -3,7 +3,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-20 17:40:10
+ * @ Modified time: 2022-12-08 10:46:59
  * @ Description:
  -->
 <div class="container-scroller">
@@ -214,7 +214,16 @@
 					$(this).addClass('selected');
 					selectedRows = table.$('tr.selected').length;
 				}
-				table.button( 0 ).enable( selectedRows === 1 );
+				var currentSelectedRowData = table.row('.selected').data();
+				if(currentSelectedRowData != undefined) {
+					if(currentSelectedRowData.status === 'To Pack' || currentSelectedRowData.status === 'Shipped' || currentSelectedRowData.status === 'Pending') {
+						table.button( 0 ).enable( selectedRows === 1 );
+					}else {
+						table.button( 0 ).enable( false );
+					}
+				}else {
+					table.button( 0 ).enable( false );
+				}
 			}
 		});
 		// Array to track the ids of the details displayed rows

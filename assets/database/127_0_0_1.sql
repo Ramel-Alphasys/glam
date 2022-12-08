@@ -3,11 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2022 at 03:40 PM
+-- Generation Time: Dec 08, 2022 at 03:17 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -21,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `glamdb`
 --
+DROP DATABASE IF EXISTS `glamdb`;
 CREATE DATABASE IF NOT EXISTS `glamdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `glamdb`;
 
@@ -30,6 +30,7 @@ USE `glamdb`;
 -- Stand-in structure for view `gv_amount_details`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_amount_details`;
 CREATE TABLE IF NOT EXISTS `gv_amount_details` (
 `id` int(11)
 ,`customer_Id` int(11)
@@ -39,9 +40,43 @@ CREATE TABLE IF NOT EXISTS `gv_amount_details` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `gv_dashboard_new`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_new`;
+CREATE TABLE IF NOT EXISTS `gv_dashboard_new` (
+`pending_count` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_cancel_c`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_c`;
+CREATE TABLE IF NOT EXISTS `gv_dashboard_on_cancel_c` (
+`total_this_year` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_cancel_l`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_l`;
+CREATE TABLE IF NOT EXISTS `gv_dashboard_on_cancel_l` (
+`total_this_year` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `gv_dashboard_on_cod_c`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_c`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_on_cod_c` (
 `total_this_year` decimal(11,2)
 );
@@ -52,8 +87,20 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_on_cod_c` (
 -- Stand-in structure for view `gv_dashboard_on_cod_l`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_l`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_on_cod_l` (
 `total_last_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_due_date`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_due_date`;
+CREATE TABLE IF NOT EXISTS `gv_dashboard_on_due_date` (
+`over_due` bigint(21)
 );
 
 -- --------------------------------------------------------
@@ -62,6 +109,7 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_on_cod_l` (
 -- Stand-in structure for view `gv_dashboard_on_gcash_c`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_c`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_on_gcash_c` (
 `total_this_year` decimal(11,2)
 );
@@ -72,6 +120,7 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_on_gcash_c` (
 -- Stand-in structure for view `gv_dashboard_on_gcash_l`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_l`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_on_gcash_l` (
 `total_last_year` decimal(11,2)
 );
@@ -82,6 +131,7 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_on_gcash_l` (
 -- Stand-in structure for view `gv_dashboard_on_walkin_c`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_c`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_on_walkin_c` (
 `total_this_year` decimal(11,2)
 );
@@ -92,6 +142,7 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_on_walkin_c` (
 -- Stand-in structure for view `gv_dashboard_on_walkin_l`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_l`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_on_walkin_l` (
 `total_last_year` decimal(11,2)
 );
@@ -102,6 +153,7 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_on_walkin_l` (
 -- Stand-in structure for view `gv_dashboard_overall_c`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_overall_c`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_overall_c` (
 `total_this_year` decimal(11,2)
 );
@@ -112,8 +164,20 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_overall_c` (
 -- Stand-in structure for view `gv_dashboard_overall_l`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_dashboard_overall_l`;
 CREATE TABLE IF NOT EXISTS `gv_dashboard_overall_l` (
 `total_last_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_still_on_due_date`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_still_on_due_date`;
+CREATE TABLE IF NOT EXISTS `gv_dashboard_still_on_due_date` (
+`still_due` bigint(21)
 );
 
 -- --------------------------------------------------------
@@ -122,6 +186,7 @@ CREATE TABLE IF NOT EXISTS `gv_dashboard_overall_l` (
 -- Stand-in structure for view `gv_transactions`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `gv_transactions`;
 CREATE TABLE IF NOT EXISTS `gv_transactions` (
 `transac_Id` int(11)
 ,`customer_Id` int(11)
@@ -145,6 +210,7 @@ CREATE TABLE IF NOT EXISTS `gv_transactions` (
 -- Creation: Nov 13, 2022 at 11:05 AM
 --
 
+DROP TABLE IF EXISTS `g_customer`;
 CREATE TABLE IF NOT EXISTS `g_customer` (
   `gcId` int(11) NOT NULL,
   `gc_guId` int(11) NOT NULL,
@@ -170,9 +236,10 @@ CREATE TABLE IF NOT EXISTS `g_customer` (
 -- Table structure for table `g_due_rentals`
 --
 -- Creation: Nov 20, 2022 at 04:11 AM
--- Last update: Dec 07, 2022 at 02:12 PM
+-- Last update: Dec 08, 2022 at 12:28 PM
 --
 
+DROP TABLE IF EXISTS `g_due_rentals`;
 CREATE TABLE IF NOT EXISTS `g_due_rentals` (
   `gdrId` int(11) NOT NULL AUTO_INCREMENT,
   `gdr_gtId` int(11) NOT NULL,
@@ -195,6 +262,7 @@ CREATE TABLE IF NOT EXISTS `g_due_rentals` (
 -- Creation: Nov 10, 2022 at 11:42 AM
 --
 
+DROP TABLE IF EXISTS `g_employee`;
 CREATE TABLE IF NOT EXISTS `g_employee` (
   `geId` int(11) NOT NULL,
   `ge_guId` int(11) DEFAULT NULL,
@@ -218,9 +286,9 @@ CREATE TABLE IF NOT EXISTS `g_employee` (
 -- Table structure for table `g_product`
 --
 -- Creation: Nov 19, 2022 at 01:01 PM
--- Last update: Dec 07, 2022 at 02:02 PM
 --
 
+DROP TABLE IF EXISTS `g_product`;
 CREATE TABLE IF NOT EXISTS `g_product` (
   `gpId` int(11) NOT NULL,
   `gp_name` varchar(255) NOT NULL,
@@ -244,9 +312,9 @@ CREATE TABLE IF NOT EXISTS `g_product` (
 -- Table structure for table `g_settings`
 --
 -- Creation: Dec 07, 2022 at 11:23 AM
--- Last update: Dec 07, 2022 at 11:23 AM
 --
 
+DROP TABLE IF EXISTS `g_settings`;
 CREATE TABLE IF NOT EXISTS `g_settings` (
   `g_id` tinyint(1) NOT NULL,
   `g_shipping_fee` decimal(10,2) NOT NULL,
@@ -263,10 +331,11 @@ CREATE TABLE IF NOT EXISTS `g_settings` (
 --
 -- Table structure for table `g_transactions`
 --
--- Creation: Dec 03, 2022 at 10:26 AM
--- Last update: Dec 07, 2022 at 02:02 PM
+-- Creation: Dec 08, 2022 at 01:34 AM
+-- Last update: Dec 08, 2022 at 12:27 PM
 --
 
+DROP TABLE IF EXISTS `g_transactions`;
 CREATE TABLE IF NOT EXISTS `g_transactions` (
   `gtId` int(11) NOT NULL AUTO_INCREMENT,
   `gt_gpId` int(11) NOT NULL,
@@ -279,6 +348,7 @@ CREATE TABLE IF NOT EXISTS `g_transactions` (
   `gt_status` text NOT NULL,
   `gt_attachment` varchar(255) DEFAULT NULL,
   `gt_selected_size` varchar(255) NOT NULL DEFAULT 'All size',
+  `gt_items` int(11) NOT NULL,
   PRIMARY KEY (`gtId`),
   KEY `gt_gcId` (`gt_gcId`),
   KEY `gt_gpId` (`gt_gpId`)
@@ -300,6 +370,7 @@ CREATE TABLE IF NOT EXISTS `g_transactions` (
 -- Creation: Nov 10, 2022 at 11:42 AM
 --
 
+DROP TABLE IF EXISTS `g_user`;
 CREATE TABLE IF NOT EXISTS `g_user` (
   `guId` int(11) NOT NULL,
   `g_username` varchar(100) DEFAULT NULL,
@@ -320,7 +391,38 @@ CREATE TABLE IF NOT EXISTS `g_user` (
 --
 DROP TABLE IF EXISTS `gv_amount_details`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_amount_details`  AS SELECT `t`.`gtId` AS `id`, `t`.`gt_gcId` AS `customer_Id`, `p`.`gp_price`+ `t`.`gt_additional_cost` AS `total_cost` FROM (`g_transactions` `t` left join `g_product` `p` on(`p`.`gpId` = `t`.`gt_gpId`))  ;
+DROP VIEW IF EXISTS `gv_amount_details`;
+CREATE OR REPLACE VIEW `gv_amount_details`  AS SELECT `t`.`gtId` AS `id`, `t`.`gt_gcId` AS `customer_Id`, `p`.`gp_price`+ `t`.`gt_additional_cost` AS `total_cost` FROM (`g_transactions` `t` left join `g_product` `p` on(`p`.`gpId` = `t`.`gt_gpId`))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_new`
+--
+DROP TABLE IF EXISTS `gv_dashboard_new`;
+
+DROP VIEW IF EXISTS `gv_dashboard_new`;
+CREATE OR REPLACE VIEW `gv_dashboard_new`  AS SELECT count(`t`.`gt_status`) AS `pending_count` FROM `g_transactions` AS `t` WHERE `t`.`gt_status` = 'Pending''Pending'  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_cancel_c`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_cancel_c`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_c`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_cancel_c`  AS SELECT count(`t`.`gt_status`) AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_status` = 'Cancelled' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_cancel_l`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_cancel_l`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_l`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_cancel_l`  AS SELECT count(`t`.`gt_status`) AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_status` = 'Cancelled' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
 
 -- --------------------------------------------------------
 
@@ -329,7 +431,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_on_cod_c`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_cod_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Cash on delivery' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_c`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_cod_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Cash on delivery' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
 
 -- --------------------------------------------------------
 
@@ -338,7 +441,18 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_on_cod_l`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_cod_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Cash on delivery' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_l`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_cod_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Cash on delivery' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_due_date`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_due_date`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_due_date`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_due_date`  AS SELECT count(`dr`.`gdrId`) AS `over_due` FROM `g_due_rentals` AS `dr` WHERE `dr`.`gdr_status` = 'Over Due''Over Due'  ;
 
 -- --------------------------------------------------------
 
@@ -347,7 +461,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_on_gcash_c`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_gcash_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Gcash' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_c`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_gcash_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Gcash' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
 
 -- --------------------------------------------------------
 
@@ -356,7 +471,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_on_gcash_l`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_gcash_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Gcash' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_l`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_gcash_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Gcash' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
 
 -- --------------------------------------------------------
 
@@ -365,7 +481,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_on_walkin_c`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_walkin_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Walk in' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_c`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_walkin_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Walk in' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
 
 -- --------------------------------------------------------
 
@@ -374,7 +491,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_on_walkin_l`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_walkin_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Walk in' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_l`;
+CREATE OR REPLACE VIEW `gv_dashboard_on_walkin_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Walk in' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
 
 -- --------------------------------------------------------
 
@@ -383,7 +501,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_overall_c`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_overall_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE year(`t`.`gt_transaction_date`) = year(curdate())  ;
+DROP VIEW IF EXISTS `gv_dashboard_overall_c`;
+CREATE OR REPLACE VIEW `gv_dashboard_overall_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE year(`t`.`gt_transaction_date`) = year(curdate())  ;
 
 -- --------------------------------------------------------
 
@@ -392,7 +511,18 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_dashboard_overall_l`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_overall_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
+DROP VIEW IF EXISTS `gv_dashboard_overall_l`;
+CREATE OR REPLACE VIEW `gv_dashboard_overall_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE year(`t`.`gt_transaction_date`) = year(curdate()) - 11  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_still_on_due_date`
+--
+DROP TABLE IF EXISTS `gv_dashboard_still_on_due_date`;
+
+DROP VIEW IF EXISTS `gv_dashboard_still_on_due_date`;
+CREATE OR REPLACE VIEW `gv_dashboard_still_on_due_date`  AS SELECT count(`dr`.`gdrId`) AS `still_due` FROM `g_due_rentals` AS `dr` WHERE `dr`.`gdr_status` = 'Still Due''Still Due'  ;
 
 -- --------------------------------------------------------
 
@@ -401,7 +531,8 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `gv_transactions`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not nullnot null  ;
+DROP VIEW IF EXISTS `gv_transactions`;
+CREATE OR REPLACE VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not nullnot null  ;
 
 --
 -- Constraints for dumped tables
@@ -425,113 +556,6 @@ ALTER TABLE `g_employee`
 ALTER TABLE `g_transactions`
   ADD CONSTRAINT `g_transactions_ibfk_1` FOREIGN KEY (`gt_gcId`) REFERENCES `g_customer` (`gcId`) ON DELETE CASCADE,
   ADD CONSTRAINT `g_transactions_ibfk_2` FOREIGN KEY (`gt_gpId`) REFERENCES `g_product` (`gpId`) ON DELETE CASCADE;
-
-
---
--- Metadata
---
-USE `phpmyadmin`;
-
---
--- Metadata for table gv_amount_details
---
-
---
--- Dumping data for table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'glamdb', 'gv_amount_details', '{\"sorted_col\":\"`gv_amount_details`.`total_cost` ASC\"}', '2022-11-12 04:49:27');
-
---
--- Metadata for table gv_dashboard_on_cod_c
---
-
---
--- Metadata for table gv_dashboard_on_cod_l
---
-
---
--- Metadata for table gv_dashboard_on_gcash_c
---
-
---
--- Dumping data for table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'glamdb', 'gv_dashboard_on_gcash_c', '{\"sorted_col\":\"`gv_dashboard_on_gcash_c`.`total_this_year` ASC\"}', '2022-11-15 13:46:56');
-
---
--- Metadata for table gv_dashboard_on_gcash_l
---
-
---
--- Metadata for table gv_dashboard_on_walkin_c
---
-
---
--- Metadata for table gv_dashboard_on_walkin_l
---
-
---
--- Metadata for table gv_dashboard_overall_c
---
-
---
--- Metadata for table gv_dashboard_overall_l
---
-
---
--- Metadata for table gv_transactions
---
-
---
--- Metadata for table g_customer
---
-
---
--- Metadata for table g_due_rentals
---
-
---
--- Metadata for table g_employee
---
-
---
--- Metadata for table g_product
---
-
---
--- Dumping data for table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'glamdb', 'g_product', '{\"sorted_col\":\"`g_product`.`gp_count` ASC\"}', '2022-12-07 14:00:55');
-
---
--- Metadata for table g_settings
---
-
---
--- Metadata for table g_transactions
---
-
---
--- Dumping data for table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'glamdb', 'g_transactions', '{\"sorted_col\":\"`g_transactions`.`gt_status` ASC\"}', '2022-12-07 13:56:36');
-
---
--- Metadata for table g_user
---
-
---
--- Metadata for database glamdb
---
-SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
