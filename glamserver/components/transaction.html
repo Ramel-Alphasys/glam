@@ -3,7 +3,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-08 10:46:59
+ * @ Modified time: 2022-12-08 22:54:02
  * @ Description:
  -->
 <div class="container-scroller">
@@ -58,11 +58,13 @@
 																		<th>Product</th>
 																		<th>Type</th>
 																		<th>Price</th>
-																		<th>Payment</th>
+																		<th>Amount Payable</th>
 																		<th>Method</th>
-																		<th>Balance</th>
+																		<th>To Pay</th>
 																		<th>Date</th>
 																		<th>Status</th>
+																		<th>No. Item/s</th>
+																		<th>Sizes</th>
 																	</tr>
 																</thead>
 															</table>
@@ -118,7 +120,7 @@
 					</div>
 					<div style="padding: 10px;">
 						<p>
-							Type: 
+							Product Type: 
 							${d.product_type}
 						</p>
 					</div>
@@ -126,6 +128,18 @@
 						<p>
 							Method: 
 							${d.method}
+						</p>
+					</div>
+					<div style="padding: 10px;">
+						<p>
+							Number of Items: 
+							${d.items}
+						</p>
+					</div>
+					<div style="padding: 10px;">
+						<p>
+							Product Selected Sizes: 
+							${d.selected_size}
 						</p>
 					</div>
 				</div>`
@@ -154,7 +168,7 @@
                 pageSize: 'LETTER',
 				orientation: 'landscape',
 				exportOptions: {
-                    columns: [ 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+                    columns: [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
                 },
 				download: 'open'
             }],
@@ -178,6 +192,8 @@
 					{ data: 'balance' },
 					{ data: 'transaction_date' },
 					{ data: 'status' },
+					{ data: 'items' },
+					{ data: 'selected_size' },
 			],
 			createdRow: function (row, data, index) {
 				if (data.status == 'To Pack' || data.status == 'Shipped') {
@@ -192,7 +208,7 @@
 			},
 			columnDefs: [
 				{
-					target: [1,3,4,7],
+					target: [1,3,4,7,11,12],
 					visible: false,
 					searchable: false,
 				},

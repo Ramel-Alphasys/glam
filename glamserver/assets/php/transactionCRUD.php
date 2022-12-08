@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 21:21:43
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-08 09:39:36
+ * @ Modified time: 2022-12-08 22:57:27
  * @ Description:
  */
 require 'database.php';
@@ -46,7 +46,7 @@ if (!empty($_POST['TYPE'])) {
                         now(),
                         'Paid',
                         '','".
-                        implode($_POST['transactionRecords'][$i]['selectedSize'])
+                        implode(", ",$_POST['transactionRecords'][$i]['selectedSize'])
                         ."',".$_POST['transactionRecords'][$i]['selectedSizeCount']
                     ;
 

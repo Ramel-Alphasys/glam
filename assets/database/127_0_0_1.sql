@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2022 at 03:17 PM
+-- Generation Time: Dec 08, 2022 at 03:58 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -34,7 +34,7 @@ DROP VIEW IF EXISTS `gv_amount_details`;
 CREATE TABLE IF NOT EXISTS `gv_amount_details` (
 `id` int(11)
 ,`customer_Id` int(11)
-,`total_cost` decimal(11,2)
+,`total_cost` decimal(21,2)
 );
 
 -- --------------------------------------------------------
@@ -196,18 +196,18 @@ CREATE TABLE IF NOT EXISTS `gv_transactions` (
 ,`product_price` decimal(10,2)
 ,`payment` decimal(10,2)
 ,`method` text
-,`balance` decimal(12,2)
+,`balance` decimal(22,2)
 ,`transaction_date` timestamp
 ,`file_attachment` varchar(255)
 ,`status` text
+,`items` int(11)
+,`selected_size` varchar(255)
 );
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_customer`
---
--- Creation: Nov 13, 2022 at 11:05 AM
 --
 
 DROP TABLE IF EXISTS `g_customer`;
@@ -224,19 +224,10 @@ CREATE TABLE IF NOT EXISTS `g_customer` (
   KEY `gc_guId` (`gc_guId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_customer`:
---   `gc_guId`
---       `g_user` -> `guId`
---
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_due_rentals`
---
--- Creation: Nov 20, 2022 at 04:11 AM
--- Last update: Dec 08, 2022 at 12:28 PM
 --
 
 DROP TABLE IF EXISTS `g_due_rentals`;
@@ -250,16 +241,10 @@ CREATE TABLE IF NOT EXISTS `g_due_rentals` (
   KEY `gdr_gtId` (`gdr_gtId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_due_rentals`:
---
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_employee`
---
--- Creation: Nov 10, 2022 at 11:42 AM
 --
 
 DROP TABLE IF EXISTS `g_employee`;
@@ -274,18 +259,10 @@ CREATE TABLE IF NOT EXISTS `g_employee` (
   KEY `ge_guId` (`ge_guId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_employee`:
---   `ge_guId`
---       `g_user` -> `guId`
---
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_product`
---
--- Creation: Nov 19, 2022 at 01:01 PM
 --
 
 DROP TABLE IF EXISTS `g_product`;
@@ -302,16 +279,10 @@ CREATE TABLE IF NOT EXISTS `g_product` (
   PRIMARY KEY (`gpId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_product`:
---
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_settings`
---
--- Creation: Dec 07, 2022 at 11:23 AM
 --
 
 DROP TABLE IF EXISTS `g_settings`;
@@ -322,17 +293,10 @@ CREATE TABLE IF NOT EXISTS `g_settings` (
   PRIMARY KEY (`g_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_settings`:
---
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_transactions`
---
--- Creation: Dec 08, 2022 at 01:34 AM
--- Last update: Dec 08, 2022 at 12:27 PM
 --
 
 DROP TABLE IF EXISTS `g_transactions`;
@@ -354,20 +318,10 @@ CREATE TABLE IF NOT EXISTS `g_transactions` (
   KEY `gt_gpId` (`gt_gpId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_transactions`:
---   `gt_gcId`
---       `g_customer` -> `gcId`
---   `gt_gpId`
---       `g_product` -> `gpId`
---
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `g_user`
---
--- Creation: Nov 10, 2022 at 11:42 AM
 --
 
 DROP TABLE IF EXISTS `g_user`;
@@ -380,10 +334,6 @@ CREATE TABLE IF NOT EXISTS `g_user` (
   PRIMARY KEY (`guId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- RELATIONSHIPS FOR TABLE `g_user`:
---
-
 -- --------------------------------------------------------
 
 --
@@ -392,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `g_user` (
 DROP TABLE IF EXISTS `gv_amount_details`;
 
 DROP VIEW IF EXISTS `gv_amount_details`;
-CREATE OR REPLACE VIEW `gv_amount_details`  AS SELECT `t`.`gtId` AS `id`, `t`.`gt_gcId` AS `customer_Id`, `p`.`gp_price`+ `t`.`gt_additional_cost` AS `total_cost` FROM (`g_transactions` `t` left join `g_product` `p` on(`p`.`gpId` = `t`.`gt_gpId`))  ;
+CREATE OR REPLACE VIEW `gv_amount_details`  AS SELECT `t`.`gtId` AS `id`, `t`.`gt_gcId` AS `customer_Id`, (`p`.`gp_price` + `t`.`gt_additional_cost`) * `t`.`gt_items` AS `total_cost` FROM (`g_transactions` `t` left join `g_product` `p` on(`p`.`gpId` = `t`.`gt_gpId`))  ;
 
 -- --------------------------------------------------------
 
@@ -532,7 +482,7 @@ CREATE OR REPLACE VIEW `gv_dashboard_still_on_due_date`  AS SELECT count(`dr`.`g
 DROP TABLE IF EXISTS `gv_transactions`;
 
 DROP VIEW IF EXISTS `gv_transactions`;
-CREATE OR REPLACE VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not nullnot null  ;
+CREATE OR REPLACE VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status`, `t`.`gt_items` AS `items`, `t`.`gt_selected_size` AS `selected_size` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not nullnot null  ;
 
 --
 -- Constraints for dumped tables
