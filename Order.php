@@ -54,7 +54,7 @@ $orderlist = $crud->sm_vr_server($params);
       <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom mb-5">Order</h2>
         <div class="container">
-          <?php foreach ($orderlist as $order) { print_r($order);?>
+          <?php foreach ($orderlist as $order) { ?>
             <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
               <div class="card-body">
                 <div class="float-start text-truncate">

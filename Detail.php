@@ -7,10 +7,11 @@
 	$params = array(
 		'fields' => '*',
 		'table' => 'g_product',
-		'filter' => "gpId='${_GET['Product']}'",
+		'filter' => "gpId=${_GET['Product']}",
 		'dbcon' => $serverConn
 	);
 	$response = $crud->sm_vr_server($params);
+  print_r($response);
 	$res = $response[0];
 ?>
 <!DOCTYPE html>
@@ -50,6 +51,14 @@
         <br>
         <br>
     </div>
+    <div class="container px-4">
+            <div class="d-flex align-items-center justify-content-between border-bottom">
+                <h2 class="pb-2">Product Details</h2>
+                <div class="">
+                  <a class="btn btn-md border shadow-sm form-control" href="PlaceOrder.php">Place Order</a>
+                </div>
+            </div>
+        </div>
       <div class="container">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
