@@ -54,17 +54,17 @@ $orderlist = $crud->sm_vr_server($params);
       <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom mb-5">Order</h2>
         <div class="container">
-          <?php foreach ($orderlist as $order) { ?>
-          <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
-            <div class="card-body">
-              <div class="float-start text-truncate">
-                Order #1
-              </div>
-              <div class="float-end">
-                <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+          <?php foreach ($orderlist as $order) { print_r($order);?>
+            <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
+              <div class="card-body">
+                <div class="float-start text-truncate">
+                  Order #1
+                </div>
+                <div class="float-end">
+                  <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+                </div>
               </div>
             </div>
-          </div>
           <?php } ?>
           <!-- <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr2">
             <div class="card-body">
