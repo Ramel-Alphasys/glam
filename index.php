@@ -67,7 +67,7 @@ $featured = $crud->sm_vr_server($params);
         <div class="container">
           <div class="carousel-caption text-start text-light bg-dark bg-opacity-50 p-3 rounded">
             <h1>Glamorouza Charlene</h1>
-            <p>We offer extra service.</p>
+            <p>Wedding full package, Make up for any occasions, wedding, beauty pageant, debut, JS Prom, Acquiantan.</p>
           </div>
         </div>
       </div>
@@ -110,8 +110,8 @@ $featured = $crud->sm_vr_server($params);
 
         <div class="row featurette">
           <div class="col-md-7">
-            <h2 class="featurette-heading fw-normal lh-1">First featurette heading. <span class="text-muted">It’ll blow your mind.</span></h2>
-            <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+            <h2 class="featurette-heading fw-normal lh-1">First feature. <span class="text-muted">Glamorouza will always give you a full service that you will never forget.</span></h2>
+            <p class="lead"></p>
           </div>
           <div class="col-md-5">
             <img src="assets/img/imgOwner.jpg" alt="..." class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
@@ -122,8 +122,8 @@ $featured = $crud->sm_vr_server($params);
 
         <div class="row featurette">
           <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span class="text-muted">See for yourself.</span></h2>
-            <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
+            <h2 class="featurette-heading fw-normal lh-1">Offers, <span class="text-muted">good services and affordable price for all customers.</span></h2>
+            <p class="lead">Come visit Glamorouza fashion shop by Charlene Meneses Pahayahay Located @ Purok 3, Upper San Apolinario, Tangub City.</p>
           </div>
           <div class="col-md-5 order-md-1">
             <img src="assets/img/imgPlaceView.jpg" alt="" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="500">
@@ -134,8 +134,8 @@ $featured = $crud->sm_vr_server($params);
 
         <div class="row featurette">
           <div class="col-md-7">
-            <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-            <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
+            <h2 class="featurette-heading fw-normal lh-1">And lastly. <span class="text-muted">Moments.</span></h2>
+            <p class="lead">"Capturing the moments of today that will wow your hearts tomorrow." <br> Achieve your dream wedding with us.</p>
           </div>
           <div class="col-md-5">
             <img src="assets/img/imgPrepare.jpg" alt="" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto rounded shadow" width="500" height="200">
