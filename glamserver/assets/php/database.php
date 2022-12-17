@@ -66,5 +66,5 @@ class ServerCon
 $databaseUsed = 'glamdb';
 $databasePort = 3306;
 $serverUsed = 'localhost';
-$user = 'root';
-$pass = 'admin';
+$user = 'glam';
+$pass = '-TEnT3pf_-JqPbX*';
