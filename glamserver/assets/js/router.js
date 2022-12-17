@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 19:42:39
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-15 19:33:45
+ * @ Modified time: 2022-12-17 09:52:16
  * @ Change Log:
  */
 $(document).ready(function () {
@@ -142,7 +142,10 @@ $(document).ready(function () {
 					}
 				);
 				if (status === "error") {
-					console.log("Output:  => $ => load newTransaction.html status: ", status);
+					console.log(
+						"Output:  => $ => load newTransaction.html status: ",
+						status
+					);
 				}
 			}
 		);
@@ -173,7 +176,10 @@ $(document).ready(function () {
 					}
 				);
 				if (status === "error") {
-					console.log("Output:  => $ => load rentalStatus.html status: ", status);
+					console.log(
+						"Output:  => $ => load rentalStatus.html status: ",
+						status
+					);
 				}
 			}
 		);
@@ -208,5 +214,7 @@ $(document).ready(function () {
 				}
 			}
 		);
+	} else if (sessionStorage.page === "2") {
+		location.href = "../Profile.php";
 	}
 });

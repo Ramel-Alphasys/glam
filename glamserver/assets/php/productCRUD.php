@@ -45,7 +45,7 @@ if (!empty($_POST['TYPE'])) {
                     'dbcon' => $conToServer
                 );
                 $checker = $crud->sm_vr_server($params);
-                 echo ($checker != null) ?  json_encode($checker) : null;
+                echo ($checker != null) ?  json_encode($checker) : null;
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed in getAllProducts: " . $conToServer->htmlize($e->getMessage())]]);
             }

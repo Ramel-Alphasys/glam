@@ -6,7 +6,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 22:31:42
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-10-28 21:43:01
+ * @ Modified time: 2022-12-17 09:45:50
  * @ Change Log:
  */
 require 'database.php';
@@ -27,12 +27,12 @@ if (!empty($_POST['TYPE'])) {
                     $params = array(
                         'fields' => '*',
                         'table' => 'g_user',
-                        'filter' => "WHERE g_username='${_POST['g_user']}' AND (g_userpass='${_POST['g_pass']}' OR g_token='${_POST['g_pass']}') AND gu_type=0 LIMIT 1",
+                        'filter' => "WHERE g_username='${_POST['g_user']}' AND (g_userpass='${_POST['g_pass']}' OR g_token='${_POST['g_pass']}') LIMIT 1",
                         'dbcon' => $conToServer
                     );
                     $checker = $crud->sm_vr_server($params);
                 }
-                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $checker[0]['guId'])) : json_encode(['STATUS' => 0]);
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $checker[0]['guId'], 'USERTYPE' => $checker[0]['gu_type'])) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }
