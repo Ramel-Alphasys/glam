@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-20 22:56:04
+ * @ Modified time: 2022-12-17 10:48:30
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -402,6 +402,7 @@
 				if($('#productCount').val()) {
 					recordData += `, gp_count = ${$('#productCount').val()}`;
 				}
+				recordData += ', ""';
 				loadData = [{...loadData, TYPE: "updateProduct", filter: `gpId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
 						type: "POST",
@@ -481,7 +482,7 @@
 				}
 				recordData += `'${JSON.stringify(Description)}', `;
 				if($('#productType').val()) {
-					recordData += `"${$('#productType').val()}", 1, `;
+					recordData += `"${$('#productType').val()}", `;
 				}else {
 					$('#productType').addClass('is-invalid').prop('title', 'this is required!').focus();
 					return;

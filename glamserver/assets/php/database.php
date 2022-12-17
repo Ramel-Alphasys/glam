@@ -6,7 +6,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 22:29:45
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-10-28 21:11:18
+ * @ Modified time: 2022-12-17 08:59:49
  * @ Change Log:
  */
 error_reporting(E_ALL | E_STRICT);
@@ -66,5 +66,5 @@ class ServerCon
 $databaseUsed = 'glamdb';
 $databasePort = 3306;
 $serverUsed = 'localhost';
-$user = 'Developer';
-$pass = '@g6sv9s02qUe()kl';
+$user = 'root';
+$pass = 'admin';

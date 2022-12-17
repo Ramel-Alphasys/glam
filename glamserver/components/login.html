@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 08:57:01
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-11-13 21:27:17
+ * @ Modified time: 2022-12-17 10:09:27
  * @ Change Log:
  -->
 <article id="loginPage">
@@ -23,6 +23,7 @@
       </div>
       <div class="loginLinks">
         <a id="forget_password" href="javascript:void(0)" data-title="Click to reset password"><i class="mdi mdi-account-search"></i> Forgot Password</a>
+        <a id="register" href="javascript:void(0)" data-title="Click to register"><i class="mdi mdi-account-multiple-plus"></i> Register</a>
       </div>
       <input type="submit" value="Login" />
       <br />
@@ -69,8 +70,13 @@
             $('input[type="text"]').focus();
           },1000);
         }else {
-          sessionStorage.setItem("page", '1');
-          sessionStorage.setItem("userId", result.USER);
+          if(result.USERTYPE == 0) {
+            sessionStorage.setItem("page", '1');
+            sessionStorage.setItem("userId", result.USER);
+          }else {
+            sessionStorage.setItem("page", '2');
+            sessionStorage.setItem("userId", result.USER);
+          }
           $('.errorMessage').removeClass('text-danger').addClass('text-success').html('<i class="mdi mdi-account-check"></i> User verified');
           setTimeout( () => {
             location.reload();
@@ -83,6 +89,13 @@
     $("#server-content").load(`components/passwordreset.html`,function (response, status) {
 			if (status === "error") {
 				console.log("Output:  => $ => load passwordreset.html status: ", status);
+			}
+		});
+  });
+  $('#register').on('click', (event) => {
+    $("#server-content").load(`components/registestration.html`,function (response, status) {
+			if (status === "error") {
+				console.log("Output:  => $ => load registestration.html status: ", status);
 			}
 		});
   });
