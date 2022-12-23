@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-17 10:48:30
+ * @ Modified time: 2022-12-17 19:31:00
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -402,28 +402,40 @@
 				if($('#productCount').val()) {
 					recordData += `, gp_count = ${$('#productCount').val()}`;
 				}
-				recordData += ', ""';
 				loadData = [{...loadData, TYPE: "updateProduct", filter: `gpId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
 						type: "POST",
 						url: "/glam/glamserver/assets/php/productCRUD.php",
 						data: loadData[0],
-						dataType: "json",
 				}).done((data) => {
-					console.warn("Log:  => $ => data", data);
-				});
-				$('#ProductModal').modal('hide');
-				table.draw();
-				$.notify({
-					title: 'Product Updated',
-					message: `Product name: ${$('#productName').val()} has been updated.`,
-				},{
-					showProgressbar: true,
-					type: "success",
-					allow_dismiss: false,
-					placement: {
-						from: 'top',
-						align: 'right'
+					if(data === 'Product updated!') {
+						$('#ProductModal').modal('hide');
+						table.draw();
+						$.notify({
+							title: 'Product Created',
+							message: `Product name: ${$('#productName').val()} has been updated.`,
+						},{
+							showProgressbar: true,
+							type: "success",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
+					}else {
+						$.notify({
+							title: 'Error',
+							message: `Product name: ${$('#productName').val()} was not updated.`,
+						},{
+							showProgressbar: true,
+							type: "danger",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
 					}
 				});
 			}else {
