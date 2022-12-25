@@ -10,17 +10,17 @@ try {
      */
 
     // DB table to use
-    $table = 'g_product';
+    $table = 'g_due_rentals';
 
     // Table's primary key
-    $primaryKey = 'gpId';
+    $primaryKey = 'gdrId';
 
     // Array of database columns which should be read and sent back to DataTables.
     // The `db` parameter represents the column name in the database, while the `dt`
     // parameter represents the DataTables column identifier. In this case object
     // parameter names
     $columns = array(
-        array('db' => 'gpId', 'dt' => 'gpId'),
+        array('db' => 'gdrId', 'dt' => 'gdrId'),
         array('db' => 'gp_product_img','dt' => 'gp_product_img'),
         array('db' => 'gp_gcash_qr','dt' => 'gp_gcash_qr',),
         array('db' => 'gp_name', 'dt' => 'gp_name'),
