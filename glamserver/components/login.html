@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 08:57:01
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-17 10:09:27
+ * @ Modified time: 2023-01-08 23:53:54
  * @ Change Log:
  -->
 <article id="loginPage">
@@ -32,6 +32,12 @@
   </div>
 </article>
 <script>
+  $('#register').hide();
+  var URL = new URL(window.location.href);
+  var getParam = URL.searchParams.get('mode');
+  if(getParam != null) {
+    $('#register').show();
+  }
   $('input[type="text"],input[type="password"]').on('keydown', (event) => {
     $('.errorMessage').html('');
   });
