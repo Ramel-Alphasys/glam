@@ -1,43 +1,44 @@
 <!--
- * @ Name: passwordreset.html
+ * @ Name: registestration.html
  * @ Purpose: sends email to user with there token to access the system
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-30 10:07:08
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-17 10:36:16
+ * @ Modified time: 2023-01-08 23:39:35
  * @ Change Log:
  -->
 <article id="resetPasswordPage">
-    <div class="loginBox">
-        <div class="loginForm">
+    <div class="loginBox2">
+        <div class="loginForm2">
             <br /><br />
             <h2>Registration</h2>
-            <div style="height: 300px;overflow-x: hidden;overflow-y: auto;">
+            <div class="registrationContent">
                 <div class="loginInputBox">
-                    <input type="email" name="email" required="required" />
+                    <input type="text" name="firstName" required="required" />
                     <span>First Name</span>
                     <i></i>
                 </div>
                 <div class="loginInputBox">
-                    <input type="email" name="email" required="required" />
+                    <input type="text" name="middleName" required="required" />
                     <span>Middle Name</span>
                     <i></i>
                 </div>
                 <div class="loginInputBox">
-                    <input type="email" name="email" required="required" />
+                    <input type="text" name="lastName" required="required" />
                     <span>Last Name</span>
                     <i></i>
                 </div>
                 <div class="loginInputBox">
-                    <input type="email" name="email" required="required" />
+                    <input type="text" name="userName" required="required" />
                     <span>User Name</span>
                     <i></i>
                 </div>
                 <div class="loginInputBox">
-                    <input type="email" name="email" required="required" />
+                    <input type="password" name="password" required="required" />
                     <span>Password</span>
                     <i></i>
                 </div>
+                <br />
             </div>
             <br />
             <input type="submit" value="Submit" />
@@ -49,49 +50,52 @@
 <script>
     $('input[type="submit"]').on('click', (event) => {
         var fields = [
-          'input[type="email"]'
+          'input[name="firstName"]',
+          'input[name="middleName"]',
+          'input[name="lastName"]',
+          'input[name="userName"]',
+          'input[name="password"]'
+        ],fieldLabel = [
+          'First Name',
+          'Middle Name',
+          'Last Name',
+          'Username',
+          'Password'
         ],
         fieldCounter = 0;
-        if($(fields[0]).val() === '') {
-            $(fields[0]).focus();
-            $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> Email Address field is Empty!');
-        }else {
-            fieldCounter++;
+        for(var i = 0; i < fields.length; i++) {
+            if($(fields[i]).val() === '') {
+                $(fields[i]).focus();
+                $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> ' + fieldLabel[i] + ' field is Empty');
+                break;
+            }else {
+                fieldCounter++;
+            }
         }
         if(fieldCounter == fields.length) {
+            var userdata = `"${$('input[name="userName"]').val()}","${$('input[name="password"]').val()}","", 1`,
+            customerdata = `"${$('input[name="firstName"]').val()}","${$('input[name="middleName"]').val()}","${$('input[name="lastName"]').val()}"`;
             $.ajax({
                 type: "POST",
                 url: "/glam/glamserver/assets/php/login.php",
-                data: {"TYPE": "resetaccount","email": $(fields[0]).val()},
+                data: {"TYPE": "clientregistration","userData": userdata,"customerData": customerdata},
                 dataType: "json",
             }).done((data) => {
                 var result = data;
-                if(result.STATUS == 0) {
-                    $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> Email Address not found!');
-                    $('input[type="email"]').val('');
-                    setTimeout( () => {
-                    $('input[type="email"]').focus();
-                    },1000);
-                }else {
-                    $('.errorMessage').removeClass('text-danger').addClass('text-success').html('<i class="mdi mdi-checkbox-marked-circle-outline"></i> ' + result.STATUS);
-                    setTimeout( () => {
-                        location.reload();
-                    },1200);
-                }
+                // if(result.STATUS == 0) {
+                //     $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> Email Address not found!');
+                //     $('input[type="email"]').val('');
+                //     setTimeout( () => {
+                //     $('input[type="email"]').focus();
+                //     },1000);
+                // }else {
+                //     $('.errorMessage').removeClass('text-danger').addClass('text-success').html('<i class="mdi mdi-checkbox-marked-circle-outline"></i> ' + result.STATUS);
+                //     setTimeout( () => {
+                //         location.reload();
+                //     },1200);
+                // }
             });
         }
     });
-    /*$('input[type="email"]').on('keydown', (event) => {
-        $('.errorMessage').html('');
-    });
-    $('input[type="email"]').on('change', (event) => {
-        var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-            elemValidation = re.test($('input[type="email"]').val()),
-            elemEmpty = $('input[type="email"]').is(':empty');
-
-        if(!elemValidation && elemEmpty) {
-            $('input[type="email"]').val('').focus();
-            $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> Invalid Email Address!');
-        }
-    });*/
+    
 </script>

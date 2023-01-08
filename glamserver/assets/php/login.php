@@ -70,7 +70,7 @@ if (!empty($_POST['TYPE'])) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }
             break;
-        case 'clientlogin':
+        case 'clientregistration':
             try {
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);

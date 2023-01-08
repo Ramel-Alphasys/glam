@@ -3,7 +3,7 @@
 	require 'glamserver\assets\php\database.php';
 	require 'glamserver\assets\php\CRUD.php';
 	$crud = new serverManipulation();
-	$serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'Metx', '(sX6j8k_GQ07uw*1']);
+	$serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
 	$params = array(
 		'fields' => '*',

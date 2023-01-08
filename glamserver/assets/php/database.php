@@ -68,3 +68,5 @@ $databasePort = 3306;
 $serverUsed = 'localhost';
 $user = 'glam';
 $pass = '-TEnT3pf_-JqPbX*';
+// auth_username=ramelTtech@gmail.com
+// auth_password=vpitaxlrcjyudxsk
