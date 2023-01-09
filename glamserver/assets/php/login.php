@@ -27,10 +27,17 @@ if (!empty($_POST['TYPE'])) {
                     $params = array(
                         'fields' => '*',
                         'table' => 'g_user',
-                        'filter' => "WHERE g_username='${_POST['g_user']}' AND (g_userpass='${_POST['g_pass']}' OR g_token='${_POST['g_pass']}') LIMIT 1",
+                        'filter' => "WHERE g_username='{$_POST['g_user']}' AND (g_userpass='{$_POST['g_pass']}' OR g_token='{$_POST['g_pass']}') LIMIT 1",
                         'dbcon' => $conToServer
                     );
                     $checker = $crud->sm_vr_server($params);
+                    $params = array(
+                        'fields' => "g_token=''",
+                        'filter' => "guId = {$checker[0]['guId']}",
+                        'table' => 'g_user',
+                        'dbcon' => $conToServer
+                    );
+                    $crud->sm_ur_server($params);
                 }
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $checker[0]['guId'], 'USERTYPE' => $checker[0]['gu_type'])) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
@@ -42,20 +49,21 @@ if (!empty($_POST['TYPE'])) {
                 $params = array(
                     'fields' => '*',
                     'table' => 'g_employee',
-                    'filter' => "WHERE ge_email = '${_POST['email']}' LIMIT 1",
+                    'filter' => "WHERE ge_email = '{$_POST['email']}' LIMIT 1",
                     'dbcon' => $conToServer
                 );
                 $checker = $crud->sm_vr_server($params);
                 if (!empty($checker)) {
                     $params = array(
-                        'fields' => "g_token='${tokenGenerated}' WHERE guId = {$checker[0]['ge_guId']}",
+                        'fields' => "g_token='{$tokenGenerated}'",
                         'table' => 'g_user',
+                        'filter' => "guId = {$checker[0]['ge_guId']}",
                         'dbcon' => $conToServer
                     );
                     if ($crud->sm_ur_server($params) != null) {
                         $params = array(
                             'to' => $_POST['email'],
-                            'message' => "Hi {$checker[0]['ge_gname']} {$checker[0]['ge_sname']},\n\n This is your token: ${tokenGenerated}. Use this to login your account at http:localhost/glamserver/.",
+                            'message' => "Hi {$checker[0]['ge_gname']} {$checker[0]['ge_sname']},\n\n This is your token: {$tokenGenerated}. Use this to login your account at http:localhost/glamserver/.",
                             'subject' => "Token Access",
                             'headers' => "From: ramelTtech@gmail.com",
                             'dbcon' => $conToServer
@@ -72,6 +80,35 @@ if (!empty($_POST['TYPE'])) {
             break;
         case 'clientregistration':
             try {
+                $params = array(
+                    'fields' => 'COUNT(*) AS Total',
+                    'table' => 'g_user',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                $userId = $checker[0]['Total'];
+                $userData = "{$userId},{$_POST['userData']}";
+                $params = array(
+                    'fields' => 'COUNT(*) AS Total',
+                    'table' => 'g_customer',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                $clientId = $checker[0]['Total'];
+                $clientData = "{$clientId},{$userId},{$_POST['customerData']}";
+                $params = array(
+                    'fields' => $userData,
+                    'table' => 'g_user',
+                    'dbcon' => $conToServer
+                );
+                $crud->sm_cr_server($params);
+                $params = array(
+                    'fields' => $clientData,
+                    'table' => 'g_customer',
+                    'dbcon' => $conToServer
+                );
+                $crud->sm_cr_server($params);
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $userId, 'USERTYPE' => 1)) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }

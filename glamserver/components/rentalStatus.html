@@ -264,7 +264,7 @@
 				loadData = [{...loadData, TYPE: "updateTransaction", table: `g_transactions`, filter: `gtId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
 					type: "POST",
-					url: "/glam/glamserver/assets/php/transactionCRUD.php",
+					url: "/glam/glamserver/assets/php/rentaldueCRUD.php",
 					data: loadData[0],
 					dataType: "json",
 				  }).done((data) => {

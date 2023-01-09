@@ -5,7 +5,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-10-28 19:32:37
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-07 17:48:18
+ * @ Modified time: 2023-01-09 10:40:33
  * @ Change Log:
  */
 class serverManipulation
@@ -18,7 +18,7 @@ class serverManipulation
     {
         try {
 
-            $query = "UPDATE ${params['table']} SET ${params['fields']} WHERE ${params['filter']}";
+            $query = "UPDATE {$params['table']} SET {$params['fields']} WHERE {$params['filter']}";
 
             $checker = $params['dbcon']->startDb()->prepare($query)->execute();
 
@@ -35,7 +35,7 @@ class serverManipulation
     {
         try {
 
-            $query = "INSERT INTO ${params['table']} VALUES(${params['fields']})";
+            $query = "INSERT INTO {$params['table']} VALUES({$params['fields']})";
 
             $checker = $params['dbcon']->startDb()->prepare($query)->execute();
 
@@ -52,7 +52,7 @@ class serverManipulation
     {
         try {
 
-            $query = "DELETE FROM ${params['table']} WHERE ${params['filter']}";
+            $query = "DELETE FROM {$params['table']} WHERE {$params['filter']}";
 
             $checker = $params['dbcon']->startDb()->prepare($query)->execute();
 
@@ -69,10 +69,10 @@ class serverManipulation
     {
         try {
 
-            $query = "SELECT ${params['fields']} FROM ${params['table']} ";
+            $query = "SELECT {$params['fields']} FROM {$params['table']} ";
 
             if (array_key_exists("filter", $params)) {
-                $query .= "${params['filter']}";
+                $query .= "{$params['filter']}";
             }
 
             $data = $params['dbcon']->startDb()->prepare($query);

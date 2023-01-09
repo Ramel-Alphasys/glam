@@ -68,7 +68,6 @@
         dataType: "json",
       }).done((data) => {
         var result = data;
-        console.log("Output:  => $ => result", result);
         if(result.STATUS == 0) {
           $('.errorMessage').html('<i class="mdi mdi-account-off"></i> User not found');
           $('input[type="text"],input[type="password"]').val('');

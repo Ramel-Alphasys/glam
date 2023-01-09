@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-30 10:07:08
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-08 23:39:35
+ * @ Modified time: 2023-01-09 09:34:43
  * @ Change Log:
  -->
 <article id="resetPasswordPage">
@@ -51,13 +51,11 @@
     $('input[type="submit"]').on('click', (event) => {
         var fields = [
           'input[name="firstName"]',
-          'input[name="middleName"]',
           'input[name="lastName"]',
           'input[name="userName"]',
           'input[name="password"]'
         ],fieldLabel = [
           'First Name',
-          'Middle Name',
           'Last Name',
           'Username',
           'Password'
@@ -74,7 +72,7 @@
         }
         if(fieldCounter == fields.length) {
             var userdata = `"${$('input[name="userName"]').val()}","${$('input[name="password"]').val()}","", 1`,
-            customerdata = `"${$('input[name="firstName"]').val()}","${$('input[name="middleName"]').val()}","${$('input[name="lastName"]').val()}"`;
+            customerdata = `"${$('input[name="firstName"]').val()}","${$('input[name="middleName"]').val()}","${$('input[name="lastName"]').val()}","","",63`;
             $.ajax({
                 type: "POST",
                 url: "/glam/glamserver/assets/php/login.php",
@@ -82,18 +80,25 @@
                 dataType: "json",
             }).done((data) => {
                 var result = data;
-                // if(result.STATUS == 0) {
-                //     $('.errorMessage').html('<i class="mdi mdi-alert-octagon"></i> Email Address not found!');
-                //     $('input[type="email"]').val('');
-                //     setTimeout( () => {
-                //     $('input[type="email"]').focus();
-                //     },1000);
-                // }else {
-                //     $('.errorMessage').removeClass('text-danger').addClass('text-success').html('<i class="mdi mdi-checkbox-marked-circle-outline"></i> ' + result.STATUS);
-                //     setTimeout( () => {
-                //         location.reload();
-                //     },1200);
-                // }
+                if(result.STATUS == 0) {
+                    $('.errorMessage').html('<i class="mdi mdi-account-off"></i> User not found');
+                    $('input[type="text"],input[type="password"]').val('');
+                    setTimeout( () => {
+                        $('input[type="text"]').focus();
+                    },1000);
+                }else {
+                    if(result.USERTYPE == 0) {
+                        sessionStorage.setItem("page", '1');
+                        sessionStorage.setItem("userId", result.USER);
+                    }else {
+                        sessionStorage.setItem("page", '2');
+                        sessionStorage.setItem("userId", result.USER);
+                    }
+                    $('.errorMessage').removeClass('text-danger').addClass('text-success').html('<i class="mdi mdi-account-check"></i> User verified');
+                    setTimeout( () => {
+                        location.reload();
+                    },800);
+                }
             });
         }
     });
