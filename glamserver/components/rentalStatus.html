@@ -4,7 +4,7 @@
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-07 17:46:13
+ * @ Modified time: 2023-01-10 22:31:10
  -->
  <div class="container-scroller">
 	<div class="container-fluid page-body-wrapper">
@@ -60,7 +60,7 @@
 																		<th>Price</th>
 																		<th>Payment</th>
 																		<th>Method</th>
-																		<th>Balance</th>
+																		<th>Penalty</th>
 																		<th>Date</th>
 																		<th>Status</th>
 																	</tr>
@@ -78,30 +78,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-<!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="TransactionModal" tabindex="-1" role="dialog" aria-labelledby="TransactionModalTitle" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-	<div class="modal-content" style="max-height: 500px;">
-		<div class="modal-header">
-		<h5 class="modal-title" id="exampleModalLongTitle">Transaction Record</h5>
-		</div>
-		<div class="modal-body" style="overflow-x: auto;">
-			<div class="form-group">
-				<label for="tStatus">Item Status</label>
-				<select class="form-control" id="tStatus">
-					<option>To Pack</option>
-					<option>Shipped</option>
-					<option>Delivered</option>
-					<option>Paid</option>
-					<option>Cancelled</option>
-				</select>
-			</div>
-		</div>
-		<div class="modal-footer">
-		<button id="saveRecord" type="button" class="btn btn-primary">Save changes</button>
 		</div>
 	</div>
 </div>
@@ -137,16 +113,6 @@
 			select: true,
 			scrollX: true,
 			buttons: [{
-                text: '<i class="mdi mdi-file-send"></i> Update Selected Row',
-                action: function ( e, dt, node, config ) {
-					var record = dt.row('.selected').data();
-					$('#saveRecord').val(record.transac_Id);
-					$('#tStatus').val(record.status);
-					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
-					$('#TransactionModal').modal('show');
-                },
-				enabled: false
-            },{
                 extend: 'pdfHtml5',
 				text:      '<i class="mdi mdi-file-export"></i> Generate PDF',
 				title: 'Transaction Records',
@@ -160,7 +126,7 @@
             }],
 			processing: true,
 			serverSide: true,
-			ajax: "assets/php/transaction.php",
+			ajax: "assets/php/rentaldue.php",
 			columns: [
 					{
 						class: 'details-control',
@@ -168,7 +134,7 @@
 						data: null,
 						defaultContent: "<i class='icon-plus'></i>",
 					},
-					{ data: 'transac_Id'},
+					{ data: 'due_date_Id'},
 					{ data: 'full_name' },
 					{ data: 'product_name' },
 					{ data: 'product_type' },
