@@ -60,7 +60,7 @@ $orderlist = $crud->sm_vr_server($params);
           <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
             <div class="card-body">
               <div class="float-start text-truncate">
-                Order #1
+                Order #<?php echo $order['gtId']; ?>
               </div>
               <div class="float-end">
                 <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>

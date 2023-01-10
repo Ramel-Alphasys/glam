@@ -10,6 +10,11 @@
 		'table' => 'g_customer',
 		'dbcon' => $serverConn
 	);
+	$userId = $_GET['UserId'];
+	if($userId == '') {
+		header("Location: glamserver/?mode=client");
+		exit;
+	}
 	$information = $crud->sm_vr_server($params);
 	$info = $information[0];
 	$cus_add = explode(',',$info['gc_address']);
