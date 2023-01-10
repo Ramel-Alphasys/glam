@@ -68,16 +68,6 @@ $orderlist = $crud->sm_vr_server($params);
             </div>
           </div>
         <?php } ?>
-        <!-- <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr2">
-            <div class="card-body">
-              <div class="float-start text-truncate">
-                Order #2
-              </div>
-              <div class="float-end">
-                <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
-              </div>
-            </div>
-          </div> -->
       </div>
       <!-- Modal -->
       <div class="modal fade" id="Ordr1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Order1" aria-hidden="true">
@@ -104,56 +94,26 @@ $orderlist = $crud->sm_vr_server($params);
                 </div>
               </div>
               <div class="container w-100 mt-5 mb-3">
-                <div class="d-flex justify-content-center m-3">
-                  <div class="cstm-card f2-bold me-3" id="gcashMode">
-                    Gcash
-                  </div>
-                  <div class="cstm-card f2-bold" id="codMode">
-                    Cash On Delivery
-                  </div>
-                </div>
+                <h5 class="text-black-100">Payment Type: GCASH</h5>
               </div>
-              <div class="form invisible d-none" id="gcashForm">
+              <div class="form">
                 <div class="container">
-                  Gcash
-                </div>
-              </div>
-              <div class="form invisible d-none" id="codForm">
-                <div class="container">
-                  <div class="form-check shadow-sm p-3 rounded">
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" role="switch" id="defaultAddressSelect">
-                      <label class="form-check-label" for="defaultAddressSelect">Use Default Address</label>
-                    </div>
-                  </div>
                   <form class="form">
-                    <h5 class="ms-4 me-4 mt-4 pb-2">Shipping Address</h5>
-                    <div class="row m-4">
+                    <h6 class="pb-2 text-black-50">Shipping Address</h6>
+                    <div class="row mb-4">
                       <div class="col">
-                        <div class="form-floating">
-                          <input type="text" class="form-control" id="floatStreet" placeholder="Street" required>
-                          <label for="floatStreet">Street</label>
-                        </div>
+                        <label for="floatStreet">Street</label>
                       </div>
                       <div class="col">
-                        <div class="form-floating">
-                          <input type="text" class="form-control" id="floatBrgy" placeholder="Barangay" required>
-                          <label for="floatBrgy">Barangay</label>
-                        </div>
+                        <label for="floatBrgy">Barangay</label>
                       </div>
                     </div>
-                    <div class="row m-4">
+                    <div class="row mb-4">
                       <div class="col">
-                        <div class="form-floating">
-                          <input type="text" class="form-control" id="floatMunicipal" placeholder="Municipality" required>
-                          <label for="floatMunicipal">Municipality</label>
-                        </div>
+                        <label for="floatMunicipal">Municipality</label>
                       </div>
                       <div class="col">
-                        <div class="form-floating">
-                          <input type="text" class="form-control" id="floatProv" placeholder="Province" required>
-                          <label for="floatProv">Province</label>
-                        </div>
+                        <label for="floatProv">Province</label>
                       </div>
                     </div>
                   </form>
