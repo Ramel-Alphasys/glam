@@ -96,28 +96,9 @@ $orderlist = $crud->sm_vr_server($params);
               <div class="container w-100 mt-5 mb-3">
                 <h5 class="text-black-100">Payment Type: GCASH</h5>
               </div>
-              <div class="form">
-                <div class="container">
-                  <form class="form">
-                    <h6 class="pb-2 text-black-50">Shipping Address</h6>
-                    <div class="row mb-4">
-                      <div class="col">
-                        <label for="floatStreet">Street</label>
-                      </div>
-                      <div class="col">
-                        <label for="floatBrgy">Barangay</label>
-                      </div>
-                    </div>
-                    <div class="row mb-4">
-                      <div class="col">
-                        <label for="floatMunicipal">Municipality</label>
-                      </div>
-                      <div class="col">
-                        <label for="floatProv">Province</label>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+              <div class="container mt-5">
+                <h6 class="pb-2 text-black-75">Shipping Address</h6>
+                <p class="fst-italic text-black-50">Purok-1, Mabini, Tangub</p>
               </div>
             </div>
             <div class="modal-footer clearfix">
