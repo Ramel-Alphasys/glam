@@ -61,25 +61,29 @@ $response = $crud->sm_vr_server($params);
     <div class="container px-4 py-5" id="custom-cards">
       <h2 class="pb-2 border-bottom">Products</h2>
       <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-
-        <?php foreach ($response as $resp) { ?>
-          <a href="<?php echo 'Detail.php?Product=' . $resp['gpId'] ?>" class="col text-decoration-none">
-            <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('assets/img/img4.png');">
-              <div class="d-flex flex-column h-100 p-3 text-shadow-1">
-                <ul class="d-flex list-unstyled">
-                  <li class="d-flex align-items-center">
-                    <?php if ($resp['gp_count'] > 0) { ?>
-                      <span class="shadow-sm badge text-bg-light opacity-75 p-2 text-success">Available <i class="fa fa-check" aria-hidden="true"></i></span>
-                    <?php } else { ?>
-                      <span class="shadow-sm badge text-bg-light opacity-75 p-2 text-danger">Available <i class="fa fa-times" aria-hidden="true"></i></span>
-                    <?php } ?>
-                  </li>
-                </ul>
-                <h2 class="pt-5 mt-5 mb-4 display-7 lh-1"><?php echo $resp['gp_name'] ?></h2>
+        <?php if( gettype($response) != 'NULL') {?>
+          <?php foreach ($response as $resp) { ?>
+            <a href="<?php echo 'Detail.php?Product=' . $resp['gpId'] ?>" class="col text-decoration-none">
+              <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('assets/img/img4.png');">
+                <div class="d-flex flex-column h-100 p-3 text-shadow-1">
+                  <ul class="d-flex list-unstyled">
+                    <li class="d-flex align-items-center">
+                      <?php if ($resp['gp_count'] > 0) { ?>
+                        <span class="shadow-sm badge text-bg-light opacity-75 p-2 text-success">Available <i class="fa fa-check" aria-hidden="true"></i></span>
+                      <?php } else { ?>
+                        <span class="shadow-sm badge text-bg-light opacity-75 p-2 text-danger">Available <i class="fa fa-times" aria-hidden="true"></i></span>
+                      <?php } ?>
+                    </li>
+                  </ul>
+                  <h2 class="pt-5 mt-5 mb-4 display-7 lh-1"><?php echo $resp['gp_name'] ?></h2>
+                </div>
               </div>
-            </div>
-          </a>
-        <?php } ?>
+            </a>
+          <?php }; ?>
+        <?php }; ?>
+        <?php if( gettype($response) == 'NULL') {?>
+          <p>No Product to show.</p>
+        <?php }; ?>
         <!-- <a href="Detail.php?" class="col text-decoration-none">
             <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('assets/img/img5.png');">
               <div class="d-flex flex-column h-100 p-3 text-shadow-1">
