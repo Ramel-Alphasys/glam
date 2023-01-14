@@ -1,4 +1,5 @@
 <?php
+	session_start();
 
 	require 'glamserver\assets\php\database.php';
 	require 'glamserver\assets\php\CRUD.php';
@@ -10,7 +11,8 @@
 		'table' => 'g_customer',
 		'dbcon' => $serverConn
 	);
-	$userId = $_GET['UserId'];
+	
+	$userId = $_SESSION['userId'];
 	if($userId == '') {
 		header("Location: glamserver/?mode=client");
 		exit;
