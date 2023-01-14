@@ -4,11 +4,11 @@ require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
-$userId = $_GET['UserId'];
-if($userId == '') {
-  header("Location: glamserver/?mode=client");
-  exit;
-}
+// $userId = $_GET['UserId'];
+// if($userId == '') {
+//   header("Location: glamserver/?mode=client");
+//   exit;
+// }
 
 $params = array(
   'fields' => '*',
@@ -62,18 +62,22 @@ $orderlist = $crud->sm_vr_server($params);
     <div class="container px-4 py-5">
       <h2 class="pb-2 border-bottom mb-5">Order</h2>
       <div class="container">
-        <?php foreach ($orderlist as $order) { ?>
-          <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
-            <div class="card-body">
-              <div class="float-start text-truncate">
-                Order #<?php echo $order['gtId']; ?>
-              </div>
-              <div class="float-end">
-                <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+      <?php if($orderlist != null) {
+           foreach ($orderlist as $order) { ?>
+            <div class="card shadow-sm w-100 mb-3" data-bs-toggle="modal" data-bs-target="#Ordr1">
+              <div class="card-body">
+                <div class="float-start text-truncate">
+                  Order #<?php echo $order['gtId']; ?>
+                </div>
+                <div class="float-end">
+                  <span class="text-muted">View Order</span>&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+                </div>
               </div>
             </div>
-          </div>
-        <?php } ?>
+          <?php };
+        } else { ?>
+            <p>No order to show.</p>  
+        <?php }; ?>
       </div>
       <!-- Modal -->
       <div class="modal fade" id="Ordr1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="Order1" aria-hidden="true">

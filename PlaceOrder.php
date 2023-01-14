@@ -103,7 +103,17 @@ $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-Jq
         </div>
         <div class="row m-5">
           <div class="p-3 shadow-sm rounded">
-            <h5>Payment Method</h5>
+            <div class="form-check form-check-inline">
+              <h5>Payment Method</h5>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="paymentType" id="gcashType" value="GCash">
+              <label class="form-check-label" for="gcashType">GCash</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="paymentType" id="codType" value="COD">
+              <label class="form-check-label" for="codType">Cash On Delivery</label>
+            </div>
           </div>
         </div>
       </form>
