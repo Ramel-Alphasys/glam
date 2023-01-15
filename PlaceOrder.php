@@ -90,7 +90,7 @@ $productSizing = explode(',',$description[2]);
                 <thead>
                   <tr>
                     <th scope="col">Product Name</th>
-                    <th scope="col">Sizing</th>
+                    <th scope="col">Sizes</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Price</th>
                   </tr>
@@ -108,7 +108,7 @@ $productSizing = explode(',',$description[2]);
                       </div>
                     </td>
                     <td>
-                      <input type="number" aria-label="Quantity" step="1" value="1" class="form-control">
+                      <input type="number" aria-label="Quantity" step="1" value="0" class="form-control">
                     </td>
                     <td>₱ <?php echo $product[0]['gp_price']; ?></td>
                   </tr>
