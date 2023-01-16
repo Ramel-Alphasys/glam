@@ -75,12 +75,19 @@ $productSizing = explode(',',$description[2]);
       <br>
       <br>
     </div>
-    <div class="container px-4 py-5 mt-1">
+    <div class="container">
       <form action="" method="POST" class="">
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <h2 class="pb-2">Checkout Details</h2>
-          <div class="">
-            <input type="submit" name="submit" class="btn btn-md border shadow-sm form-control" value="Checkout">
+          <div class="fixed-bottom container bg-white shadow-lg " style="max-width: 50rem; height: 5rem;">
+            <div class="row">
+              <div class="col text-center">Total Price: P100</div>
+              <div class="col text-center">
+                <div class="" style="width: 10rem;">
+                  <input type="submit" name="submit" class="btn btn-md border shadow-sm form-control" value="Checkout">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="row m-5">
@@ -96,7 +103,7 @@ $productSizing = explode(',',$description[2]);
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <!-- <tr>
                     <td><?php echo $productName;?></td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
@@ -111,7 +118,7 @@ $productSizing = explode(',',$description[2]);
                       <input type="number" aria-label="Quantity" step="1" value="0" class="form-control">
                     </td>
                     <td>₱ <?php echo $product[0]['gp_price']; ?></td>
-                  </tr>
+                  </tr> -->
                 </tbody>
               </table>
             </div>
@@ -119,7 +126,46 @@ $productSizing = explode(',',$description[2]);
         </div>
         <div class="row m-5">
           <div class="p-3 shadow-sm rounded">
-            <h5>Payment Method</h5>
+            <div class="form-check form-check-inline">
+              <h5>Payment Method:</h5>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashMode" value="GCash">
+              <label class="form-check-label" for="gcashMode">GCash</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="codMode" value="COD">
+              <label class="form-check-label" for="codMode">Cash On Delivery</label>
+            </div>
+          </div>
+          <div class="container p-3 d-none" id="payGCash">
+            <div class="card" style="width: 18rem; height: 18rem;">
+              <div class="card-body">QR here!</div>
+            </div>
+            <div class="mb-3" style="width: 18rem;">
+              <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
+              <input class="form-control form-control-sm" id="gcashReceipt" type="file">
+            </div>
+          </div>
+        </div>
+        <div class="row m-5">
+          <hr>
+          <div class="fs-5 fw-semibold mb-2">Terms and conditions</div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required title="terms and condition." aria-required="true">
+            <p class="form-check-label" for="flexCheckDefault">
+              <span>The terms and conditions are in relation to business and work carried out by the Glamorouza Boutique. It shall provide the details of the agreement that is formed between the customer and the glamorouza owner/staff. Upon the rent classified to be approved, it is considered that the customer accepted the terms and condition of the business/company provided. The glamorouza boutique terms and condition are as follows: </span><br>
+                <ul class="list-group ps-5 pb-3">
+                  <li>the customer shall provide accurate information in order to validate the reservation request. In accurate information shall lead to unsuccessful reservation.</li>
+                  <li>the customer shall provide down payment in order to reserve the selected apparel(s). (Can be online and non- online reservation)</li>
+                  <li>the Glamorouza boutique only provides 1 to 2 days  to return the rented apparel(s).</li>
+                  <li>returning of apparel(s) with damages shall be charges,  and can be discussed by owner and the customer.</li>
+                  <li>delayed of returning the apparel(s) with it's due date  shall be charges 100 each day and  each apparel.</li>
+                  <li>the Glamorouza boutique do not provide delivery. </li>
+                </ul>
+              <span class="pt-3">The terms and conditions of Glamorouza boutique provides a peaceful agreement and a good service to the customers.</span>
+              <br><br>
+            </p>
           </div>
         </div>
       </form>
@@ -130,6 +176,12 @@ $productSizing = explode(',',$description[2]);
   $(document).ready(function() {
     $(".menu-icon").on("click", function() {
       $("nav ul").toggleClass("showing");
+    });
+    $("#gcashMode").on("click", function() {
+      $("#payGCash").removeClass('d-none')
+    });
+    $("#codMode").on("click", function() {
+      $("#payGCash").addClass('d-none')
     });
   });
 </script>

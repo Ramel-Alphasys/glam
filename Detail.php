@@ -16,9 +16,9 @@ $response = $crud->sm_vr_server($params);
 $res = $response[0];
 $json = $res['gp_description'];
 $desArr = json_decode($json, true);
-$sizes = json_decode($desArr['Size'], true);
+$sizes = substr($desArr['Size'], 1, -1);
  
-print_r($desArr['Size']);
+print_r(explode(",", trim("'",$sizes)));
 
 ?>
 <!DOCTYPE html>
