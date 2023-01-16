@@ -49,7 +49,8 @@ try {
         ),
         array('db' => 'transaction_date', 'dt' => 'transaction_date'),
         array('db' => 'status', 'dt' => 'status'),
-        array('db' => 'due_date', 'dt' => 'due_date')
+        array('db' => 'due_date', 'dt' => 'due_date'),
+        array('db' => 'm_num', 'dt' => 'm_num')
     );
 
     // SQL server connection information
