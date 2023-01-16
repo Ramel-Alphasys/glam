@@ -4,7 +4,7 @@
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-10 22:31:10
+ * @ Modified time: 2023-01-11 22:53:39
  -->
  <div class="container-scroller">
 	<div class="container-fluid page-body-wrapper">
@@ -56,7 +56,7 @@
 																		<th>Id</th>
 																		<th>Customer</th>
 																		<th>Product</th>
-																		<th>Type</th>
+																		<th>Customer Mobile</th>
 																		<th>Price</th>
 																		<th>Payment</th>
 																		<th>Method</th>
@@ -94,8 +94,8 @@
 					</div>
 					<div style="padding: 10px;">
 						<p>
-							Type: 
-							${d.product_type}
+							Mobile Number: 
+							${d.m_num}
 						</p>
 					</div>
 					<div style="padding: 10px;">
@@ -137,7 +137,7 @@
 					{ data: 'due_date_Id'},
 					{ data: 'full_name' },
 					{ data: 'product_name' },
-					{ data: 'product_type' },
+					{ data: 'm_num' },
 					{ data: 'product_price' },
 					{ data: 'payment' },
 					{ data: 'method'},
@@ -180,7 +180,6 @@
 					$(this).addClass('selected');
 					selectedRows = table.$('tr.selected').length;
 				}
-				table.button( 0 ).enable( selectedRows === 1 );
 			}
 		});
 		// Array to track the ids of the details displayed rows
