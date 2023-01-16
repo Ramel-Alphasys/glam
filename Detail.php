@@ -16,9 +16,7 @@ $response = $crud->sm_vr_server($params);
 $res = $response[0];
 $json = $res['gp_description'];
 $desArr = json_decode($json, true);
-$sizes = substr($desArr['Size'], 1, -1);
- 
-print_r(explode(",", trim("'",$sizes)));
+$sizes = explode(",", str_replace("'","",substr($desArr['Size'], 1, -1)));
 
 ?>
 <!DOCTYPE html>
@@ -65,7 +63,7 @@ print_r(explode(",", trim("'",$sizes)));
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <h2 class="pb-2">Product Details</h2>
           <div class="">
-            <a class="btn btn-md btn-dark border shadow-sm form-control" href="PlaceOrder.php">Checkout</a>
+            <a class="btn btn-md btn-dark border shadow-sm form-control" href="<?php echo 'PlaceOrder.php?ProdId='.$res['gpId'];?>">Checkout</a>
           </div>
         </div>
       </div>
@@ -100,7 +98,7 @@ print_r(explode(",", trim("'",$sizes)));
           <div class="card-body">
             <h3 class="card-title me-5 ms-5"><?php echo $res['gp_name'] ?></h3><br>
             <h6 class="me-5 ms-5">Available Size: </h6>
-            <p class="card-text me-5 ms-5"><?php foreach($sizes as $s){ echo $s.' '; } ?></p><br>
+            <p class="card-text me-5 ms-5"><?php foreach($sizes as $s){ echo $s.', '; } ?></p><br>
             <h5 class="card-text me-5 ms-5">Description: </h5><br> 
             <p class="card-text me-5 ms-5"><?php echo $desArr['Description']; ?></p><br>
             <!-- <p class="card-text"><small class="text-muted"><?php echo $res['gp_type']; ?> occasion</small></p> -->
