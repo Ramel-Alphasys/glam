@@ -19,7 +19,7 @@ $params = array(
 );
 $userId = $_SESSION['userId'];
 if($userId == '') {
-  header("Location: glam/glamserver/?mode=client");
+  header("Location: glamserver/?mode=client");
   exit;
 }
 
@@ -79,14 +79,14 @@ $productSizing = explode(',',$description[2]);
       <form action="" method="POST" class="">
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <h2 class="pb-2">Checkout Details</h2>
-          <div class="fixed-bottom container bg-white shadow-lg " style="max-width: 50rem; height: 5rem;">
+          <div class="fixed-bottom container shadow-lg border" style="max-width: 50rem; height: 5rem;">
             <div class="row">
-              <div class="col text-center">Total Price: P100</div>
-              <div class="col text-center">
-                <div class="" style="width: 10rem;">
-                  <input type="submit" name="submit" class="btn btn-md border shadow-sm form-control" value="Checkout">
+              <div class="col text-center pt-4">
+                <div class="" =>
+                  <input type="submit" name="submit" class="btn btn-md border btn-dark shadow-sm form-control" value="Checkout">
                 </div>
               </div>
+              <div class="col text-center fs-5 pt-4"></div>
             </div>
           </div>
         </div>
@@ -127,20 +127,29 @@ $productSizing = explode(',',$description[2]);
         <div class="row m-5">
           <div class="p-3 shadow-sm rounded">
             <div class="form-check form-check-inline">
-              <h5>Payment Method:</h5>
+              <h5>GCash Payment:</h5>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashMode" value="GCash">
-              <label class="form-check-label" for="gcashMode">GCash</label>
+              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashFull" value="Full">
+              <label class="form-check-label" for="gcashFull">Full Payment</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="codMode" value="COD">
-              <label class="form-check-label" for="codMode">Cash On Delivery</label>
+              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashPartial" value="Partial">
+              <label class="form-check-label" for="gcashPartial">Partial Payment</label>
             </div>
           </div>
-          <div class="container p-3 d-none" id="payGCash">
+          <div class="container p-3 d-none" id="payFulGCash">
             <div class="card" style="width: 18rem; height: 18rem;">
-              <div class="card-body">QR here!</div>
+              <div class="card-body">Full Payment QR!</div>
+            </div>
+            <div class="mb-3" style="width: 18rem;">
+              <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
+              <input class="form-control form-control-sm" id="gcashReceipt" type="file">
+            </div>
+          </div>
+          <div class="container p-3 d-none" id="payParGCash">
+            <div class="card" style="width: 18rem; height: 18rem;">
+              <div class="card-body">Partial Payment QR!</div>
             </div>
             <div class="mb-3" style="width: 18rem;">
               <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
@@ -177,11 +186,13 @@ $productSizing = explode(',',$description[2]);
     $(".menu-icon").on("click", function() {
       $("nav ul").toggleClass("showing");
     });
-    $("#gcashMode").on("click", function() {
-      $("#payGCash").removeClass('d-none')
+    $("#gcashFull").on("click", function() {
+      $("#payFulGCash").removeClass('d-none')
+      $("#payParGCash").addClass('d-none')
     });
-    $("#codMode").on("click", function() {
-      $("#payGCash").addClass('d-none')
+    $("#gcashPartial").on("click", function() {
+      $("#payFulGCash").addClass('d-none')
+      $("#payParGCash").removeClass('d-none')
     });
   });
 </script>
