@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * @ Name: login.php
  * @ Purpose: file contains the connection from database to system
@@ -38,7 +38,7 @@ if (!empty($_POST['TYPE'])) {
                         'dbcon' => $conToServer
                     );
                     $crud->sm_ur_server($params);
-                }
+                }$_SESSION["userId"] = $checker[0]['guId'];
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $checker[0]['guId'], 'USERTYPE' => $checker[0]['gu_type'])) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);

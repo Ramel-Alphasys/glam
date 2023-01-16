@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 19:42:39
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-17 09:52:16
+ * @ Modified time: 2023-01-14 21:09:55
  * @ Change Log:
  */
 $(document).ready(function () {
@@ -215,6 +215,6 @@ $(document).ready(function () {
 			}
 		);
 	} else if (sessionStorage.page === "2") {
-		location.href = "../Profile.php";
+		location.href = "http://localhost/glam/Profile.php";
 	}
 });

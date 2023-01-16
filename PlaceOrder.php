@@ -1,17 +1,39 @@
 <?php
-
 /**
  * @ Name: Product.php
  * @ Purpose: file contains the connection from database to system
  * @ Author: Metz Tamz
  * 
  */
-
+session_start();
 require 'glamserver\assets\php\database.php';
 require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
+$_SESSION['prodId'] = 6;
+$params = array(
+  'fields' => '*',
+  'table' => 'g_product',
+  'filter' => 'WHERE gpId = '.$_SESSION['prodId'],
+  'dbcon' => $serverConn
+);
+$userId = $_SESSION['userId'];
+if($userId == '') {
+  header("Location: glam/glamserver/?mode=client");
+  exit;
+}
 
+$product = $crud->sm_vr_server($params);
+print_r($product);
+$productName = $product[0]['gp_name'];
+$description = $product[0]['gp_description'];
+$description = str_replace('{', '', $description);
+$description = str_replace('}', '', $description);
+$description = explode('":"', $description);
+$description[2] = str_replace('"','',$description[2]);
+$description[2] = str_replace('[','',$description[2]);
+$description[2] = str_replace(']','',$description[2]);
+$productSizing = explode(',',$description[2]);
 ?>
 
 <!DOCTYPE html>
@@ -68,33 +90,27 @@ $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-Jq
                 <thead>
                   <tr>
                     <th scope="col">Product Name</th>
-                    <th scope="col">Sizing</th>
+                    <th scope="col">Sizes</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Price</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Product #1</td>
+                    <td><?php echo $productName;?></td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck1">Small</label>
-
-                        <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck2">Medium</label>
-
-                        <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck3">Large</label>
-
-                        <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck4">XL</label>
+                      <?php
+                        foreach ($productSizing as $x => $val) {
+                          echo '<input type="checkbox" class="btn-check" id="btncheck'.$x.'" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck'.$x.'">'.$productSizing[$x].'</label>';
+                        }
+                      ?>
                       </div>
                     </td>
                     <td>
-                      <input type="number" aria-label="Quantity" class="form-control">
+                      <input type="number" aria-label="Quantity" step="1" value="0" class="form-control">
                     </td>
-                    <td>P 100</td>
+                    <td>₱ <?php echo $product[0]['gp_price']; ?></td>
                   </tr>
                 </tbody>
               </table>

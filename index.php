@@ -7,6 +7,7 @@ $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-Jq
 $params = array(
   'fields' => '*',
   'table' => 'g_product',
+  'filter' => 'LIMIT 3',
   'dbcon' => $serverConn
 );
 
@@ -81,27 +82,16 @@ $featured = $crud->sm_vr_server($params);
       <div class="container marketing">
         <!-- Carousel Content-->
         <div class="row">
-
-          <div class="col-lg-4">
-            <img src="assets/img/img1.png" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
-            <h2 class="fw-normal">Product 1</h2>
-            <p>Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
-            <p><a class="btn btn-dark shadow-sm" href="Product.php">View More Product</a></p>
-          </div>
-
-          <div class="col-lg-4">
-            <img src="assets/img/img2.png" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
-            <h2 class="fw-normal">Product 2</h2>
-            <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
-            <p><a class="btn btn-dark shadow-sm" href="Product.php">View More Product</a></p>
-          </div>
-
-          <div class="col-lg-4">
-            <img src="assets/img/img3.png" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
-            <h2 class="fw-normal">Product 3</h2>
-            <p>And lastly this, the third column of representative placeholder content.</p>
-            <p><a class="btn btn-dark shadow-sm" href="Product.php">View More Product</a></p>
-          </div>
+          <?php if($featured != null) { 
+                    foreach($featured as $ft) {
+          ?>
+            <div class="col-lg-4">
+              <img src="assets/img/img1.png" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
+              <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php<?php echo 'Product.php?Product='.$ft['gpId']; ?>">View More Product</a></p>
+              <h4 class="fw-normal"><?php echo $ft['gp_name']; ?></h4>
+            </div>
+          <?php };
+            }; ?>
 
         </div>
         <hr class="featurette-divider">
@@ -148,7 +138,7 @@ $featured = $crud->sm_vr_server($params);
 
       </div>
       <footer class="container">
-        <p><strong>2022 &copy;</strong> Glamurousa &middot; </p>
+        <p><strong><?php echo date("Y"); ?> &copy;</strong> Glamurousa &middot; </p>
       </footer>
     </main>
   </body>

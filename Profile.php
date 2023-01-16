@@ -1,4 +1,5 @@
 <?php
+	session_start();
 
 	require 'glamserver\assets\php\database.php';
 	require 'glamserver\assets\php\CRUD.php';
@@ -10,6 +11,12 @@
 		'table' => 'g_customer',
 		'dbcon' => $serverConn
 	);
+	
+	$userId = $_SESSION['userId'];
+	if($userId == '') {
+		header("Location: glamserver/?mode=client");
+		exit;
+	}
 	$information = $crud->sm_vr_server($params);
 	$info = $information[0];
 	$cus_add = explode(',',$info['gc_address']);
