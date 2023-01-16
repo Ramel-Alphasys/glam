@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @ Name: Product.php
  * @ Purpose: file contains the connection from database to system
@@ -10,30 +11,29 @@ require 'glamserver\assets\php\database.php';
 require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
-$_SESSION['prodId'] = 6;
+
 $params = array(
   'fields' => '*',
   'table' => 'g_product',
-  'filter' => 'WHERE gpId = '.$_SESSION['prodId'],
+  'filter' => 'WHERE gpId = ' . $_GET['ProdId'],
   'dbcon' => $serverConn
 );
 $userId = $_SESSION['userId'];
-if($userId == '') {
+if ($userId == '') {
   header("Location: glamserver/?mode=client");
   exit;
 }
 
 $product = $crud->sm_vr_server($params);
-print_r($product);
 $productName = $product[0]['gp_name'];
 $description = $product[0]['gp_description'];
 $description = str_replace('{', '', $description);
 $description = str_replace('}', '', $description);
 $description = explode('":"', $description);
-$description[2] = str_replace('"','',$description[2]);
-$description[2] = str_replace('[','',$description[2]);
-$description[2] = str_replace(']','',$description[2]);
-$productSizing = explode(',',$description[2]);
+$description[2] = str_replace('"', '', $description[2]);
+$description[2] = str_replace('[', '', $description[2]);
+$description[2] = str_replace(']', '', $description[2]);
+$productSizing = explode(',', $description[2]);
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +82,7 @@ $productSizing = explode(',',$description[2]);
           <div class="fixed-bottom container shadow-lg border" style="max-width: 50rem; height: 5rem;">
             <div class="row">
               <div class="col text-center pt-4">
-                <div class="" =>
+                <div class=""=>
                   <input type="submit" name="submit" class="btn btn-md border btn-dark shadow-sm form-control" value="Checkout">
                 </div>
               </div>
@@ -103,22 +103,22 @@ $productSizing = explode(',',$description[2]);
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- <tr>
-                    <td><?php echo $productName;?></td>
+                  <tr>
+                    <td><?php echo $productName; ?></td>
                     <td>
                       <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                      <?php
+                        <?php
                         foreach ($productSizing as $x => $val) {
-                          echo '<input type="checkbox" class="btn-check" id="btncheck'.$x.'" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck'.$x.'">'.$productSizing[$x].'</label>';
+                          echo '<input type="checkbox" class="btn-check" id="btncheck' . $x . '" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck' . $x . '">' . $productSizing[$x] . '</label>';
                         }
-                      ?>
+                        ?>
                       </div>
                     </td>
                     <td>
                       <input type="number" aria-label="Quantity" step="1" value="0" class="form-control">
                     </td>
                     <td>₱ <?php echo $product[0]['gp_price']; ?></td>
-                  </tr> -->
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -140,7 +140,7 @@ $productSizing = explode(',',$description[2]);
           </div>
           <div class="container p-3 d-none" id="payFulGCash">
             <div class="card" style="width: 18rem; height: 18rem;">
-              <div class="card-body">Full Payment QR!</div>
+              <div class="card-body"><img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?php echo '/glam/glamserver/assets/qrcodes/' . $product[0]['gp_gcash_qr']; ?>" /></div>
             </div>
             <div class="mb-3" style="width: 18rem;">
               <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
@@ -164,16 +164,16 @@ $productSizing = explode(',',$description[2]);
             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required title="terms and condition." aria-required="true">
             <p class="form-check-label" for="flexCheckDefault">
               <span>The terms and conditions are in relation to business and work carried out by the Glamorouza Boutique. It shall provide the details of the agreement that is formed between the customer and the glamorouza owner/staff. Upon the rent classified to be approved, it is considered that the customer accepted the terms and condition of the business/company provided. The glamorouza boutique terms and condition are as follows: </span><br>
-                <ul class="list-group ps-5 pb-3">
-                  <li>the customer shall provide accurate information in order to validate the reservation request. In accurate information shall lead to unsuccessful reservation.</li>
-                  <li>the customer shall provide down payment in order to reserve the selected apparel(s). (Can be online and non- online reservation)</li>
-                  <li>the Glamorouza boutique only provides 1 to 2 days  to return the rented apparel(s).</li>
-                  <li>returning of apparel(s) with damages shall be charges,  and can be discussed by owner and the customer.</li>
-                  <li>delayed of returning the apparel(s) with it's due date  shall be charges 100 each day and  each apparel.</li>
-                  <li>the Glamorouza boutique do not provide delivery. </li>
-                </ul>
-              <span class="pt-3">The terms and conditions of Glamorouza boutique provides a peaceful agreement and a good service to the customers.</span>
-              <br><br>
+            <ul class="list-group ps-5 pb-3">
+              <li>the customer shall provide accurate information in order to validate the reservation request. In accurate information shall lead to unsuccessful reservation.</li>
+              <li>the customer shall provide down payment in order to reserve the selected apparel(s). (Can be online and non- online reservation)</li>
+              <li>the Glamorouza boutique only provides 1 to 2 days to return the rented apparel(s).</li>
+              <li>returning of apparel(s) with damages shall be charges, and can be discussed by owner and the customer.</li>
+              <li>delayed of returning the apparel(s) with it's due date shall be charges 100 each day and each apparel.</li>
+              <li>the Glamorouza boutique do not provide delivery. </li>
+            </ul>
+            <span class="pt-3">The terms and conditions of Glamorouza boutique provides a peaceful agreement and a good service to the customers.</span>
+            <br><br>
             </p>
           </div>
         </div>
