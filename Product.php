@@ -79,9 +79,9 @@ $response = $crud->sm_vr_server($params);
                 </div>
               </div>
             </a>
-          <?php }; ?>
-        <?php }; ?>
-        <?php if( gettype($response) == 'NULL') {?>
+          <?php }; 
+        };
+        if( gettype($response) == 'NULL') {?>
           <p>No Product to show.</p>
         <?php }; ?>
         <!-- <a href="Detail.php?" class="col text-decoration-none">
