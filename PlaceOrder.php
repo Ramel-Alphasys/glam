@@ -25,6 +25,7 @@ if ($userId == '') {
 }
 
 $product = $crud->sm_vr_server($params);
+print_r($product);
 $productName = $product[0]['gp_name'];
 $description = $product[0]['gp_description'];
 $description = str_replace('{', '', $description);
@@ -76,13 +77,15 @@ $productSizing = explode(',', $description[2]);
       <br>
     </div>
     <div class="container">
-      <form action="" method="POST" class="">
+      <form action="assets\php\saveTransac.php" method="POST" enctype="multipart/form-data">
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <h2 class="pb-2">Checkout Details</h2>
           <div class="fixed-bottom container shadow-lg border" style="max-width: 50rem; height: 5rem;">
             <div class="row">
               <div class="col text-center pt-4">
-                <div class=""=>
+                <div class="">
+                  <input type="text" name="prudId" value="<?php echo $product[0]['gpId']; ?>" hidden>
+                  <input id="selectedSize" type="text" name="selectedSize" value="" hidden>
                   <input type="submit" name="submit" class="btn btn-md border btn-dark shadow-sm form-control" value="Checkout">
                 </div>
               </div>
@@ -109,13 +112,13 @@ $productSizing = explode(',', $description[2]);
                       <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <?php
                         foreach ($productSizing as $x => $val) {
-                          echo '<input type="checkbox" class="btn-check" id="btncheck' . $x . '" autocomplete="off"><label class="btn btn-outline-primary" for="btncheck' . $x . '">' . $productSizing[$x] . '</label>';
+                          echo '<input type="checkbox" name="sizing" data-value="' . $productSizing[$x] . '" class="btn-check" id="btncheck' . $x . '" autocomplete="off" onclick="countMeter(this)" /><label class="btn btn-outline-primary" for="btncheck' . $x . '">' . $productSizing[$x] . '</label>';
                         }
                         ?>
                       </div>
                     </td>
                     <td>
-                      <input type="number" aria-label="Quantity" step="1" value="0" class="form-control">
+                      <input id='counter' name="counter" type="number" aria-label="Quantity" step="1" max="<?php echo $product[0]['gp_count']; ?>" value="0" class="form-control">
                     </td>
                     <td>₱ <?php echo $product[0]['gp_price']; ?></td>
                   </tr>
@@ -130,11 +133,11 @@ $productSizing = explode(',', $description[2]);
               <h5>GCash Payment:</h5>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashFull" value="Full">
+              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashFull" value="Full" required>
               <label class="form-check-label" for="gcashFull">Full Payment</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashPartial" value="Partial">
+              <input class="form-check-input pay-mod" type="radio" name="paymentMode" id="gcashPartial" value="Partial" required>
               <label class="form-check-label" for="gcashPartial">Partial Payment</label>
             </div>
           </div>
@@ -144,7 +147,7 @@ $productSizing = explode(',', $description[2]);
             </div>
             <div class="mb-3" style="width: 18rem;">
               <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
-              <input class="form-control form-control-sm" id="gcashReceipt" type="file">
+              <input class="form-control form-control-sm" name="full" id="gcashReceipt" type="file" />
             </div>
           </div>
           <div class="container p-3 d-none" id="payParGCash">
@@ -153,7 +156,7 @@ $productSizing = explode(',', $description[2]);
             </div>
             <div class="mb-3" style="width: 18rem;">
               <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
-              <input class="form-control form-control-sm" id="gcashReceipt" type="file">
+              <input class="form-control form-control-sm" name="partial" id="gcashReceipt" type="file" />
             </div>
           </div>
         </div>
@@ -161,7 +164,7 @@ $productSizing = explode(',', $description[2]);
           <hr>
           <div class="fs-5 fw-semibold mb-2">Terms and conditions</div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" required title="terms and condition." aria-required="true">
+            <input class="form-check-input" type="checkbox" name="onCheck" id="flexCheckDefault" required title="terms and condition." aria-required="true">
             <p class="form-check-label" for="flexCheckDefault">
               <span>The terms and conditions are in relation to business and work carried out by the Glamorouza Boutique. It shall provide the details of the agreement that is formed between the customer and the glamorouza owner/staff. Upon the rent classified to be approved, it is considered that the customer accepted the terms and condition of the business/company provided. The glamorouza boutique terms and condition are as follows: </span><br>
             <ul class="list-group ps-5 pb-3">
@@ -195,6 +198,33 @@ $productSizing = explode(',', $description[2]);
       $("#payParGCash").removeClass('d-none')
     });
   });
+  var sizesSelected = [];
+
+  function countMeter(event) {
+    if (event.checked) {
+      var limit = parseInt(<?php echo $product[0]['gp_count']; ?>);
+      var num = parseInt(document.getElementById('counter').value);
+      if (num < limit) {
+        num++;
+      }
+      document.getElementById('counter').value = num;
+      if (sizesSelected.findIndex(row => row === event.dataset.value) == -1) {
+        sizesSelected.push(event.dataset.value);
+      }
+    } else {
+      var limit = parseInt(<?php echo $product[0]['gp_count']; ?>);
+      var num = parseInt(document.getElementById('counter').value);
+      if (num > 0) {
+        num--;
+      }
+      document.getElementById('counter').value = num;
+      if (sizesSelected.findIndex(row => row === event.dataset.value) != -1) {
+        sizesSelected.splice(sizesSelected.findIndex(row => row === event.dataset.value), 1);
+      }
+    }
+    document.getElementById('selectedSize').value = sizesSelected;
+    console.warn("Log:  => countMeter => sizesSelected", sizesSelected);
+  }
 </script>
 
 </html>
