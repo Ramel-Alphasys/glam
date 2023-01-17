@@ -14,9 +14,15 @@ $params = array(
 );
 $response = $crud->sm_vr_server($params);
 $res = $response[0];
-$json = $res['gp_description'];
-$desArr = json_decode($json, true);
-$sizes = explode(",", str_replace("'","",substr($desArr['Size'], 1, -1)));
+$productName = $response[0]['gp_name'];
+$description = $response[0]['gp_description'];
+$description = str_replace('{', '', $description);
+$description = str_replace('}', '', $description);
+$description = explode('":"', $description);
+$description[2] = str_replace('"', '', $description[2]);
+$description[2] = str_replace('[', '', $description[2]);
+$description[2] = str_replace(']', '', $description[2]);
+$productSizing = explode(',', $description[2]);
 
 ?>
 <!DOCTYPE html>
@@ -98,9 +104,15 @@ $sizes = explode(",", str_replace("'","",substr($desArr['Size'], 1, -1)));
           <div class="card-body">
             <h3 class="card-title me-5 ms-5"><?php echo $res['gp_name'] ?></h3><br>
             <h6 class="me-5 ms-5">Available Size: </h6>
-            <p class="card-text me-5 ms-5"><?php foreach($sizes as $s){ echo $s.', '; } ?></p><br>
+            <p class="card-text me-5 ms-5">
+              <?php 
+                foreach($productSizing as $s => $cn){ 
+                  echo '<span class="badge rounded-pill text-bg-dark">'. $productSizing[$s] .'</span> '; 
+                } 
+              ?>
+            </p><br>
             <h5 class="card-text me-5 ms-5">Description: </h5><br> 
-            <p class="card-text me-5 ms-5"><?php echo $desArr['Description']; ?></p><br>
+            <p class="card-text me-5 ms-5"><?php echo strstr($description[1], '"', true); ?></p><br>
             <!-- <p class="card-text"><small class="text-muted"><?php echo $res['gp_type']; ?> occasion</small></p> -->
           </div>
         </div>
