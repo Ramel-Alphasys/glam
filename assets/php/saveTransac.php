@@ -30,7 +30,8 @@ $params = array(
 $transac = $crud->sm_cr_server($params);
 
 if (move_uploaded_file($_FILES['full']['tmp_name'], $uploadfile)) {
-    echo "File is valid, and was successfully uploaded.";
+    echo "Transaction Made.";
+    header("Location: ..\..\Order.php");
 } else {
     echo "Upload failed";
 }
