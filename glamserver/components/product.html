@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-08 23:41:33
+ * @ Modified time: 2023-01-18 23:32:07
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -159,11 +159,11 @@
 				if(temp.length > 2) {
 					temp[2] = JSON.parse(temp[2].substring(1).slice(0,-1));
 				}else {
-					temp[2] = 'All size';
+					temp[2] = 'Package - All sizes';
 				}
 			}else {
 				temp[0] = d.gp_description;
-				temp[2] = 'All size';
+				temp[2] = 'Package - All sizes';
 			}
 			if(d.gp_gcash_qr) {
 				qr = `

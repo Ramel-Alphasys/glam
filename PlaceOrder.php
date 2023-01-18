@@ -37,7 +37,7 @@ if (empty($findingCollon)) {
   $description[2] = str_replace(']', '', $description[2]);
   $productSizing = explode(',', $description[2]);
 } else {
-  $productSizing = ['All size'];
+  $productSizing = ['Package - All sizes'];
 }
 ?>
 
@@ -84,12 +84,14 @@ if (empty($findingCollon)) {
       <form action="assets\php\saveTransac.php" method="POST" enctype="multipart/form-data">
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <h2 class="pb-2">Checkout Details</h2>
-          <div class="fixed-bottom container shadow-lg border" style="max-width: 50rem; height: 5rem;">
+          <div class="fixed-bottom container shadow-lg border bg-light" style="max-width: 50rem; height: 5rem;">
             <div class="row">
               <div class="col text-center pt-4">
                 <div class="">
                   <input type="text" name="prudId" value="<?php echo $product[0]['gpId']; ?>" hidden>
                   <input id="selectedSize" type="text" name="selectedSize" value="" hidden>
+                  <input id="price" type="text" name="price" value="" hidden>
+                  <input type="text" name="userId" value="<?php echo $userId; ?>" hidden>
                   <input type="submit" name="submit" class="btn btn-md border btn-dark shadow-sm form-control" value="Checkout">
                 </div>
               </div>
@@ -208,10 +210,13 @@ if (empty($findingCollon)) {
     if (event.checked) {
       var limit = parseInt(<?php echo $product[0]['gp_count']; ?>);
       var num = parseInt(document.getElementById('counter').value);
+      console.warn("Log:  => countMeter => num", num);
       if (num < limit) {
         num++;
       }
+      var price = (parseFloat(<?php echo $product[0]['gp_price']; ?>) * num).toFixed(2);
       document.getElementById('counter').value = num;
+      document.getElementById('price').value = price;
       if (sizesSelected.findIndex(row => row === event.dataset.value) == -1) {
         sizesSelected.push(event.dataset.value);
       }
@@ -221,7 +226,9 @@ if (empty($findingCollon)) {
       if (num > 0) {
         num--;
       }
+      var price = (parseFloat(<?php echo $product[0]['gp_price']; ?>) * num).toFixed(2);
       document.getElementById('counter').value = num;
+      document.getElementById('price').value = price;
       if (sizesSelected.findIndex(row => row === event.dataset.value) != -1) {
         sizesSelected.splice(sizesSelected.findIndex(row => row === event.dataset.value), 1);
       }
