@@ -25,16 +25,20 @@ if ($userId == '') {
 }
 
 $product = $crud->sm_vr_server($params);
-print_r($product);
 $productName = $product[0]['gp_name'];
 $description = $product[0]['gp_description'];
 $description = str_replace('{', '', $description);
 $description = str_replace('}', '', $description);
-$description = explode('":"', $description);
-$description[2] = str_replace('"', '', $description[2]);
-$description[2] = str_replace('[', '', $description[2]);
-$description[2] = str_replace(']', '', $description[2]);
-$productSizing = explode(',', $description[2]);
+$findingCollon = strpos($description, ":");
+if (empty($findingCollon)) {
+  $description = explode('":"', $description);
+  $description[2] = str_replace('"', '', $description[2]);
+  $description[2] = str_replace('[', '', $description[2]);
+  $description[2] = str_replace(']', '', $description[2]);
+  $productSizing = explode(',', $description[2]);
+} else {
+  $productSizing = ['All size'];
+}
 ?>
 
 <!DOCTYPE html>
