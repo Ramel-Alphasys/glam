@@ -6,7 +6,7 @@ session_start();
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 22:31:42
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-17 09:45:50
+ * @ Modified time: 2023-01-18 21:16:55
  * @ Change Log:
  */
 require 'database.php';
@@ -38,7 +38,8 @@ if (!empty($_POST['TYPE'])) {
                         'dbcon' => $conToServer
                     );
                     $crud->sm_ur_server($params);
-                }$_SESSION["userId"] = $checker[0]['guId'];
+                }
+                $_SESSION["userId"] = $checker[0]['guId'];
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $checker[0]['guId'], 'USERTYPE' => $checker[0]['gu_type'])) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
@@ -109,6 +110,33 @@ if (!empty($_POST['TYPE'])) {
                 );
                 $crud->sm_cr_server($params);
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $userId, 'USERTYPE' => 1)) : json_encode(['STATUS' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'settingsDetails':
+            try {
+                $params = array(
+                    'fields' => '*',
+                    'table' => 'g_settings',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'saveSettingsDetails':
+            try {
+                $params = array(
+                    'fields' => "{$_POST['API']}={$_POST['VALUE']}",
+                    'filter' => "g_id = 0",
+                    'table' => 'g_settings',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_ur_server($params);
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }

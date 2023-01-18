@@ -38,22 +38,19 @@
 													<div class="card">
 													  <div class="card-body">
 													    <h4 class="card-title">Categories</h4>
-													    <p class="card-description">
-														<button type="button" class="btn btn-primary btn-sm">new category</button>
-													    </p>
 													    <div class="table-responsive">
-														 <table class="table">
-														   <thead>
-															<tr>
-															  <th>Category Name</th>
-															</tr>
-														   </thead>
-														   <tbody>
-															<tr>
-															  <td>53275531</td>
-															</tr>
-														   </tbody>
-														 </table>
+															<table
+																id="categoryTable"
+																class="table table-striped"
+																style="width: 100%"
+															>
+																<thead>
+																	<tr>
+																		<th>Id</th>
+																		<th>Category Name</th>
+																	</tr>
+																</thead>
+															</table>
 													    </div>
 													  </div>
 													</div>
@@ -61,30 +58,20 @@
 												<div class="col-lg-6 grid-margin stretch-card">
 													<div class="card">
 													  <div class="card-body">
-													    <h4 class="card-title">Basic Table</h4>
-													    <p class="card-description">
-														 Add class <code>.table</code>
-													    </p>
+													    <h4 class="card-title">System Settings</h4>
 													    <div class="statistics-details d-flex align-items-center justify-content-between">
 															<div>
 																<p class="statistics-title">Penalty</p>
-																<h3 class="rate-percentage">₱100 per day</h3>
-															</div>
-															<!-- <div>
-															<p class="statistics-title">Rentals (Walk in)</p>
-															<h3 class="rate-percentage">₱<span id="totalWalkin"></span><br />this year</h3>
-															<p id="totalWalkinper" class="d-flex"></p>
+																<h3 class="rate-percentage">₱<span id="penalty" data-api="g_penalty" contenteditable="true"></span> per day</h3>
 															</div>
 															<div>
-															<p class="statistics-title">Rentals (Cash on delivery)</p>
-															<h3 class="rate-percentage">₱<span id="totalCOD"></span><br />this year</h3>
-															<p id="totalCODper" class="d-flex"></p>
+																<p class="statistics-title">Shipping Fee</p>
+																<h3 class="rate-percentage">₱<span id="shippingFee" data-api="g_shipping_fee" contenteditable="true"></span> per shipping</h3>
 															</div>
-															<div class="d-none d-md-block">
-															<p class="statistics-title">Total Rental Revenue</p>
-															<h3 class="rate-percentage">₱<span id="totalTR"></span><br />this year</h3>
-															<p id="totalTRper" class="d-flex"></p>
-															</div> -->
+															<div>
+																<p class="statistics-title">Days Till Due</p>
+																<h3 class="rate-percentage"><span id="daysDue" data-api="g_days_till_due" contenteditable="true"></span> day/s till due</h3>
+															</div>
 														</div>
 													  </div>
 													</div>
@@ -112,8 +99,126 @@
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="CategoryModal" tabindex="-1" role="dialog" aria-labelledby="CategoryModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-s" role="document">
+		<div class="modal-content" style="max-height: 500px;">
+			<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLongTitle">Category Record</h5>
+			</div>
+			<div class="modal-body" style="overflow-x: auto;">
+				<div class="form-group">
+					<label for="CategoryName"><i class="mdi mdi-regex text-danger"></i> Category Name</label>
+					<input type="text" class="form-control" id="CategoryName" placeholder="Category name here...">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="saveRecord" type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
-	$(document).ready(function () {
+	function saveChanges(params) {
+		$.ajax({
+			type: "POST",
+			url: "/glam/glamserver/assets/php/login.php",
+			data: {"TYPE": "saveSettingsDetails", 'API': params[0], 'VALUE': params[1]},
+			dataType: "json",
+		}).done((data) => {
+			if(data.STATUS == 1) {
+				
+			}
+		});
+	}
 
+	var table = $("#categoryTable").DataTable({
+		dom: "Bfrtip",
+		select: true,
+		buttons: [{
+			text: "<i class=\"mdi mdi-file-import\"></i> New Record",
+			className: "createCategoryRecord",
+			action: function( e, dt, node, config ) {
+				$('#CategoryModal').modal('show');
+			}
+		},{
+			text: "<i class=\"mdi mdi-file-send\"></i> Update Selected Row",
+			className: "createCategoryRecord",
+			action: function( e, dt, node, config ) {
+				$('#CategoryModal').modal('show');
+			},
+			enabled: false
+		},{
+			text: "<i class=\"mdi mdi-delete-forever\"></i> Delete Record",
+			className: "createCategoryRecord",
+			action: function( e, dt, node, config ) {
+				var record = dt.row('.selected').data();
+			},
+			enabled: false
+		},],
+		lengthMenu: [
+			[1, -1],
+			[1, 'All'],
+		],
+		pagingType: 'full',
+		processing: true,
+		serverSide: true,
+		ajax: "assets/php/settings.php",
+		columns: [
+				{ data: 'gcatId' },
+				{ data: 'gcat_name' },
+		],
+		columnDefs: [
+			{
+				target: [0],
+				visible: false,
+				searchable: false,
+			},
+		],
+		stateSave: true,
+		initComplete: function () {
+
+		}
+	});
+
+	$('#categoryTable tbody').on('click', 'tr', function () {
+		var selectedRows;
+		if(this.classList.value != '') {
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected');
+				selectedRows = table.$('tr.selected').length;
+			} else {
+				table.$('tr.selected').removeClass('selected');
+				$(this).addClass('selected');
+				selectedRows = table.$('tr.selected').length;
+			}
+			table.button( 1 ).enable( selectedRows === 1 );
+			table.button( 2 ).enable( selectedRows === 1 );
+		}
+	});
+
+	$(document).ready(function () {
+		$('#CategoryModal').modal('hide');
+		$('#penalty').on('DOMSubtreeModified',event => {
+			saveChanges([event.target.dataset.api,event.target.innerText]);
+		});
+		$('#shippingFee').on('DOMSubtreeModified',event => {
+			saveChanges([event.target.dataset.api,event.target.innerText]);
+		});
+		$('#daysDue').on('DOMSubtreeModified',event => {
+			saveChanges([event.target.dataset.api,event.target.innerText]);
+		});
+		$.ajax({
+			type: "POST",
+			url: "/glam/glamserver/assets/php/login.php",
+			data: {"TYPE": "settingsDetails"},
+			dataType: "json",
+		}).done((data) => {
+			if(data.STATUS == 1) {
+				$('#penalty').text(data.Data[0].g_penalty);
+				$('#shippingFee').text(data.Data[0].g_shipping_fee);
+				$('#daysDue').text(data.Data[0].g_days_till_due);
+			}
+		});
 	});
 </script>
