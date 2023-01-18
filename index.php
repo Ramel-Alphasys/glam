@@ -86,7 +86,7 @@ $featured = $crud->sm_vr_server($params);
                     foreach($featured as $ft) {
           ?>
             <div class="col-lg-4">
-              <img src="assets/img/img1.png" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
+              <img src="<?php echo "glamserver/assets/contents/".$ft['gp_product_img']."" ?>" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
               <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php">View More Product</a></p>
               <h4 class="fw-normal"><?php echo $ft['gp_name']; ?></h4>
             </div>

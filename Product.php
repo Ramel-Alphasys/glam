@@ -64,7 +64,7 @@ $response = $crud->sm_vr_server($params);
         <?php if( gettype($response) != 'NULL') {?>
           <?php foreach ($response as $resp) { ?>
             <a href="<?php echo 'Detail.php?Product=' . $resp['gpId'] ?>" class="col text-decoration-none">
-              <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('assets/img/img4.png');">
+              <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="<?php echo "background-image: url('glamserver/assets/contents/".$resp['gp_product_img']."');" ?>">
                 <div class="d-flex flex-column h-100 p-3 text-shadow-1">
                   <ul class="d-flex list-unstyled">
                     <li class="d-flex align-items-center">
@@ -75,7 +75,9 @@ $response = $crud->sm_vr_server($params);
                       <?php } ?>
                     </li>
                   </ul>
-                  <h2 class="pt-5 mt-5 mb-4 display-7 lh-1"><?php echo $resp['gp_name'] ?></h2>
+                  <h2 class="mt-5 mb-4 display-7 lh-base">
+                    <span class="text-bg-dark bg-opacity-10"><?php echo $resp['gp_name'] ?></span>
+                  </h2>
                 </div>
               </div>
             </a>

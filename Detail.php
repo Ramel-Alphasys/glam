@@ -19,10 +19,13 @@ $description = $response[0]['gp_description'];
 $description = str_replace('{', '', $description);
 $description = str_replace('}', '', $description);
 $description = explode('":"', $description);
-$description[2] = str_replace('"', '', $description[2]);
-$description[2] = str_replace('[', '', $description[2]);
-$description[2] = str_replace(']', '', $description[2]);
-$productSizing = explode(',', $description[2]);
+$productSizing = [];
+if(count($description) > 2) {
+  $description[2] = str_replace('"', '', $description[2]);
+  $description[2] = str_replace('[', '', $description[2]);
+  $description[2] = str_replace(']', '', $description[2]);
+  $productSizing = explode(',', $description[2]);
+}
 
 ?>
 <!DOCTYPE html>
@@ -83,14 +86,14 @@ $productSizing = explode(',', $description[2]);
           <div id="ItemPreview" class="carousel slide carousel-fade m-5" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active" data-bs-interval="1000">
-                <img src="assets/img/img1.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
+                <img src="<?php echo "glamserver/assets/contents/".$res['gp_product_img']; ?>" class="d-block rounded w-100" alt="..." style="height: 540px;">
               </div>
-              <div class="carousel-item" data-bs-interval="1000">
+              <!-- <div class="carousel-item" data-bs-interval="1000">
                 <img src="assets/img/img3.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
               </div>
               <div class="carousel-item" data-bs-interval="1000">
                 <img src="assets/img/img1.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
-              </div>
+              </div> -->
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#ItemPreview" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -106,13 +109,26 @@ $productSizing = explode(',', $description[2]);
             <h6 class="me-5 ms-5">Available Size: </h6>
             <p class="card-text me-5 ms-5">
               <?php 
-                foreach($productSizing as $s => $cn){ 
-                  echo '<span class="badge rounded-pill text-bg-dark">'. $productSizing[$s] .'</span> '; 
-                } 
+              // print_r(count($productSizing));
+                if( count($productSizing) > 1) {
+                  foreach($productSizing as $s => $cn){ 
+                    echo '<span class="badge rounded-pill text-bg-dark">'. $productSizing[$s] .'</span> '; 
+                  } 
+                } else {
+                  echo '<span class="badge rounded-pill text-bg-dark">Package</span> '; 
+                }
               ?>
             </p><br>
             <h5 class="card-text me-5 ms-5">Description: </h5><br> 
-            <p class="card-text me-5 ms-5"><?php echo strstr($description[1], '"', true); ?></p><br>
+            <p class="card-text me-5 ms-5">
+              <?php
+              if(count($description) > 1) {
+                echo strstr($description[1], '"', true); 
+              } else {
+                echo 'No desctiption added.';
+              }
+              ?>
+            </p><br>
             <!-- <p class="card-text"><small class="text-muted"><?php echo $res['gp_type']; ?> occasion</small></p> -->
           </div>
         </div>

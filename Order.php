@@ -6,16 +6,16 @@ require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
-// $userId = $_SESSION['userId'];
-// if($userId == '') {
-//   header("Location: glamserver/?mode=client");
-//   exit;
-// }
+$userId = $_SESSION['userId'];
+if($userId == '') {
+  header("Location: glamserver/?mode=client");
+  exit;
+}
 
 $params = array(
   'fields' => '*',
   'table' => 'g_transactions',
-  // 'filter' => 'WHERE gt_gcId='.$userId,
+  'filter' => 'WHERE gt_gcId='.$userId,
   'dbcon' => $serverConn
 );
 
