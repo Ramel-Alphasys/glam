@@ -314,7 +314,7 @@ $('#createTransac').on('click', event => {
         data: {"TYPE": "newTransaction","transactionRecords": selectedProducts},
         dataType: "json",
     }).done((data) => {
-        if(data.Response != 0) {
+        if(data.MESSAGE != 0) {
             $.notify({
                 title: 'Success!',
                 message: `Transaction created.`,
@@ -330,7 +330,7 @@ $('#createTransac').on('click', event => {
             sessionStorage.page='rentalStat';
             location.reload();
         }else {
-            console.warn(`🚀newTransaction => data`, data);
+            console.warn(`🚀newTransaction => data`, data.MESSAGE);
         }
     });
 });

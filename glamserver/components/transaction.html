@@ -3,7 +3,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 19:05:02
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-10 22:28:40
+ * @ Modified time: 2023-01-21 16:49:49
  * @ Description:
  -->
 <div class="container-scroller">
@@ -287,7 +287,7 @@
 				if($('#tStatus').val()) {
 					recordData += `gt_status = '${$('#tStatus').val()}'`;
 				}
-				loadData = [{...loadData, TYPE: "updateTransaction", table: `g_transactions`, filter: `gtId = ${$('#saveRecord').val()}`, params: recordData}];
+				loadData = [{...loadData, TYPE: "updateTransaction", table: `g_transactions`, filter: `gtId = ${$('#saveRecord').val()}`, params: recordData, status: $('#tStatus').val(), tId: $('#saveRecord').val()}];
 				$.ajax({
 					type: "POST",
 					url: "/glam/glamserver/assets/php/transactionCRUD.php",

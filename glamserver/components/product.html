@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-18 23:32:07
+ * @ Modified time: 2023-01-21 22:59:46
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -57,7 +57,7 @@
 																		<th>Product QR</th>
 																		<th>Name</th>
 																		<th>Description</th>
-																		<th>Type</th>
+																		<th>Category</th>
 																		<th>Availability</th>
 																		<th>Price</th>
 																		<th>Count</th>
@@ -109,7 +109,7 @@
 								  </select>
 							</div>
 							<div class="form-group">
-								<label for="productType"><i class="mdi mdi-regex text-danger"></i> Product Type</label>
+								<label for="productType"><i class="mdi mdi-regex text-danger"></i> Product Category</label>
 								<select class="form-control" id="productType">
 								  <option>Casual</option>
 								  <option>Formal</option>
@@ -229,6 +229,7 @@
                 action: function ( e, dt, node, config ) {
 					$('#productSize').val([]);
 					var record = dt.row('.selected').data();
+					var price = [];
 					if(record.gp_description.includes('[')||record.gp_description.includes('{')) {
 						var temp = record.gp_description.replace(/[{}]/g, "").split(':');
 						temp[1] = temp[1].split('",');
@@ -242,10 +243,10 @@
 					$('#saveRecord').val(record.gpId);
 					$('#productName').val(record.gp_name);
 					$('#productType').val(record.gp_type);
-					record.gp_price = record.gp_price.split('.');
-					record.gp_price[0] = record.gp_price[0].replace(/\₱ /g, "");
-					record.gp_price[3] = record.gp_price[0] +'.'+ record.gp_price[1];
-					$('#productAmount').val(parseFloat(record.gp_price[3]).toFixed(2));
+					price = record.gp_price.split('.');
+					price[0] = price[0].replace(/\₱ /g, "");
+					price[3] = price[0] +'.'+ price[1];
+					$('#productAmount').val(parseFloat(price[3]).toFixed(2));
 					$('#productCount').val(record.gp_count);
 					$('#saveRecord').html($('#saveRecord').text().replace('Save','Update'));
 					$('#ProductModal').modal('show');
@@ -487,10 +488,11 @@
 				}
 				if($('#productSize').val().length > 0) {
 					Description.Size = JSON.stringify($('#productSize').val());
-				}else {
+				}
+				/*else {
 					$('#productSize').addClass('is-invalid').prop('title', 'this is required!').focus();
 					return;
-				}
+				}*/
 				recordData += `'${JSON.stringify(Description)}', `;
 				if($('#productType').val()) {
 					recordData += `"${$('#productType').val()}", `;

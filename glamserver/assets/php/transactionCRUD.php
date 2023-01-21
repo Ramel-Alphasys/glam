@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-11-10 21:21:43
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2022-12-08 22:57:27
+ * @ Modified time: 2023-01-21 20:36:58
  * @ Description:
  */
 require 'database.php';
@@ -25,6 +25,34 @@ if (!empty($_POST['TYPE'])) {
                     'filter' => $_POST['filter'],
                     'dbcon'  => $conToServer
                 );
+
+                if($_POST['status'] == 'Paid' || $_POST['status'] == 'Delivered') {
+                        
+                    $params = array(
+                        'fields' => 'g_days_till_due',
+                        'table'  => 'g_settings',
+                        'dbcon'  => $conToServer
+                    );
+
+                    $dueDate = $crud->sm_vr_server($params);
+
+                    $valuesToInsert = 
+                    "null,".
+                    $_POST['tId'].",
+                    now(),
+                    DATE_ADD(now(), interval {$dueDate[0]['g_days_till_due']} day),
+                    'Still Due'"  ;
+
+                    $params = array(
+                        'fields' => $valuesToInsert,
+                        'table'  => 'g_due_rentals',
+                        'dbcon'  => $conToServer
+                    );
+
+                    $dueRecord = $crud->sm_cr_server($params);
+                    
+                }
+
                 return ($crud->sm_ur_server($params) != null) ? 'Transaction updated!' : null;
 
             } catch (PDOException $e) {
@@ -41,7 +69,7 @@ if (!empty($_POST['TYPE'])) {
                         0,
                         'Walk In',
                         'Cash',".
-                        $_POST['transactionRecords'][$i]['gp_price'].",
+                        ($_POST['transactionRecords'][$i]['gp_price'] * $_POST['transactionRecords'][$i]['selectedSizeCount']).",
                         0.00,
                         now(),
                         'Paid',
@@ -114,6 +142,8 @@ if (!empty($_POST['TYPE'])) {
                     }
 
                 }
+
+                echo json_encode(array('MESSAGE' => 1));
                 
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed in updateTransaction: " . $conToServer->htmlize($e->getMessage())]]);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2023 at 08:15 AM
+-- Generation Time: Jan 21, 2023 at 11:45 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -255,6 +255,13 @@ CREATE TABLE `g_customer` (
   `gc_p_m_number` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `g_customer`
+--
+
+-- INSERT INTO `g_customer` (`gcId`, `gc_guId`, `gc_gname`, `gc_mname`, `gc_sname`, `gc_address`, `gc_email`, `gc_p_m_number`) VALUES
+-- (0, 1, 'Ramel', '', 'Empleo', '', '', 63);
+
 -- --------------------------------------------------------
 
 --
@@ -269,6 +276,13 @@ CREATE TABLE `g_due_rentals` (
   `gdr_due_date` date NOT NULL,
   `gdr_status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `g_due_rentals`
+--
+
+-- INSERT INTO `g_due_rentals` (`gdrId`, `gdr_gtId`, `gdr_date`, `gdr_due_date`, `gdr_status`) VALUES
+-- (1, 1, '2023-01-21 08:53:36', '2023-01-23', 'Still Due');
 
 -- --------------------------------------------------------
 
@@ -305,6 +319,14 @@ CREATE TABLE `g_product` (
   `gp_featured_img` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `g_product`
+--
+
+-- INSERT INTO `g_product` (`gpId`, `gp_name`, `gp_description`, `gp_type`, `gp_price`, `gp_product_img`, `gp_gcash_qr`, `gp_count`, `gp_featured_img`) VALUES
+-- (0, 'test', '{\"Description\":\"testing\",\"Size\":\"[\"M\",\"L\"]\"}', 'Casual', '150.00', 'best-books-2015_wide-18ea71bcef7792d9fd6ea5183846999a06b17eee.jpg', '', 10, ''),
+-- (1, 'Black shoes', '{\"Description\":\"dfsdfsdfs\"}', 'Casual', '150.00', '485120-learn-to-code-640x360.jpg', 'IMG_20170728_114738.jpg', 12, '');
+
 -- --------------------------------------------------------
 
 --
@@ -314,10 +336,17 @@ CREATE TABLE `g_product` (
 DROP TABLE IF EXISTS `g_settings`;
 CREATE TABLE `g_settings` (
   `g_id` tinyint(1) NOT NULL,
-  `g_shipping_fee` decimal(10,2) NOT NULL,
+  `g_shipping_fee` decimal(10,2) DEFAULT NULL,
   `g_days_till_due` tinyint(4) DEFAULT NULL,
-  `g_penalty` int(11) NOT NULL
+  `g_penalty` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `g_settings`
+--
+
+INSERT INTO `g_settings` (`g_id`, `g_shipping_fee`, `g_days_till_due`, `g_penalty`) VALUES
+(0, '140.00', 2, 100);
 
 -- --------------------------------------------------------
 
@@ -341,6 +370,13 @@ CREATE TABLE `g_transactions` (
   `gt_items` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `g_transactions`
+--
+
+-- INSERT INTO `g_transactions` (`gtId`, `gt_gpId`, `gt_gcId`, `gt_payment_method`, `gt_type`, `gt_payment`, `gt_additional_cost`, `gt_transaction_date`, `gt_status`, `gt_attachment`, `gt_selected_size`, `gt_items`) VALUES
+-- (1, 0, 0, 'Gcash', 'Full', '300.00', '0.00', '2023-01-21 08:05:07', 'Delivered', 'FB_IMG_1553090340484.jpg', 'M,L', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -355,6 +391,13 @@ CREATE TABLE `g_user` (
   `g_token` varchar(16) DEFAULT NULL,
   `gu_type` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `g_user`
+--
+
+INSERT INTO `g_user` (`guId`, `g_username`, `g_userpass`, `g_token`, `gu_type`) VALUES
+(0, 'admin', 'admin', '', 0);
 
 -- --------------------------------------------------------
 
@@ -569,13 +612,17 @@ ALTER TABLE `g_user`
 -- AUTO_INCREMENT for table `g_due_rentals`
 --
 ALTER TABLE `g_due_rentals`
-  MODIFY `gdrId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gdrId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- AUTO_INCREMENT for table `g_transactions`
 --
 ALTER TABLE `g_transactions`
-  MODIFY `gtId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gtId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
+
+
+ALTER TABLE `g_category`
+  MODIFY `gcatId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=0;
 
 --
 -- Constraints for dumped tables

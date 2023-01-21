@@ -104,7 +104,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="saveRecord" type="button" class="btn btn-primary">Save changes</button>
+				<button id="saveRecord" type="button" class="btn btn-primary">Save</button>
 			</div>
 		</div>
 	</div>
@@ -130,12 +130,18 @@
 			text: "<i class=\"mdi mdi-file-import\"></i> New Record",
 			className: "createCategoryRecord",
 			action: function( e, dt, node, config ) {
+				$('#saveRecord').text('Save');
+				$('#CategoryName').val('');
 				$('#CategoryModal').modal('show');
 			}
 		},{
 			text: "<i class=\"mdi mdi-file-send\"></i> Update Selected Row",
 			className: "createCategoryRecord",
 			action: function( e, dt, node, config ) {
+				$('#saveRecord').text('Update');
+				var record = dt.row('.selected').data();
+				$('#saveRecord').val(record.gcatId);
+				$('#CategoryName').val(record.gcat_name);
 				$('#CategoryModal').modal('show');
 			},
 			enabled: false
@@ -144,6 +150,29 @@
 			className: "createCategoryRecord",
 			action: function( e, dt, node, config ) {
 				var record = dt.row('.selected').data();
+				console.warn(`🚀 => record`, record);
+				$.ajax({
+					type: "POST",
+					url: "/glam/glamserver/assets/php/login.php",
+					data: {"TYPE": "categoryDeletion","catId": record.gcatId},
+					dataType: "json",
+				}).done((data) => {
+					if(data.STATUS == 1) {
+						$.notify({
+							title: '<i class="mdi mdi-delete-forever"></i>Category Deletion.',
+							message: `Category name ${record.gcat_name} is deleted.`,
+						},{
+							showProgressbar: true,
+							type: "success",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
+						table.draw();
+					}
+				});
 			},
 			enabled: false
 		},],
@@ -166,7 +195,6 @@
 				searchable: false,
 			},
 		],
-		stateSave: true,
 		initComplete: function () {
 
 		}
@@ -209,6 +237,57 @@
 				$('#penalty').text(data.Data[0].g_penalty);
 				$('#shippingFee').text(data.Data[0].g_shipping_fee);
 				$('#daysDue').text(data.Data[0].g_days_till_due);
+			}
+		});
+		$('#saveRecord').on('click', event => {
+			if(event.currentTarget.innerText.includes('Update')) {
+				$.ajax({
+					type: "POST",
+					url: "/glam/glamserver/assets/php/login.php",
+					data: {"TYPE": "categoryUpdate", "category": `${$('#CategoryName').val()}`, "catId": event.currentTarget.value},
+					dataType: "json",
+				}).done((data) => {
+					if(data.STATUS == 1) {
+						$.notify({
+							title: '<i class=\"mdi mdi-file-import\"></i>Category Update.',
+							message: `Category is updated.`,
+						},{
+							showProgressbar: true,
+							type: "success",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
+						table.draw();
+						$('#CategoryModal').modal('hide');
+					}
+				});
+			}else{
+				$.ajax({
+					type: "POST",
+					url: "/glam/glamserver/assets/php/login.php",
+					data: {"TYPE": "categoryNew", "category": `${$('#CategoryName').val()}`},
+					dataType: "json",
+				}).done((data) => {
+					if(data.STATUS == 1) {
+						$.notify({
+							title: '<i class=\"mdi mdi-file-import\"></i>Category Creation.',
+							message: `Category name ${$('#CategoryName').val()} is created.`,
+						},{
+							showProgressbar: true,
+							type: "success",
+							allow_dismiss: false,
+							placement: {
+								from: 'top',
+								align: 'right'
+							}
+						});
+						table.draw();
+						$('#CategoryModal').modal('hide');
+					}
+				});
 			}
 		});
 	});
