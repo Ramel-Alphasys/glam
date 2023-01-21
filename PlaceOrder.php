@@ -29,8 +29,8 @@ $productName = $product[0]['gp_name'];
 $description = $product[0]['gp_description'];
 $description = str_replace('{', '', $description);
 $description = str_replace('}', '', $description);
-$findingCollon = strpos($description, ":",1);
-if (!empty($findingCollon)) {
+$findingCollon = strpos($description, '","Size');
+if ($findingCollon != '') {
   $description = explode('":"', $description);
   $description[2] = str_replace('"', '', $description[2]);
   $description[2] = str_replace('[', '', $description[2]);
