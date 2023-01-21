@@ -5,6 +5,10 @@ require '..\..\glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
+if (!file_exists('C:\\xampp\\htdocs\\glam\\glamserver\\assets\\transactions\\')) {
+    mkdir('C:\\xampp\\htdocs\\glam\\glamserver\\assets\\transactions\\', 0777, true);
+}
+
 $uploaddir = 'C:\\xampp\\htdocs\\glam\\glamserver\\assets\\transactions\\';
 $uploadfile = $uploaddir . basename($_FILES['full']['name']);
 

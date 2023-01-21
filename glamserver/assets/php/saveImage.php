@@ -6,6 +6,10 @@ $crud = new serverManipulation();
 // set here connection to database
 $conToServer = new ServerCon([$serverUsed, $databasePort, $databaseUsed, $user, $pass]);
 
+if (!file_exists('C:\\xampp\\htdocs\\glam\\glamserver\\assets\\contents\\')) {
+    mkdir('C:\\xampp\\htdocs\\glam\\glamserver\\assets\\contents\\', 0777, true);
+}
+
 $uploaddir = 'C:\\xampp\\htdocs\\glam\\glamserver\\assets\\contents\\';
 $uploadfile = $uploaddir . basename($_FILES['inputFile']['name']);
 

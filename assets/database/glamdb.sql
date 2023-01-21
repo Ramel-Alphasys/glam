@@ -1,27 +1,249 @@
--- MariaDB dump 10.19  Distrib 10.4.25-MariaDB, for Win64 (AMD64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: glamdb
--- ------------------------------------------------------
--- Server version	10.4.25-MariaDB
+-- Host: 127.0.0.1
+-- Generation Time: Jan 21, 2023 at 08:15 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Database: `glamdb`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_amount_details`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_amount_details`;
+CREATE TABLE `gv_amount_details` (
+`id` int(11)
+,`customer_Id` int(11)
+,`total_cost` decimal(21,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_new`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_new`;
+CREATE TABLE `gv_dashboard_new` (
+`pending_count` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_cancel_c`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_c`;
+CREATE TABLE `gv_dashboard_on_cancel_c` (
+`total_this_year` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_cancel_l`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_l`;
+CREATE TABLE `gv_dashboard_on_cancel_l` (
+`total_this_year` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_cod_c`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_c`;
+CREATE TABLE `gv_dashboard_on_cod_c` (
+`total_this_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_cod_l`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_l`;
+CREATE TABLE `gv_dashboard_on_cod_l` (
+`total_last_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_due_date`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_due_date`;
+CREATE TABLE `gv_dashboard_on_due_date` (
+`over_due` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_gcash_c`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_c`;
+CREATE TABLE `gv_dashboard_on_gcash_c` (
+`total_this_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_gcash_l`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_l`;
+CREATE TABLE `gv_dashboard_on_gcash_l` (
+`total_last_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_walkin_c`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_c`;
+CREATE TABLE `gv_dashboard_on_walkin_c` (
+`total_this_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_on_walkin_l`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_l`;
+CREATE TABLE `gv_dashboard_on_walkin_l` (
+`total_last_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_overall_c`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_overall_c`;
+CREATE TABLE `gv_dashboard_overall_c` (
+`total_this_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_overall_l`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_overall_l`;
+CREATE TABLE `gv_dashboard_overall_l` (
+`total_last_year` decimal(11,2)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_dashboard_still_on_due_date`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_dashboard_still_on_due_date`;
+CREATE TABLE `gv_dashboard_still_on_due_date` (
+`still_due` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_due_rentals`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_due_rentals`;
+CREATE TABLE `gv_due_rentals` (
+`due_date_Id` int(11)
+,`customer_Id` int(11)
+,`full_name` varchar(452)
+,`m_num` bigint(20)
+,`product_name` varchar(255)
+,`product_type` varchar(100)
+,`product_price` decimal(10,2)
+,`payment` decimal(10,2)
+,`method` text
+,`balance` bigint(17)
+,`transaction_date` timestamp
+,`file_attachment` varchar(255)
+,`status` varchar(100)
+,`due_date` date
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `gv_transactions`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `gv_transactions`;
+CREATE TABLE `gv_transactions` (
+`transac_Id` int(11)
+,`customer_Id` int(11)
+,`full_name` varchar(452)
+,`product_name` varchar(255)
+,`product_type` varchar(100)
+,`product_price` decimal(10,2)
+,`payment` decimal(10,2)
+,`method` text
+,`balance` decimal(22,2)
+,`transaction_date` timestamp
+,`file_attachment` varchar(255)
+,`status` text
+,`items` int(11)
+,`selected_size` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `g_category`
+--
+
+DROP TABLE IF EXISTS `g_category`;
+CREATE TABLE `g_category` (
+  `gcatId` int(11) NOT NULL,
+  `gcat_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `g_customer`
 --
 
 DROP TABLE IF EXISTS `g_customer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `g_customer` (
   `gcId` int(11) NOT NULL,
   `gc_guId` int(11) NOT NULL,
@@ -30,114 +252,80 @@ CREATE TABLE `g_customer` (
   `gc_sname` varchar(150) NOT NULL,
   `gc_address` text NOT NULL,
   `gc_email` varchar(200) NOT NULL,
-  `gc_p_m_number` int(11) NOT NULL,
-  PRIMARY KEY (`gcId`),
-  KEY `gc_guId` (`gc_guId`),
-  CONSTRAINT `g_customer_ibfk_1` FOREIGN KEY (`gc_guId`) REFERENCES `g_user` (`guId`) ON DELETE CASCADE ON UPDATE CASCADE
+  `gc_p_m_number` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `g_customer`
+-- Table structure for table `g_due_rentals`
 --
 
-LOCK TABLES `g_customer` WRITE;
-/*!40000 ALTER TABLE `g_customer` DISABLE KEYS */;
-INSERT INTO `g_customer` VALUES (0,1,'chad','t.','wick','','',1231231231);
-/*!40000 ALTER TABLE `g_customer` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `g_due_rentals`;
+CREATE TABLE `g_due_rentals` (
+  `gdrId` int(11) NOT NULL,
+  `gdr_gtId` int(11) NOT NULL,
+  `gdr_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `gdr_due_date` date NOT NULL,
+  `gdr_status` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `g_employee`
 --
 
 DROP TABLE IF EXISTS `g_employee`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `g_employee` (
   `geId` int(11) NOT NULL,
   `ge_guId` int(11) DEFAULT NULL,
   `ge_gname` varchar(150) DEFAULT NULL,
   `ge_mname` varchar(150) DEFAULT NULL,
   `ge_sname` varchar(150) DEFAULT NULL,
-  `ge_email` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`geId`),
-  KEY `ge_guId` (`ge_guId`),
-  CONSTRAINT `g_employee_ibfk_1` FOREIGN KEY (`ge_guId`) REFERENCES `g_user` (`guId`)
+  `ge_email` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `g_employee`
---
-
-LOCK TABLES `g_employee` WRITE;
-/*!40000 ALTER TABLE `g_employee` DISABLE KEYS */;
-INSERT INTO `g_employee` VALUES (0,0,'ramel','o.','empleo','ramelempleo@gmail.com');
-/*!40000 ALTER TABLE `g_employee` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `g_product`
 --
 
 DROP TABLE IF EXISTS `g_product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `g_product` (
   `gpId` int(11) NOT NULL,
   `gp_name` varchar(255) NOT NULL,
   `gp_description` longtext NOT NULL,
   `gp_type` varchar(100) NOT NULL,
-  `gp_availability` tinyint(4) NOT NULL,
   `gp_price` decimal(10,2) NOT NULL,
   `gp_product_img` text NOT NULL,
   `gp_gcash_qr` text DEFAULT NULL,
   `gp_count` int(11) NOT NULL,
-  `gp_featured_img` text DEFAULT NULL,
-  PRIMARY KEY (`gpId`)
+  `gp_featured_img` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `g_product`
---
-
-LOCK TABLES `g_product` WRITE;
-/*!40000 ALTER TABLE `g_product` DISABLE KEYS */;
-INSERT INTO `g_product` VALUES (0,'Pellentesque in ipsum id orci porta dapibus.','{\"Description\":\"Nulla porttitor accumsan tincidunt.\nPraesent sapien massa, convallis a pellentesque nec, egestas non nisi.\"}','Casual',1,100.00,'FB_IMG_15057447458379679.jpg','b361dc12ab407a00db104cda410ea551.jpg',2,NULL),(1,'Vestibulum ac diam','Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.','Casual',0,199.99,'ian-schneider-TamMbr4okv4-unsplash.jpg','georg-arthur-pflueger-eO_JhqabBY0-unsplash.jpg',2,NULL),(2,'Curabitur arcu erat','{\"Description\":\"Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Donec rutrum congue leo eget malesuada.\",\"Size\":\"[\"S\",\"M\",\"L\",\"XL\"]\"}','Swim wear',1,459.99,'phillip-goldsberry--AHIA8Bs_HA-unsplash.jpg','salesforce-new-logo.jpg',1,NULL),(3,'Sed porttitor lectus nibh.','Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.','Casual',1,129.99,'FB_IMG_15057366648826881.jpg','FireShot Capture 493 - Checkout – AlphaSys Merchandise - merchandise.alphasys.com.au.jpg',1,NULL),(4,'Vestibulum ac diam','Curabitur aliquet quam id dui posuere blandit. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem.','Formal',1,100.00,'phillip-goldsberry--AHIA8Bs_HA-unsplash.jpg','FireShot Capture 493 - Checkout – AlphaSys Merchandise - merchandise.alphasys.com.au.jpg',4,NULL),(5,'Red shoes','{\"Description\":\"test\",\"Size\":\"[\"M\",\"XL\"]\"}','Casual',1,150.00,'FB_IMG_15057447242236845.jpg','b361dc12ab407a00db104cda410ea551.jpg',1,NULL),(6,'Black shoes','{\"Description\":\"dfadfgag arg argrgsrsgs\",\"Size\":\"[\"S\",\"M\",\"L\",\"XL\"]\"}','Casual',1,150.00,'b361dc12ab407a00db104cda410ea551.jpg','',3,NULL);
-/*!40000 ALTER TABLE `g_product` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `g_settings`
 --
 
 DROP TABLE IF EXISTS `g_settings`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `g_settings` (
-  `g_shipping_fee` decimal(10,2) NOT NULL
+  `g_id` tinyint(1) NOT NULL,
+  `g_shipping_fee` decimal(10,2) NOT NULL,
+  `g_days_till_due` tinyint(4) DEFAULT NULL,
+  `g_penalty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `g_settings`
---
-
-LOCK TABLES `g_settings` WRITE;
-/*!40000 ALTER TABLE `g_settings` DISABLE KEYS */;
-INSERT INTO `g_settings` VALUES (140.00);
-/*!40000 ALTER TABLE `g_settings` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `g_transactions`
 --
 
 DROP TABLE IF EXISTS `g_transactions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `g_transactions` (
   `gtId` int(11) NOT NULL,
   `gt_gpId` int(11) NOT NULL,
@@ -145,139 +333,274 @@ CREATE TABLE `g_transactions` (
   `gt_payment_method` text NOT NULL,
   `gt_type` text NOT NULL,
   `gt_payment` decimal(10,2) NOT NULL,
-  `gt_additional_cost` decimal(10,2) NOT NULL,
-  `gt_transaction_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `gt_additional_cost` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `gt_transaction_date` timestamp NULL DEFAULT current_timestamp(),
   `gt_status` text NOT NULL,
-  `gt_attachment` varchar(255) NOT NULL,
-  PRIMARY KEY (`gtId`),
-  KEY `gt_gcId` (`gt_gcId`),
-  KEY `gt_gpId` (`gt_gpId`),
-  CONSTRAINT `g_transactions_ibfk_1` FOREIGN KEY (`gt_gcId`) REFERENCES `g_customer` (`gcId`) ON DELETE CASCADE,
-  CONSTRAINT `g_transactions_ibfk_2` FOREIGN KEY (`gt_gpId`) REFERENCES `g_product` (`gpId`) ON DELETE CASCADE
+  `gt_attachment` varchar(255) DEFAULT NULL,
+  `gt_selected_size` varchar(255) NOT NULL DEFAULT 'All size',
+  `gt_items` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `g_transactions`
---
-
-LOCK TABLES `g_transactions` WRITE;
-/*!40000 ALTER TABLE `g_transactions` DISABLE KEYS */;
-INSERT INTO `g_transactions` VALUES (0,0,0,'Gcash','Partial',50.00,0.00,'2022-11-10 00:33:13','Reserved',''),(1,1,0,'Cash on delivery','Full + shipping',100.00,140.00,'2022-11-12 11:01:49','Pending',''),(2,3,0,'Walk in','Full + shipping',129.99,140.00,'2022-11-12 09:42:54','Delivered',''),(3,4,0,'Gcash','Partial',100.00,140.00,'2022-11-12 09:53:09','Reserved','');
-/*!40000 ALTER TABLE `g_transactions` ENABLE KEYS */;
-UNLOCK TABLES;
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `g_user`
 --
 
 DROP TABLE IF EXISTS `g_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `g_user` (
   `guId` int(11) NOT NULL,
   `g_username` varchar(100) DEFAULT NULL,
   `g_userpass` varchar(50) DEFAULT NULL,
   `g_token` varchar(16) DEFAULT NULL,
-  `gu_type` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`guId`)
+  `gu_type` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `g_user`
+-- Structure for view `gv_amount_details`
 --
-
-LOCK TABLES `g_user` WRITE;
-/*!40000 ALTER TABLE `g_user` DISABLE KEYS */;
-INSERT INTO `g_user` VALUES (0,'admin','admin','678hmntBGHJQRSUY',0),(1,'testClient','testClient',NULL,1);
-/*!40000 ALTER TABLE `g_user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Temporary table structure for view `gv_amount_details`
---
-
 DROP TABLE IF EXISTS `gv_amount_details`;
-/*!50001 DROP VIEW IF EXISTS `gv_amount_details`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `gv_amount_details` (
-  `id` tinyint NOT NULL,
-  `customer_Id` tinyint NOT NULL,
-  `total_cost` tinyint NOT NULL
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
+
+DROP VIEW IF EXISTS `gv_amount_details`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_amount_details`  AS SELECT `t`.`gtId` AS `id`, `t`.`gt_gcId` AS `customer_Id`, (`p`.`gp_price` + `t`.`gt_additional_cost`) * `t`.`gt_items` AS `total_cost` FROM (`g_transactions` `t` left join `g_product` `p` on(`p`.`gpId` = `t`.`gt_gpId`))  ;
+
+-- --------------------------------------------------------
 
 --
--- Temporary table structure for view `gv_transactions`
+-- Structure for view `gv_dashboard_new`
 --
+DROP TABLE IF EXISTS `gv_dashboard_new`;
 
+DROP VIEW IF EXISTS `gv_dashboard_new`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_new`  AS SELECT count(`t`.`gt_status`) AS `pending_count` FROM `g_transactions` AS `t` WHERE `t`.`gt_status` = 'Pending\'Pending''Pending\'Pending'  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_cancel_c`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_cancel_c`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_c`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_cancel_c`  AS SELECT count(`t`.`gt_status`) AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_status` = 'Cancelled' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_cancel_l`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_cancel_l`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_cancel_l`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_cancel_l`  AS SELECT count(`t`.`gt_status`) AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_status` = 'Cancelled' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 1  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_cod_c`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_cod_c`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_c`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_cod_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Cash on delivery' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_cod_l`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_cod_l`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_cod_l`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_cod_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Cash on delivery' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 1  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_due_date`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_due_date`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_due_date`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_due_date`  AS SELECT count(`dr`.`gdrId`) AS `over_due` FROM `g_due_rentals` AS `dr` WHERE `dr`.`gdr_status` = 'Over Due\'Over Due''Over Due\'Over Due'  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_gcash_c`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_gcash_c`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_c`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_gcash_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Gcash' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_gcash_l`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_gcash_l`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_gcash_l`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_gcash_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Gcash' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 1  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_walkin_c`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_walkin_c`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_c`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_walkin_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Walk in' AND year(`t`.`gt_transaction_date`) = year(curdate())  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_on_walkin_l`
+--
+DROP TABLE IF EXISTS `gv_dashboard_on_walkin_l`;
+
+DROP VIEW IF EXISTS `gv_dashboard_on_walkin_l`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_on_walkin_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE `t`.`gt_payment_method` = 'Walk in' AND year(`t`.`gt_transaction_date`) = year(curdate()) - 1  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_overall_c`
+--
+DROP TABLE IF EXISTS `gv_dashboard_overall_c`;
+
+DROP VIEW IF EXISTS `gv_dashboard_overall_c`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_overall_c`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_this_year` FROM `g_transactions` AS `t` WHERE year(`t`.`gt_transaction_date`) = year(curdate())  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_overall_l`
+--
+DROP TABLE IF EXISTS `gv_dashboard_overall_l`;
+
+DROP VIEW IF EXISTS `gv_dashboard_overall_l`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_overall_l`  AS SELECT `t`.`gt_payment`+ `t`.`gt_additional_cost` AS `total_last_year` FROM `g_transactions` AS `t` WHERE year(`t`.`gt_transaction_date`) = year(curdate()) - 1  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_dashboard_still_on_due_date`
+--
+DROP TABLE IF EXISTS `gv_dashboard_still_on_due_date`;
+
+DROP VIEW IF EXISTS `gv_dashboard_still_on_due_date`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_dashboard_still_on_due_date`  AS SELECT count(`dr`.`gdrId`) AS `still_due` FROM `g_due_rentals` AS `dr` WHERE `dr`.`gdr_status` = 'Still Due\'Still Due''Still Due\'Still Due'  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_due_rentals`
+--
+DROP TABLE IF EXISTS `gv_due_rentals`;
+
+DROP VIEW IF EXISTS `gv_due_rentals`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_due_rentals`  AS SELECT `dr`.`gdrId` AS `due_date_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `c`.`gc_p_m_number` AS `m_num`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, (to_days(current_timestamp()) - to_days(`t`.`gt_transaction_date`)) * (select `g_settings`.`g_penalty` from `g_settings`) AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `dr`.`gdr_status` AS `status`, `dr`.`gdr_due_date` AS `due_date` FROM ((((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) left join `g_due_rentals` `dr` on(`t`.`gtId` = `dr`.`gdr_gtId`)) WHERE `dr`.`gdrId` is not nullnot null  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `gv_transactions`
+--
 DROP TABLE IF EXISTS `gv_transactions`;
-/*!50001 DROP VIEW IF EXISTS `gv_transactions`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE TABLE `gv_transactions` (
-  `transac_Id` tinyint NOT NULL,
-  `customer_Id` tinyint NOT NULL,
-  `full_name` tinyint NOT NULL,
-  `product_name` tinyint NOT NULL,
-  `product_type` tinyint NOT NULL,
-  `product_price` tinyint NOT NULL,
-  `payment` tinyint NOT NULL,
-  `method` tinyint NOT NULL,
-  `balance` tinyint NOT NULL,
-  `transaction_date` tinyint NOT NULL,
-  `file_attachment` tinyint NOT NULL,
-  `status` tinyint NOT NULL
-) ENGINE=MyISAM */;
-SET character_set_client = @saved_cs_client;
+
+DROP VIEW IF EXISTS `gv_transactions`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status`, `t`.`gt_items` AS `items`, `t`.`gt_selected_size` AS `selected_size` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not nullnot null  ;
 
 --
--- Final view structure for view `gv_amount_details`
+-- Indexes for dumped tables
 --
 
-/*!50001 DROP TABLE IF EXISTS `gv_amount_details`*/;
-/*!50001 DROP VIEW IF EXISTS `gv_amount_details`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `gv_amount_details` AS select `t`.`gtId` AS `id`,`t`.`gt_gcId` AS `customer_Id`,`p`.`gp_price` + `t`.`gt_additional_cost` AS `total_cost` from (`g_transactions` `t` left join `g_product` `p` on(`p`.`gpId` = `t`.`gt_gpId`)) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
+--
+-- Indexes for table `g_customer`
+--
+ALTER TABLE `g_customer`
+  ADD PRIMARY KEY (`gcId`),
+  ADD KEY `gc_guId` (`gc_guId`);
 
 --
--- Final view structure for view `gv_transactions`
+-- Indexes for table `g_due_rentals`
+--
+ALTER TABLE `g_due_rentals`
+  ADD PRIMARY KEY (`gdrId`),
+  ADD KEY `gdr_gtId` (`gdr_gtId`);
+
+--
+-- Indexes for table `g_employee`
+--
+ALTER TABLE `g_employee`
+  ADD PRIMARY KEY (`geId`),
+  ADD KEY `ge_guId` (`ge_guId`);
+
+--
+-- Indexes for table `g_product`
+--
+ALTER TABLE `g_product`
+  ADD PRIMARY KEY (`gpId`);
+
+--
+-- Indexes for table `g_transactions`
+--
+ALTER TABLE `g_transactions`
+  ADD PRIMARY KEY (`gtId`),
+  ADD KEY `gt_gcId` (`gt_gcId`),
+  ADD KEY `gt_gpId` (`gt_gpId`);
+
+--
+-- Indexes for table `g_user`
+--
+ALTER TABLE `g_user`
+  ADD PRIMARY KEY (`guId`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
-/*!50001 DROP TABLE IF EXISTS `gv_transactions`*/;
-/*!50001 DROP VIEW IF EXISTS `gv_transactions`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_unicode_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `gv_transactions` AS select `t`.`gtId` AS `transac_Id`,`c`.`gcId` AS `customer_Id`,concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`,`p`.`gp_name` AS `product_name`,`p`.`gp_type` AS `product_type`,`p`.`gp_price` AS `product_price`,`t`.`gt_payment` AS `payment`,`t`.`gt_payment_method` AS `method`,`ad`.`total_cost` - `t`.`gt_payment` AS `balance`,`t`.`gt_transaction_date` AS `transaction_date`,`t`.`gt_attachment` AS `file_attachment`,`t`.`gt_status` AS `status` from (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) where `c`.`gcId` is not null */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+--
+-- AUTO_INCREMENT for table `g_due_rentals`
+--
+ALTER TABLE `g_due_rentals`
+  MODIFY `gdrId` int(11) NOT NULL AUTO_INCREMENT;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- AUTO_INCREMENT for table `g_transactions`
+--
+ALTER TABLE `g_transactions`
+  MODIFY `gtId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `g_customer`
+--
+ALTER TABLE `g_customer`
+  ADD CONSTRAINT `g_customer_ibfk_1` FOREIGN KEY (`gc_guId`) REFERENCES `g_user` (`guId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `g_employee`
+--
+ALTER TABLE `g_employee`
+  ADD CONSTRAINT `g_employee_ibfk_1` FOREIGN KEY (`ge_guId`) REFERENCES `g_user` (`guId`);
+
+--
+-- Constraints for table `g_transactions`
+--
+ALTER TABLE `g_transactions`
+  ADD CONSTRAINT `g_transactions_ibfk_1` FOREIGN KEY (`gt_gcId`) REFERENCES `g_customer` (`gcId`) ON DELETE CASCADE,
+  ADD CONSTRAINT `g_transactions_ibfk_2` FOREIGN KEY (`gt_gpId`) REFERENCES `g_product` (`gpId`) ON DELETE CASCADE;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2022-11-13 19:05:49
