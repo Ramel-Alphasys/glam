@@ -76,7 +76,7 @@
 														<h4 class="card-title">User Settings</h4>
 														<div class="form-group">
 															<label for="employeeEmail"><i class="mdi mdi-regex text-danger"></i> Employee Email</label>
-															<input type="text" class="form-control" id="employeeEmail" placeholder="Employee Email here...">
+															<input type="text" class="form-control" data-api="ge_email" id="employeeEmail" placeholder="Employee Email here...">
 														</div>
 														<button type="button" class="btn btn-info btn-icon-text" onclick="sessionStorage.page=0;location.reload();"><i class="icon-logout"></i> Logout</button>
 													  </div>
@@ -114,15 +114,34 @@
 	</div>
 </div>
 <script>
+	var stat = 0;
 	function saveChanges(params) {
+		var paramsSize = params.length;
+		var param = (paramsSize == 3) ? {"TYPE": params[2], 'API': params[0], 'VALUE': params[1]} : {"TYPE": params[2], 'API': params[0], 'VALUE': params[1], 'recId': params[3]};
 		$.ajax({
 			type: "POST",
 			url: "/glam/glamserver/assets/php/login.php",
-			data: {"TYPE": "saveSettingsDetails", 'API': params[0], 'VALUE': params[1]},
+			data: param,
 			dataType: "json",
 		}).done((data) => {
 			if(data.STATUS == 1) {
-				
+				if(stat != 0) {
+					$.notify({
+						title: 'Record Update',
+						message: `Setting record updated.`,
+					},{
+						showProgressbar: true,
+						type: "success",
+						allow_dismiss: false,
+						placement: {
+							from: 'top',
+							align: 'right'
+						}
+					});
+					stat = 0;
+				}
+			}else{
+				console.warn(`🚀 => saveChanges => data`, data);
 			}
 		});
 	}
@@ -223,13 +242,17 @@
 	$(document).ready(function () {
 		$('#CategoryModal').modal('hide');
 		$('#penalty').on('DOMSubtreeModified',event => {
-			saveChanges([event.target.dataset.api,event.target.innerText]);
+			saveChanges([event.target.dataset.api,event.target.innerText,'saveSettingsDetails']);
 		});
 		$('#shippingFee').on('DOMSubtreeModified',event => {
-			saveChanges([event.target.dataset.api,event.target.innerText]);
+			saveChanges([event.target.dataset.api,event.target.innerText,'saveSettingsDetails']);
 		});
 		$('#daysDue').on('DOMSubtreeModified',event => {
-			saveChanges([event.target.dataset.api,event.target.innerText]);
+			saveChanges([event.target.dataset.api,event.target.innerText,'saveSettingsDetails']);
+		});
+		$('#employeeEmail').on('change',event => {
+			stat = 1;
+			saveChanges([event.target.dataset.api,event.target.value,'saveEmployeeEmail',sessionStorage.userId]);
 		});
 		$.ajax({
 			type: "POST",
@@ -241,6 +264,16 @@
 				$('#penalty').text(data.Data[0].g_penalty);
 				$('#shippingFee').text(data.Data[0].g_shipping_fee);
 				$('#daysDue').text(data.Data[0].g_days_till_due);
+			}
+		});
+		$.ajax({
+			type: "POST",
+			url: "/glam/glamserver/assets/php/login.php",
+			data: {"TYPE": "employeeEmail"},
+			dataType: "json",
+		}).done((data) => {
+			if(data.STATUS == 1) {
+				$('#employeeEmail').val(data.Data[0].ge_email);
 			}
 		});
 		$('#saveRecord').on('click', event => {

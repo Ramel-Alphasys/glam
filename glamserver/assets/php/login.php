@@ -171,6 +171,30 @@ if (!empty($_POST['TYPE'])) {
             break;
         case 'employeeEmail':
             try {
+                $params = array(
+                    'fields' => '*',
+                    'table' => 'g_employee',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
+        case 'saveEmployeeEmail':
+            try {
+
+                $params = array(
+                    'fields' => "{$_POST['API']}='{$_POST['VALUE']}'",
+                    'filter' => "ge_guId = ".$_POST['recId'],
+                    'table' => 'g_employee',
+                    'dbcon' => $conToServer
+                );
+
+                $checker = $crud->sm_ur_server($params);
+
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
 
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
