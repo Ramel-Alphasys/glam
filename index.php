@@ -4,14 +4,14 @@ require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
-$params = array(
-  'fields' => '*',
-  'table' => 'g_product',
-  'filter' => 'LIMIT 3',
-  'dbcon' => $serverConn
-);
+// $params = array(
+//   'fields' => '*',
+//   'table' => 'g_product',
+//   'filter' => 'LIMIT 3',
+//   'dbcon' => $serverConn
+// );
 
-$featured = $crud->sm_vr_server($params);
+// $featured = $crud->sm_vr_server($params);
 
 ?>
 <!DOCTYPE html>
@@ -82,17 +82,21 @@ $featured = $crud->sm_vr_server($params);
       <div class="container marketing">
         <!-- Carousel Content-->
         <div class="row">
-          <?php if($featured != null) { 
-                    foreach($featured as $ft) {
-          ?>
-            <div class="col-lg-4">
-              <img src="<?php echo "glamserver/assets/contents/".$ft['gp_product_img']."" ?>" alt="..." class="bd-placeholder-img rounded-circle" width="140" height="140">
-              <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php">View More Product</a></p>
-              <h4 class="fw-normal"><?php echo $ft['gp_name']; ?></h4>
-            </div>
-          <?php };
-            }; ?>
-
+          <div class="col-lg-4">
+            <img src="assets/img/Men.jpg" alt="..." class="bd-placeholder-img rounded-circle shadow" width="140" height="140">
+            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=men">View Products</a></p>
+            <h4 class="fw-normal">Men's</h4>
+          </div>
+          <div class="col-lg-4">
+            <img src="assets/img/Women.jpg" alt="..." class="bd-placeholder-img rounded-circle shadow" width="140" height="140">
+            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=women">View Products</a></p>
+            <h4 class="fw-normal">Women's</h4>
+          </div>
+          <div class="col-lg-4">
+            <img src="assets/img/Kids.jpg" alt="..." class="bd-placeholder-img rounded-circle shadow" width="140" height="140">
+            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=kid">View Products</a></p>
+            <h4 class="fw-normal">Kid's</h4>
+          </div>
         </div>
         <hr class="featurette-divider">
         <!-- End-->

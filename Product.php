@@ -12,11 +12,22 @@ require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
-$params = array(
-  'fields' => '*',
-  'table' => 'g_product',
-  'dbcon' => $serverConn
-);
+$sorting = '';
+if(isset($_GET['sort'])){
+  $sorting = $_GET['sort'];
+  $params = array(
+    'fields' => '*',
+    'table' => 'g_product',
+    'filter' => ' WHERE gp_category='.$sorting,
+    'dbcon' => $serverConn
+  );
+} else {
+  $params = array(
+    'fields' => '*',
+    'table' => 'g_product',
+    'dbcon' => $serverConn
+  );
+}
 $response = $crud->sm_vr_server($params);
 ?>
 <!DOCTYPE html>
