@@ -17,7 +17,7 @@ if(isset($_GET['sort'])){
   $params = array(
     'fields' => '*',
     'table' => 'g_product',
-    'filter' => ' WHERE gp_category='.$sorting,
+    'filter' => ' WHERE `gp_type` LIKE "'.$sorting.'"',
     'dbcon' => $serverConn
   );
 } else {
