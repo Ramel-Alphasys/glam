@@ -300,6 +300,8 @@ CREATE TABLE `g_employee` (
   `ge_email` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `g_employee` (`geId`, `ge_guId`, `ge_gname`, `ge_mname`, `ge_sname`, `ge_email`) VALUES ('0', '0', 'admin', '', 'admin', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -547,7 +549,7 @@ CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DE
 DROP TABLE IF EXISTS `gv_due_rentals`;
 
 DROP VIEW IF EXISTS `gv_due_rentals`;
-CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_due_rentals`  AS SELECT `dr`.`gdrId` AS `due_date_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `c`.`gc_p_m_number` AS `m_num`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, (to_days(current_timestamp()) - to_days(`t`.`gt_transaction_date`)) * (select `g_settings`.`g_penalty` from `g_settings`) AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `dr`.`gdr_status` AS `status`, `dr`.`gdr_due_date` AS `due_date` FROM ((((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) left join `g_due_rentals` `dr` on(`t`.`gtId` = `dr`.`gdr_gtId`)) WHERE `dr`.`gdrId` is not nullnot null  ;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_due_rentals`  AS SELECT `dr`.`gdrId` AS `due_date_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `c`.`gc_p_m_number` AS `m_num`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, (to_days(current_timestamp()) - to_days(`t`.`gt_transaction_date`)) * (select `g_settings`.`g_penalty` from `g_settings`) AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `dr`.`gdr_status` AS `status`, `dr`.`gdr_due_date` AS `due_date` FROM ((((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) left join `g_due_rentals` `dr` on(`t`.`gtId` = `dr`.`gdr_gtId`)) WHERE `dr`.`gdrId` is not null ;
 
 -- --------------------------------------------------------
 
@@ -557,7 +559,7 @@ CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DE
 DROP TABLE IF EXISTS `gv_transactions`;
 
 DROP VIEW IF EXISTS `gv_transactions`;
-CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status`, `t`.`gt_items` AS `items`, `t`.`gt_selected_size` AS `selected_size` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not nullnot null  ;
+CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `gv_transactions`  AS SELECT `t`.`gtId` AS `transac_Id`, `c`.`gcId` AS `customer_Id`, concat(`c`.`gc_gname`,' ',`c`.`gc_mname`,' ',`c`.`gc_sname`) AS `full_name`, `p`.`gp_name` AS `product_name`, `p`.`gp_type` AS `product_type`, `p`.`gp_price` AS `product_price`, `t`.`gt_payment` AS `payment`, `t`.`gt_payment_method` AS `method`, `ad`.`total_cost`- `t`.`gt_payment` AS `balance`, `t`.`gt_transaction_date` AS `transaction_date`, `t`.`gt_attachment` AS `file_attachment`, `t`.`gt_status` AS `status`, `t`.`gt_items` AS `items`, `t`.`gt_selected_size` AS `selected_size` FROM (((`g_product` `p` left join `g_transactions` `t` on(`p`.`gpId` = `t`.`gt_gpId`)) left join `g_customer` `c` on(`c`.`gcId` = `t`.`gt_gcId`)) left join `gv_amount_details` `ad` on(`ad`.`id` = `t`.`gtId`)) WHERE `c`.`gcId` is not null ;
 
 --
 -- Indexes for dumped tables
@@ -603,6 +605,10 @@ ALTER TABLE `g_transactions`
 --
 ALTER TABLE `g_user`
   ADD PRIMARY KEY (`guId`);
+
+
+ALTER TABLE `g_category`
+  ADD PRIMARY KEY (`gcatId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
