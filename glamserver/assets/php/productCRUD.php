@@ -50,5 +50,18 @@ if (!empty($_POST['TYPE'])) {
                 echo json_encode([['MESSAGE' => "Connection failed in getAllProducts: " . $conToServer->htmlize($e->getMessage())]]);
             }
             break;
+        case 'getCategory':
+            try {
+                $params = array(
+                    'fields' => '*',
+                    'table' => 'g_category',
+                    'dbcon' => $conToServer
+                );
+                $checker = $crud->sm_vr_server($params);
+                echo ($checker != null) ?  json_encode($checker) : null;
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed in getAllProducts: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
     }
 }
