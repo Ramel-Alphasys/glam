@@ -6,21 +6,22 @@
 	$crud = new serverManipulation();
 	$serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
-	$params = array(
-		'fields' => '*',
-		'table' => 'g_customer',
-		'dbcon' => $serverConn
-	);
+	
 	
 	$userId = $_SESSION['userId'];
 	if($userId == '') {
 		header("Location: glamserver/?mode=client");
 		exit;
 	}
+	$params = array(
+		'fields' => '*',
+		'table' => 'g_customer',
+		'filter' => 'WHERE gc_guId= '.$userId,
+		'dbcon' => $serverConn
+	);
 	$information = $crud->sm_vr_server($params);
 	$info = $information[0];
 	$cus_add = explode(',',$info['gc_address']);
-	// print_r($info);
 	$street = "";
 	$brgy = "";
 	$city = "";
@@ -106,7 +107,7 @@
 					<div class="row m-4">
 						<div class="col">
 							<div class="form-floating mb-3">
-								<input type="tel" maxlength="9" class="form-control" name="mobile" id="floatPhone" value="<?php echo $info['gc_p_m_number']; ?>" required placeholder="Mobile" required>
+								<input type="tel" maxlength="12" class="form-control" name="mobile" id="floatPhone" value="<?php echo $info['gc_p_m_number']; ?>" required placeholder="Mobile" required>
 								<label for="floatPhone">Phone</label>
 							</div>
 						</div>

@@ -116,7 +116,7 @@ $orderlist = $crud->sm_vr_server($params);
                     <div class="container">
                       <div class="d-flex p-2 shadow rounded order-det">
                         <div class="">
-                          <img src="assets/img/img1.png" class="img-fluid shadow rounded" alt="" width="200" height="200">
+                          <img src="glamserver/assets/contents/<?php echo $prod['gp_product_img']; ?>" class="img-fluid shadow rounded" alt="" style="max-width: 200px; max-height: 150px;">
                         </div>
                         <div class="ps-3">
                           <ul>
@@ -138,9 +138,9 @@ $orderlist = $crud->sm_vr_server($params);
                     <div class="float-start">
                       <span class="fw-light">Order Status: </span><span class="text-success fw-semibold"><?php echo $order['gt_status']; ?></span>
                     </div>
-                    <div class="float-end">
+                    <!-- <div class="float-end">
                       <span class="fw-light">Expected Date: </span><span class="fw-semibold">30 Sept. 2020</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>

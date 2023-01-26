@@ -37,5 +37,6 @@ if (move_uploaded_file($_FILES['full']['tmp_name'], $uploadfile)) {
     echo "Transaction Made.";
     header("Location: ..\..\Order.php");
 } else {
-    echo "Upload failed";
+    echo "Transaction Made. Partial";
+    header("Location: ..\..\Order.php");
 }

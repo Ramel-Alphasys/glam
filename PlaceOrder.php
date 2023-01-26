@@ -85,17 +85,16 @@ if ($findingCollon != '') {
         <div class="d-flex align-items-center justify-content-between border-bottom">
           <h2 class="pb-2">Checkout Details</h2>
           <div class="fixed-bottom container shadow-lg border bg-light" style="max-width: 50rem; height: 5rem;">
-            <div class="row">
+            <div class="row d-flex align-items-center justify-content-between">
               <div class="col text-center pt-4">
                 <div class="">
                   <input type="text" name="prudId" value="<?php echo $product[0]['gpId']; ?>" hidden>
                   <input id="selectedSize" type="text" name="selectedSize" value="" hidden>
                   <input id="price" type="text" name="price" value="" hidden>
                   <input type="text" name="userId" value="<?php echo $userId; ?>" hidden>
-                  <input type="submit" name="submit" class="btn btn-md border btn-dark shadow-sm form-control" value="Checkout">
+                  <input type="submit" name="submit" class="btn btn-md border btn-dark shadow-sm form-control" value="Checkout" id="checkoutbtn">
                 </div>
               </div>
-              <div class="col text-center fs-5 pt-4"></div>
             </div>
           </div>
         </div>
@@ -153,7 +152,7 @@ if ($findingCollon != '') {
             </div>
             <div class="mb-3" style="width: 18rem;">
               <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
-              <input class="form-control form-control-sm" name="full" id="gcashReceipt" type="file" />
+              <input class="form-control form-control-sm" name="full" id="gcashReceiptFul" type="file" />
             </div>
           </div>
           <div class="container p-3 d-none" id="payParGCash">
@@ -162,7 +161,7 @@ if ($findingCollon != '') {
             </div>
             <div class="mb-3" style="width: 18rem;">
               <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
-              <input class="form-control form-control-sm" name="partial" id="gcashReceipt" type="file" />
+              <input class="form-control form-control-sm" name="partial" id="gcashReceiptPar" type="file" />
             </div>
           </div>
         </div>
@@ -192,16 +191,21 @@ if ($findingCollon != '') {
 </body>
 <script type="text/javascript">
   $(document).ready(function() {
+
     $(".menu-icon").on("click", function() {
       $("nav ul").toggleClass("showing");
     });
     $("#gcashFull").on("click", function() {
-      $("#payFulGCash").removeClass('d-none')
-      $("#payParGCash").addClass('d-none')
+      $("#payFulGCash").removeClass('d-none');
+      $("#payParGCash").addClass('d-none');
+      document.getElementById('gcashReceiptFul').required = true;
+      document.getElementById('gcashReceiptPar').removeAttribute('required');
     });
     $("#gcashPartial").on("click", function() {
-      $("#payFulGCash").addClass('d-none')
-      $("#payParGCash").removeClass('d-none')
+      $("#payFulGCash").addClass('d-none');
+      $("#payParGCash").removeClass('d-none');
+      document.getElementById('gcashReceiptPar').required = true;
+      document.getElementById('gcashReceiptFul').removeAttribute('required');
     });
   });
   var sizesSelected = [];
