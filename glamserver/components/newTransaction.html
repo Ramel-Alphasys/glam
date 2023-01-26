@@ -62,20 +62,20 @@
                                                                     <div class="col-12 d-flex flex-row">
                                                                         <div class="col-4 d-flex flex-column">
                                                                             <div class="form-group">
-                                                                                <label for="productName">First Name <small class="text-muted"></small></label>
-                                                                                <input type="text" class="form-control" id="productName" placeholder="Product name here..." />
+                                                                                <label for="firstName">First Name <small class="text-muted"></small></label>
+                                                                                <input type="text" class="form-control" id="firstName" placeholder="" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-4 d-flex flex-column">
                                                                             <div class="form-group">
-                                                                                <label for="productName">Middle Name <small class="text-muted"></small></label>
-                                                                                <input type="text" class="form-control" id="productName" placeholder="Product name here..." />
+                                                                                <label for="middleName">Middle Name <small class="text-muted"></small></label>
+                                                                                <input type="text" class="form-control" id="middleName" placeholder="" />
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-4 d-flex flex-column">
                                                                             <div class="form-group">
-                                                                                <label for="productName">Last Name <small class="text-muted"></small></label>
-                                                                                <input type="text" class="form-control" id="productName" placeholder="Product name here..." />
+                                                                                <label for="lastName">Last Name <small class="text-muted"></small></label>
+                                                                                <input type="text" class="form-control" id="lastName" placeholder="" />
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -84,7 +84,7 @@
                                                                             <div class="input-group-prepend">
                                                                               <span class="input-group-text bg-primary text-white">Phone Number</span>
                                                                             </div>
-                                                                            <input id="AmountReceived" type="Number" min="0" step=".01" class="form-control" aria-label="Amount here...">
+                                                                            <input id="phoneNumber" type="Number" min="0" step="0" class="form-control" aria-label="">
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-12 d-flex flex-row" style="padding-top: 20px;">
@@ -308,12 +308,19 @@ $('#AmountReceived').on('change', (event) => {
     }
 });
 $('#createTransac').on('click', event => {
+    var params = {
+        'phone': $('#phoneNumber').val(),
+        'firstName': $('#firstName').val(),
+        'middleName': $('#middleName').val(),
+        'lastName': $('#lastName').val()
+    };
     $.ajax({
         type: "POST",
         url: "/glam/glamserver/assets/php/transactionCRUD.php",
-        data: {"TYPE": "newTransaction","transactionRecords": selectedProducts},
+        data: {"TYPE": "newTransaction","transactionRecords": selectedProducts, "customer" : params},
         dataType: "json",
     }).done((data) => {
+        console.warn("Log:  => data", data);
         if(data.MESSAGE != 0) {
             $.notify({
                 title: 'Success!',
@@ -327,8 +334,8 @@ $('#createTransac').on('click', event => {
                     align: 'right'
                 }
             });
-            sessionStorage.page='rentalStat';
-            location.reload();
+            //sessionStorage.page='rentalStat';
+            //location.reload();
         }else {
             console.warn(`🚀newTransaction => data`, data.MESSAGE);
         }

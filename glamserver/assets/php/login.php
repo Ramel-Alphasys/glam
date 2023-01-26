@@ -6,7 +6,7 @@ session_start();
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-29 22:31:42
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-18 21:16:55
+ * @ Modified time: 2023-01-26 21:30:22
  * @ Change Log:
  */
 require 'database.php';
@@ -137,6 +137,7 @@ if (!empty($_POST['TYPE'])) {
                     'dbcon' => $conToServer
                 );
                 $crud->sm_cr_server($params);
+                $_SESSION["userId"] = $userId;
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'USER' => $userId, 'USERTYPE' => 1)) : json_encode(['STATUS' => 0]);
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
@@ -187,7 +188,7 @@ if (!empty($_POST['TYPE'])) {
 
                 $params = array(
                     'fields' => "{$_POST['API']}='{$_POST['VALUE']}'",
-                    'filter' => "ge_guId = ".$_POST['recId'],
+                    'filter' => "ge_guId = " . $_POST['recId'],
                     'table' => 'g_employee',
                     'dbcon' => $conToServer
                 );
@@ -195,7 +196,6 @@ if (!empty($_POST['TYPE'])) {
                 $checker = $crud->sm_ur_server($params);
 
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
-
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }
@@ -204,7 +204,7 @@ if (!empty($_POST['TYPE'])) {
             try {
 
                 $params = array(
-                    'filter' => "gcatId = ". $_POST['catId'],
+                    'filter' => "gcatId = " . $_POST['catId'],
                     'table' => 'g_category',
                     'dbcon' => $conToServer
                 );
@@ -212,7 +212,6 @@ if (!empty($_POST['TYPE'])) {
                 $checker = $crud->sm_dr_server($params);
 
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
-
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }
@@ -220,7 +219,7 @@ if (!empty($_POST['TYPE'])) {
         case 'categoryNew':
             try {
                 $params = array(
-                    'fields' => "null,'".$_POST['category']."'",
+                    'fields' => "null,'" . $_POST['category'] . "'",
                     'table' => 'g_category',
                     'dbcon' => $conToServer
                 );
@@ -228,28 +227,26 @@ if (!empty($_POST['TYPE'])) {
                 $checker = $crud->sm_cr_server($params);
 
                 echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
-
             } catch (PDOException $e) {
                 echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
             }
             break;
         case 'categoryUpdate':
-                try {
-    
-                    $params = array(
-                        'fields' => "gcat_name='{$_POST["category"]}'",
-                        'filter' => "gcatId = ". $_POST['catId'],
-                        'table' => 'g_category',
-                        'dbcon' => $conToServer
-                    );
-    
-                    $checker = $crud->sm_ur_server($params);
-    
-                    echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
+            try {
 
-                } catch (PDOException $e) {
-                    echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
-                }
-                break;
+                $params = array(
+                    'fields' => "gcat_name='{$_POST["category"]}'",
+                    'filter' => "gcatId = " . $_POST['catId'],
+                    'table' => 'g_category',
+                    'dbcon' => $conToServer
+                );
+
+                $checker = $crud->sm_ur_server($params);
+
+                echo (!empty($checker)) ? json_encode(array('STATUS' => 1, 'Data' => $checker)) : json_encode(['STATUS' => 0]);
+            } catch (PDOException $e) {
+                echo json_encode([['MESSAGE' => "Connection failed: " . $conToServer->htmlize($e->getMessage())]]);
+            }
+            break;
     }
 }
