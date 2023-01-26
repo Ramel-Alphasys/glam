@@ -83,29 +83,15 @@ if(count($description) > 2) {
           <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
         </div>
         <div class="card border-0 mb-3">
-          <div id="ItemPreview" class="carousel slide carousel-fade m-5" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active" data-bs-interval="1000">
-                <img src="<?php echo "glamserver/assets/contents/".$res['gp_product_img']; ?>" class="d-block rounded w-100" alt="..." style="height: 540px;">
+          <div class="m-5">
+            <div class="container">
+              <div class="d-flex justify-content-center rounded">
+                <img src="<?php echo "glamserver/assets/contents/".$res['gp_product_img']; ?>" class="d-block rounded shadow" alt="..." style="height: 540px;">
               </div>
-              <!-- <div class="carousel-item" data-bs-interval="1000">
-                <img src="assets/img/img3.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
-              </div>
-              <div class="carousel-item" data-bs-interval="1000">
-                <img src="assets/img/img1.png" class="d-block rounded w-100" alt="..." style="height: 540px;">
-              </div> -->
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#ItemPreview" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#ItemPreview" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
           </div>
           <div class="card-body">
-            <h3 class="card-title me-5 ms-5"><?php echo $res['gp_name'] ?></h3><br>
+            <h3 class="card-title me-5 ms-5"><?php echo $res['gp_name'] ?> <span class="text-muted fs-5">(₱<?php echo $res['gp_price']; ?>)</span></h3><br>
             <h6 class="me-5 ms-5">Available Size: </h6>
             <p class="card-text me-5 ms-5">
               <?php 

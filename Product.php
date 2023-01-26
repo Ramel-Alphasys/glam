@@ -12,7 +12,13 @@ require 'glamserver\assets\php\CRUD.php';
 $crud = new serverManipulation();
 $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-JqPbX*']);
 
-if(isset($_GET['sort'])){
+if(!isset($_GET['sort']) || $_GET['sort'] == 'All'){
+  $params = array(
+    'fields' => '*',
+    'table' => 'g_product',
+    'dbcon' => $serverConn
+  );
+} else if (isset($_GET['sort'])){
   $sorting = $_GET['sort'];
   $params = array(
     'fields' => '*',
@@ -20,14 +26,17 @@ if(isset($_GET['sort'])){
     'filter' => ' WHERE `gp_type` LIKE "'.$sorting.'"',
     'dbcon' => $serverConn
   );
-} else {
-  $params = array(
-    'fields' => '*',
-    'table' => 'g_product',
-    'dbcon' => $serverConn
-  );
 }
 $response = $crud->sm_vr_server($params);
+
+$catPar = array(
+  'fields'  => '*',
+  'table'   => 'g_category',
+  'dbcon'   => $serverConn
+);
+
+$category =  $crud->sm_vr_server($catPar);
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -69,7 +78,19 @@ $response = $crud->sm_vr_server($params);
       <br>
     </div>
     <div class="container px-4 py-5" id="custom-cards">
-      <h2 class="pb-2 border-bottom">Products</h2>
+      <div class="d-flex align-items-center justify-content-between border-bottom">
+        <h2 class="pb-2">Products</h2>
+        <div class="">
+          <select class="form-select prod-category" aria-label="Catergory" id="category_filter">
+            <option value="All">All</option>
+            <?php if(gettype($category) !='NULL') {
+              foreach($category as $cat) { ?>
+                <option value="<?php echo $cat['gcat_name']; ?>"><?php echo $cat['gcat_name']; ?> </option>
+            <?php  }
+            }; ?>
+          </select>
+        </div>
+      </div>
       <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
         <?php if( gettype($response) != 'NULL') {?>
           <?php foreach ($response as $resp) { ?>
@@ -114,8 +135,17 @@ $response = $crud->sm_vr_server($params);
 </body>
 <script type="text/javascript">
   $(document).ready(function() {
+    let sp = new URLSearchParams(window.location.search);
+    if(sp.get('sort') != '') {
+      $('select').find('option[value='+sp.get('sort')+']').attr('selected', 'selected');
+    }
     $(".menu-icon").on("click", function() {
       $("nav ul").toggleClass("showing");
+    });
+    $(".prod-category").on("change", function() {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort',document.getElementById("category_filter").value);
+      window.location.href = url;
     });
   });
 </script>

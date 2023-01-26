@@ -84,18 +84,18 @@ $serverConn  = new ServerCon(['localhost', 3306, 'glamdb', 'glam', '-TEnT3pf_-Jq
         <div class="row">
           <div class="col-lg-4">
             <img src="assets/img/Men.jpg" alt="..." class="bd-placeholder-img rounded-circle shadow" width="140" height="140">
-            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=men">View Products</a></p>
-            <h4 class="fw-normal">Men's</h4>
+            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=Mens">View Products</a></p>
+            <h4 class="fw-normal">Mens</h4>
           </div>
           <div class="col-lg-4">
             <img src="assets/img/Women.jpg" alt="..." class="bd-placeholder-img rounded-circle shadow" width="140" height="140">
-            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=women">View Products</a></p>
-            <h4 class="fw-normal">Women's</h4>
+            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=Womens">View Products</a></p>
+            <h4 class="fw-normal">Womens</h4>
           </div>
           <div class="col-lg-4">
             <img src="assets/img/Kids.jpg" alt="..." class="bd-placeholder-img rounded-circle shadow" width="140" height="140">
-            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=kid">View Products</a></p>
-            <h4 class="fw-normal">Kid's</h4>
+            <p class="mt-3"><a class="btn btn-dark shadow-sm" href="Product.php?sort=Kids">View Products</a></p>
+            <h4 class="fw-normal">Kids</h4>
           </div>
         </div>
         <hr class="featurette-divider">
