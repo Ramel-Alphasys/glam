@@ -146,22 +146,26 @@ if ($findingCollon != '') {
               <label class="form-check-label" for="gcashPartial">Partial Payment</label>
             </div>
           </div>
-          <div class="container p-3 d-none" id="payFulGCash">
-            <div class="card" style="width: 18rem; height: 18rem;">
-              <div class="card-body"><img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?php echo '/glam/glamserver/assets/qrcodes/' . $product[0]['gp_gcash_qr']; ?>" /></div>
-            </div>
-            <div class="mb-3" style="width: 18rem;">
-              <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
-              <input class="form-control form-control-sm" name="full" id="gcashReceiptFul" type="file" />
+          <div class="container p-3 d-none  d-flex justify-content-center" id="payFulGCash">
+            <div>
+              <div class="card" style="width: 18rem; height: 18rem;">
+                <div class="card-body"><img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?php echo '/glam/glamserver/assets/qrcodes/' . $product[0]['gp_gcash_qr']; ?>" /></div>
+              </div>
+              <div class="mb-3" style="width: 18rem;">
+                <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
+                <input class="form-control form-control-sm" name="full" id="gcashReceiptFul" type="file" />
+              </div>
             </div>
           </div>
-          <div class="container p-3 d-none" id="payParGCash">
-            <div class="card" style="width: 18rem; height: 18rem;">
-              <div class="card-body">Partial Payment QR!</div>
-            </div>
-            <div class="mb-3" style="width: 18rem;">
-              <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
-              <input class="form-control form-control-sm" name="partial" id="gcashReceiptPar" type="file" />
+          <div class="container p-3 d-none d-flex justify-content-center" id="payParGCash">
+            <div>
+              <div class="card" style="width: 18rem; height: 18rem;">
+                <div class="card-body">Partial Payment QR!</div>
+              </div>
+              <div class="mb-3" style="width: 18rem;">
+                <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
+                <input class="form-control form-control-sm" name="partial" id="gcashReceiptPar" type="file" />
+              </div>
             </div>
           </div>
         </div>
