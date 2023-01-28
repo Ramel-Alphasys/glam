@@ -4,7 +4,7 @@
  * @ Author: Ramel Niño O. Empleo
  * @ Create Time: 2022-09-15 09:11:53
  * @ Modified by: Ramel Niño O. Empleo
- * @ Modified time: 2023-01-25 21:08:17
+ * @ Modified time: 2023-01-28 09:01:29
  * @ Change Log:
  -->
 <div class="container-scroller">
@@ -92,6 +92,10 @@
 								<input type="file" class="form-control form-control-sm" id="productGcashQR" accept="image/jpeg" placeholder="Gcash qr image here...">
 							</div>
 							<div class="form-group">
+								<label for="productGcashQR">Gcash Partial QR Image</label>
+								<input type="file" class="form-control form-control-sm" id="productGcashQRp" accept="image/jpeg" placeholder="Gcash qr image here...">
+							</div>
+							<div class="form-group">
 								<label for="productName"><i class="mdi mdi-regex text-danger"></i> Product Name</label>
 								<input type="text" class="form-control" id="productName" placeholder="Product name here...">
 							</div>
@@ -100,7 +104,7 @@
 								<textarea class="form-control form-control-lg" id="productDescription" rows="20" placeholder="Product description here..."></textarea>
 							</div>
 							<div class="form-group">
-								<label for="productSize"><i class="mdi mdi-regex text-danger"></i> Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
+								<label for="productSize">Size <small class="text-muted">(press ctrl key then click to select multiple options)</small></label>
 								<select id="productSize" class="form-select" multiple>
 									<option value="S">S</option>
 									<option value="M">M</option>
@@ -162,7 +166,7 @@
 	$(document).ready(function () {
 		function format(d) {
 			var temp = [];
-			var qr;
+			var qr = [];
 			if(d.gp_description.includes('[') || d.gp_description.includes('{')) {
 				temp = d.gp_description.replace(/[{}]/g, "").split(':');
 				temp[1] = temp[1].split('",');
@@ -177,13 +181,22 @@
 				temp[2] = 'Package - All sizes';
 			}
 			if(d.gp_gcash_qr) {
-				qr = `
+				qr[0] = `
 				<a class="yBox" href="/glam/glamserver/assets/qrcodes/${d.gp_gcash_qr}" data-ybox-group="group${d.gpId}">
 					<img src="/glam/glamserver/assets/qrcodes/${d.gp_gcash_qr}" />
 				</a>
 				`;
 			}else {
-				qr = 'No Gcash QR Code';
+				qr[0] = 'No Gcash QR Code';
+			}
+			if(d.gp_featured_img) {
+				qr[1] = `
+				<a class="yBox" href="/glam/glamserver/assets/qrcodes/${d.gp_featured_img}" data-ybox-group="group${d.gpId}">
+					<img src="/glam/glamserver/assets/qrcodes/${d.gp_featured_img}" />
+				</a>
+				`;
+			}else {
+				qr[1] = 'No Gcash QR Code';
 			}
 			return (
 				`<h5>Description</h5>
@@ -195,7 +208,13 @@
 					<div style="padding: 10px;">
 						<p>
 							<i class="mdi mdi-qrcode"></i> QR Code:<br />
-							${qr}
+							${qr[0]}
+						</p>
+					</div>
+					<div style="padding: 10px;">
+						<p>
+							<i class="mdi mdi-qrcode"></i> Partial QR Code:<br />
+							${qr[1]}
 						</p>
 					</div>
 					<div style="padding: 10px;">
@@ -226,7 +245,7 @@
 				action: function( e, dt, node, config ) {
 					recordCount = table.page.info().recordsTotal;
 					$('#saveRecord').html($('#saveRecord').text().replace('Update','Save'));
-					$('#productName,#productDescription,#productType,#productAmount,#productImage,#productGcashQR,#productCount').removeClass('is-invalid').val('');
+					$('#productName,#productDescription,#productType,#productAmount,#productImage,#productCount,#productGcashQR,#productGcashQRp').removeClass('is-invalid').val('');
 					$('#productSize').val([]);
 					$('#ProductModal').modal('show');
 				}
@@ -290,11 +309,11 @@
 					{ data: 'gp_type' },
 					{ data: 'gp_count'},
 					{ data: 'gp_price' },
-					{ data: 'gp_count' },
+					{ data: 'gp_featured_img' },
 			],
 			columnDefs: [
 				{
-					target: [1,2,3,5],
+					target: [1,2,3,5,9],
 					visible: false,
 					searchable: false,
 				},
@@ -356,6 +375,7 @@
 			var loadData = [];
 			var myFormData = document.getElementById('productImage').files[0]; //get the file 
 			var myFormData2 = document.getElementById('productGcashQR').files[0]; //get the file 
+			var myFormData3 = document.getElementById('productGcashQRp').files[0]; //get the file 
 			if(event.currentTarget.innerText.includes('Update')) {
 				if (myFormData) {   //Check the file is emty or not
 					form.append('inputFile', myFormData); //append files
@@ -386,10 +406,24 @@
 						}
 					});
 				}
-
+				form = new FormData();
+				if (myFormData3) {   //Check the file is emty or not
+					form.append('inputFile', myFormData3); //append files
+					$.ajax({
+						type: 'POST',               
+						processData: false,
+						contentType: false, 
+						data: form,
+						url: "/glam/glamserver/assets/php/saveqr.php", //My reference URL
+						dataType : 'json',  
+						success: function(jsonData){
+							console.warn("Log:  => $ => jsonData", jsonData);
+						}
+					});
+				}
 				var recordData = '';
 				if($('#productName').val()) {
-					recordData += `gp_name = '${$('#productName').val()}', `;
+					recordData += `gp_name = "${$('#productName').val()}", `;
 				}
 				if($('#productDescription').val()) {
 					Description.Description = $('#productDescription').val();
@@ -399,19 +433,22 @@
 				}
 				recordData += `gp_description = '${JSON.stringify(Description)}', `;
 				if($('#productType').val()) {
-					recordData += `gp_type = '${$('#productType').val()}', `;
+					recordData += `gp_type = "${$('#productType').val()}", `;
 				}
 				if($('#productAmount').val()) {
-					recordData += `gp_price = '${$('#productAmount').val()}'`;
+					recordData += `gp_price = "${$('#productAmount').val()}"`;
 				}
 				if(myFormData) {
-					recordData += `, gp_product_img = '${myFormData.name}'`;
+					recordData += `, gp_product_img = "${myFormData.name}"`;
 				}
 				if(myFormData2) {
-					recordData += `, gp_gcash_qr = '${myFormData2.name}'`;
+					recordData += `, gp_gcash_qr = "${myFormData2.name}"`;
 				}
 				if($('#productCount').val()) {
 					recordData += `, gp_count = ${$('#productCount').val()}`;
+				}
+				if(myFormData3) {
+					recordData += `, gp_featured_img = "${myFormData3.name}"`;
 				}
 				loadData = [{...loadData, TYPE: "updateProduct", filter: `gpId = ${$('#saveRecord').val()}`, params: recordData}];
 				$.ajax({
@@ -482,7 +519,21 @@
 						}
 					});
 				}
-
+				form = new FormData();
+				if (myFormData3) {   //Check the file is emty or not
+					form.append('inputFile', myFormData3); //append files
+					$.ajax({
+						type: 'POST',               
+						processData: false,
+						contentType: false, 
+						data: form,
+						url: "/glam/glamserver/assets/php/saveqr.php", //My reference URL
+						dataType : 'json',  
+						success: function(jsonData){
+							console.warn("Log:  => $ => jsonData", jsonData);
+						}
+					});
+				}
 				var recordData = `${recordCount}, `;
 				if($('#productName').val()) {
 					$('#productName').removeClass('is-invalid');
@@ -531,7 +582,11 @@
 					$('#productCount').addClass('is-invalid').prop('title', 'this is required!').focus();
 					return;
 				}
-				recordData += ', ""';
+				if(myFormData3) {
+					recordData += `, "${myFormData3.name}"`;
+				}else {
+					recordData += `, ""`;
+				}
 				loadData = [{...loadData, TYPE: "createProduct", params: recordData}];
 				$.ajax({
 					type: "POST",
