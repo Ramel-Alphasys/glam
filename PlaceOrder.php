@@ -149,7 +149,7 @@ if ($findingCollon != '') {
           <div class="container p-3 d-none  d-flex justify-content-center" id="payFulGCash">
             <div>
               <div class="card" style="width: 18rem; height: 18rem;">
-                <div class="card-body"><img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="<?php echo '/glam/glamserver/assets/qrcodes/' . $product[0]['gp_gcash_qr']; ?>" /></div>
+                <div class="card-body"><img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 100%; height: 90%;margin: 0px;" src="<?php echo '/glam/glamserver/assets/qrcodes/' . $product[0]['gp_gcash_qr']; ?>" /></div>
               </div>
               <div class="mb-3" style="width: 18rem;">
                 <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
@@ -161,6 +161,7 @@ if ($findingCollon != '') {
             <div>
               <div class="card" style="width: 18rem; height: 18rem;">
                 <div class="card-body">Partial Payment QR!</div>
+                <div class="card-body"><img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 100%; height: 90%;margin: 0px;" src="<?php echo '/glam/glamserver/assets/qrcodes/' . $product[0]['gp_featured_img']; ?>" /></div>
               </div>
               <div class="mb-3" style="width: 18rem;">
                 <label for="gcashReceipt" class="form-label">Upload a copy of payment receipt</label>
