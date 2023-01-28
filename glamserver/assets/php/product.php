@@ -44,7 +44,8 @@ try {
                 return '₱ ' . number_format($d, 2, '.', '');
             }
         ),
-        array('db' => 'gp_count', 'dt' => 'gp_count')
+        array('db' => 'gp_count', 'dt' => 'gp_count'),
+        array('db' => 'gp_featured_img', 'dt' => 'gp_featured_img')
     );
 
     // SQL server connection information
